@@ -1,0 +1,452 @@
+rule_id,rule_name,severity,file,company_id,year,details
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ADANIENSOL,2024,"Reported OPM=30.0, calculated OPM=34.39"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,AXISBANK,2013,"Reported OPM=1353.0, calculated OPM=30.58"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,AXISBANK,2014,"Reported OPM=2307.0, calculated OPM=31.47"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,AXISBANK,2015,"Reported OPM=3097.0, calculated OPM=31.36"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,AXISBANK,2016,"Reported OPM=3466.0, calculated OPM=32.61"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,AXISBANK,2017,"Reported OPM=-5715.0, calculated OPM=53.45"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,AXISBANK,2018,"Reported OPM=-10277.0, calculated OPM=63.12"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,AXISBANK,2019,"Reported OPM=-5447.0, calculated OPM=49.39"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,AXISBANK,2020,"Reported OPM=-9859.0, calculated OPM=55.98"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,AXISBANK,2021,"Reported OPM=-2510.0, calculated OPM=50.12"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,AXISBANK,2022,"Reported OPM=3170.0, calculated OPM=44.47"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,AXISBANK,2023,"Reported OPM=13857.0, calculated OPM=34.16"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,AXISBANK,2024,"Reported OPM=11952.0, calculated OPM=34.69"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,AXISBANK,TTM,"Reported OPM=9061.0, calculated OPM=36.94"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,BAJFINANCE,2015,"Reported OPM=1367.0, calculated OPM=32.49"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,BAJFINANCE,2016,"Reported OPM=1986.0, calculated OPM=32.25"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,BAJFINANCE,2017,"Reported OPM=2867.0, calculated OPM=32.60"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,BAJFINANCE,2018,"Reported OPM=3935.0, calculated OPM=32.28"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,BAJFINANCE,2019,"Reported OPM=6310.0, calculated OPM=29.50"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,BAJFINANCE,2020,"Reported OPM=7608.0, calculated OPM=34.73"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,BAJFINANCE,2021,"Reported OPM=6314.0, calculated OPM=40.64"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,BAJFINANCE,2022,"Reported OPM=9906.0, calculated OPM=37.55"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,BAJFINANCE,2023,"Reported OPM=16018.0, calculated OPM=30.65"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,BAJFINANCE,2024,"Reported OPM=19987.0, calculated OPM=29.29"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,BAJFINANCE,TTM,"Reported OPM=21417.0, calculated OPM=30.42"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,BANKBARODA,2013,"Reported OPM=1006.0, calculated OPM=30.05"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,BANKBARODA,2014,"Reported OPM=809.0, calculated OPM=29.78"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,BANKBARODA,2015,"Reported OPM=902.0, calculated OPM=29.98"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,BANKBARODA,2016,"Reported OPM=-11700.0, calculated OPM=55.44"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,BANKBARODA,2017,"Reported OPM=-4372.0, calculated OPM=43.28"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,BANKBARODA,2018,"Reported OPM=-9197.0, calculated OPM=56.65"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,BANKBARODA,2019,"Reported OPM=-5414.0, calculated OPM=48.79"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,BANKBARODA,2020,"Reported OPM=-11728.0, calculated OPM=51.44"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,BANKBARODA,2021,"Reported OPM=-6957.0, calculated OPM=51.23"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,BANKBARODA,2022,"Reported OPM=-2948.0, calculated OPM=51.12"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,BANKBARODA,2023,"Reported OPM=6329.0, calculated OPM=40.45"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,BANKBARODA,2024,"Reported OPM=4102.0, calculated OPM=37.49"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,BANKBARODA,TTM,"Reported OPM=3526.0, calculated OPM=37.42"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CANBK,2013,"Reported OPM=655.0, calculated OPM=21.18"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CANBK,2014,"Reported OPM=-672.0, calculated OPM=24.35"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CANBK,2015,"Reported OPM=-621.0, calculated OPM=23.51"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CANBK,2016,"Reported OPM=-8008.0, calculated OPM=40.38"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CANBK,2017,"Reported OPM=-5775.0, calculated OPM=37.85"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CANBK,2018,"Reported OPM=-13350.0, calculated OPM=61.87"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CANBK,2019,"Reported OPM=-11590.0, calculated OPM=56.73"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CANBK,2020,"Reported OPM=-12867.0, calculated OPM=53.88"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CANBK,2021,"Reported OPM=-18367.0, calculated OPM=61.83"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CANBK,2022,"Reported OPM=-13657.0, calculated OPM=58.39"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CANBK,2023,"Reported OPM=-9877.0, calculated OPM=49.80"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CANBK,2024,"Reported OPM=-7745.0, calculated OPM=41.75"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CANBK,TTM,"Reported OPM=-8985.0, calculated OPM=40.23"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CHOLAFIN,2013,"Reported OPM=472.0, calculated OPM=26.77"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CHOLAFIN,2014,"Reported OPM=578.0, calculated OPM=28.42"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CHOLAFIN,2015,"Reported OPM=696.0, calculated OPM=28.56"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CHOLAFIN,2016,"Reported OPM=899.0, calculated OPM=30.04"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CHOLAFIN,2017,"Reported OPM=1143.0, calculated OPM=28.16"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CHOLAFIN,2018,"Reported OPM=1451.0, calculated OPM=26.10"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CHOLAFIN,2019,"Reported OPM=1888.0, calculated OPM=22.96"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CHOLAFIN,2020,"Reported OPM=1699.0, calculated OPM=27.79"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CHOLAFIN,2021,"Reported OPM=2094.0, calculated OPM=30.40"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CHOLAFIN,2022,"Reported OPM=2924.0, calculated OPM=28.83"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CHOLAFIN,2023,"Reported OPM=3515.0, calculated OPM=28.10"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CHOLAFIN,2024,"Reported OPM=4548.0, calculated OPM=28.10"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CHOLAFIN,TTM,"Reported OPM=5175.0, calculated OPM=28.67"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CIPLA,2013,"Reported OPM=2214.0, calculated OPM=73.26"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CIPLA,2014,"Reported OPM=2147.0, calculated OPM=78.90"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CIPLA,2015,"Reported OPM=2163.0, calculated OPM=80.94"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CIPLA,2016,"Reported OPM=2480.0, calculated OPM=82.02"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CIPLA,2017,"Reported OPM=2496.0, calculated OPM=82.66"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CIPLA,2018,"Reported OPM=2826.0, calculated OPM=81.35"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CIPLA,2019,"Reported OPM=3097.0, calculated OPM=81.07"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CIPLA,2020,"Reported OPM=3206.0, calculated OPM=81.29"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CIPLA,2021,"Reported OPM=4252.0, calculated OPM=77.80"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CIPLA,2022,"Reported OPM=4553.0, calculated OPM=79.08"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CIPLA,2023,"Reported OPM=5027.0, calculated OPM=77.91"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CIPLA,2024,"Reported OPM=6291.0, calculated OPM=75.59"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,CIPLA,TTM,"Reported OPM=6906.0, calculated OPM=74.40"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,COALINDIA,2013,"Reported OPM=18087.0, calculated OPM=73.52"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,COALINDIA,2014,"Reported OPM=17766.0, calculated OPM=74.84"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,COALINDIA,2015,"Reported OPM=17343.0, calculated OPM=76.60"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,COALINDIA,2016,"Reported OPM=18714.0, calculated OPM=75.96"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,COALINDIA,2017,"Reported OPM=12448.0, calculated OPM=84.07"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,COALINDIA,2018,"Reported OPM=9288.0, calculated OPM=89.10"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,COALINDIA,2019,"Reported OPM=25007.0, calculated OPM=74.89"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,COALINDIA,2020,"Reported OPM=21581.0, calculated OPM=77.54"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,COALINDIA,2021,"Reported OPM=18628.0, calculated OPM=79.31"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,COALINDIA,2022,"Reported OPM=24721.0, calculated OPM=77.47"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,COALINDIA,2023,"Reported OPM=44232.0, calculated OPM=68.01"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,COALINDIA,2024,"Reported OPM=47971.0, calculated OPM=66.29"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,COALINDIA,TTM,"Reported OPM=46610.0, calculated OPM=66.78"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCBANK,2013,"Reported OPM=3534.0, calculated OPM=35.22"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCBANK,2014,"Reported OPM=5602.0, calculated OPM=31.74"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCBANK,2015,"Reported OPM=7214.0, calculated OPM=31.90"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCBANK,2016,"Reported OPM=9037.0, calculated OPM=31.75"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCBANK,2017,"Reported OPM=11374.0, calculated OPM=32.56"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCBANK,2018,"Reported OPM=13374.0, calculated OPM=34.63"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCBANK,2019,"Reported OPM=16592.0, calculated OPM=33.15"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCBANK,2020,"Reported OPM=14593.0, calculated OPM=37.20"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCBANK,2021,"Reported OPM=16848.0, calculated OPM=40.81"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCBANK,2022,"Reported OPM=20795.0, calculated OPM=41.61"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCBANK,2023,"Reported OPM=29932.0, calculated OPM=36.92"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCBANK,2024,"Reported OPM=-44685.0, calculated OPM=61.41"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCBANK,TTM,"Reported OPM=-57587.0, calculated OPM=62.61"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCLIFE,2013,"Reported OPM=525.0, calculated OPM=96.27"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCLIFE,2014,"Reported OPM=605.0, calculated OPM=96.48"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCLIFE,2015,"Reported OPM=874.0, calculated OPM=96.79"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCLIFE,2016,"Reported OPM=953.0, calculated OPM=94.74"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCLIFE,2017,"Reported OPM=972.0, calculated OPM=96.83"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCLIFE,2018,"Reported OPM=1074.0, calculated OPM=96.67"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCLIFE,2019,"Reported OPM=1215.0, calculated OPM=96.87"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCLIFE,2020,"Reported OPM=1141.0, calculated OPM=96.12"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCLIFE,2021,"Reported OPM=1235.0, calculated OPM=98.27"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCLIFE,2022,"Reported OPM=778.0, calculated OPM=98.84"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCLIFE,2023,"Reported OPM=80.0, calculated OPM=99.89"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCLIFE,2024,"Reported OPM=531.0, calculated OPM=99.48"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HDFCLIFE,TTM,"Reported OPM=725.0, calculated OPM=99.28"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HEROMOTOCO,2014,"Reported OPM=3553.0, calculated OPM=85.94"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HEROMOTOCO,2015,"Reported OPM=3520.0, calculated OPM=87.22"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HEROMOTOCO,2016,"Reported OPM=4424.0, calculated OPM=84.45"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HEROMOTOCO,2017,"Reported OPM=4585.0, calculated OPM=83.97"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HEROMOTOCO,2018,"Reported OPM=5334.0, calculated OPM=83.57"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HEROMOTOCO,2019,"Reported OPM=5025.0, calculated OPM=85.21"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HEROMOTOCO,2020,"Reported OPM=4070.0, calculated OPM=86.09"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HEROMOTOCO,2021,"Reported OPM=4058.0, calculated OPM=86.90"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HEROMOTOCO,2022,"Reported OPM=3256.0, calculated OPM=88.98"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HEROMOTOCO,2023,"Reported OPM=4099.0, calculated OPM=88.00"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HEROMOTOCO,2024,"Reported OPM=5235.0, calculated OPM=86.15"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HEROMOTOCO,TTM,"Reported OPM=5561.0, calculated OPM=86.13"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDALCO,2013,"Reported OPM=7699.0, calculated OPM=90.40"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDALCO,2014,"Reported OPM=8024.0, calculated OPM=90.85"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDALCO,2015,"Reported OPM=8844.0, calculated OPM=91.52"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDALCO,2016,"Reported OPM=7778.0, calculated OPM=92.12"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDALCO,2017,"Reported OPM=12317.0, calculated OPM=87.71"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDALCO,2018,"Reported OPM=13695.0, calculated OPM=88.11"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDALCO,2019,"Reported OPM=15511.0, calculated OPM=88.12"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDALCO,2020,"Reported OPM=14306.0, calculated OPM=87.89"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDALCO,2021,"Reported OPM=17559.0, calculated OPM=86.70"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDALCO,2022,"Reported OPM=28347.0, calculated OPM=85.47"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDALCO,2023,"Reported OPM=22666.0, calculated OPM=89.85"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDALCO,2024,"Reported OPM=23872.0, calculated OPM=88.95"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDALCO,TTM,"Reported OPM=27931.0, calculated OPM=87.53"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDUNILVR,2013,"Reported OPM=4220.0, calculated OPM=84.37"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDUNILVR,2014,"Reported OPM=4759.0, calculated OPM=83.72"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDUNILVR,2015,"Reported OPM=5412.0, calculated OPM=83.07"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDUNILVR,2016,"Reported OPM=5910.0, calculated OPM=81.64"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDUNILVR,2017,"Reported OPM=6328.0, calculated OPM=80.92"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDUNILVR,2018,"Reported OPM=7499.0, calculated OPM=78.90"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDUNILVR,2019,"Reported OPM=8880.0, calculated OPM=77.41"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDUNILVR,2020,"Reported OPM=9861.0, calculated OPM=75.21"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDUNILVR,2021,"Reported OPM=11626.0, calculated OPM=75.28"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDUNILVR,2022,"Reported OPM=12857.0, calculated OPM=75.49"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDUNILVR,2023,"Reported OPM=14147.0, calculated OPM=76.65"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDUNILVR,2024,"Reported OPM=14659.0, calculated OPM=76.32"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,HINDUNILVR,TTM,"Reported OPM=14759.0, calculated OPM=76.45"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIBANK,2013,"Reported OPM=-15085.0, calculated OPM=70.59"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIBANK,2014,"Reported OPM=-13084.0, calculated OPM=66.40"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIBANK,2015,"Reported OPM=-16120.0, calculated OPM=70.53"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIBANK,2016,"Reported OPM=-26955.0, calculated OPM=88.12"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIBANK,2017,"Reported OPM=-37737.0, calculated OPM=104.76"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIBANK,2018,"Reported OPM=-44906.0, calculated OPM=117.12"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIBANK,2019,"Reported OPM=-50971.0, calculated OPM=116.38"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIBANK,2020,"Reported OPM=-45190.0, calculated OPM=100.62"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIBANK,2021,"Reported OPM=-44805.0, calculated OPM=102.41"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIBANK,2022,"Reported OPM=-26558.0, calculated OPM=84.69"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIBANK,2023,"Reported OPM=-17341.0, calculated OPM=72.57"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIBANK,2024,"Reported OPM=-14152.0, calculated OPM=62.41"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIBANK,TTM,"Reported OPM=-31575.0, calculated OPM=69.63"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIGI,2013,"Reported OPM=-178.0, calculated OPM=104.46"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIGI,2014,"Reported OPM=-225.0, calculated OPM=105.19"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIGI,2015,"Reported OPM=-221.0, calculated OPM=105.24"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIGI,2016,"Reported OPM=764.0, calculated OPM=87.34"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIGI,2017,"Reported OPM=919.0, calculated OPM=87.78"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIGI,2018,"Reported OPM=-262.0, calculated OPM=103.79"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIGI,2019,"Reported OPM=1669.0, calculated OPM=85.05"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIGI,2020,"Reported OPM=1772.0, calculated OPM=84.61"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIGI,2021,"Reported OPM=2072.0, calculated OPM=82.97"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIGI,2022,"Reported OPM=1016.0, calculated OPM=93.66"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIGI,2023,"Reported OPM=1264.0, calculated OPM=92.93"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIGI,2024,"Reported OPM=2577.0, calculated OPM=87.42"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIGI,TTM,"Reported OPM=3363.0, calculated OPM=85.57"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIPRULI,2013,"Reported OPM=745.0, calculated OPM=96.28"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIPRULI,2014,"Reported OPM=1504.0, calculated OPM=93.13"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIPRULI,2015,"Reported OPM=1655.0, calculated OPM=95.20"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIPRULI,2016,"Reported OPM=1842.0, calculated OPM=91.17"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIPRULI,2017,"Reported OPM=1806.0, calculated OPM=95.22"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIPRULI,2018,"Reported OPM=1771.0, calculated OPM=95.44"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIPRULI,2019,"Reported OPM=541.0, calculated OPM=98.70"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIPRULI,2020,"Reported OPM=-319.0, calculated OPM=101.52"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIPRULI,2021,"Reported OPM=-390.0, calculated OPM=100.47"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIPRULI,2022,"Reported OPM=-2163.0, calculated OPM=103.40"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIPRULI,2023,"Reported OPM=-1757.0, calculated OPM=103.48"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIPRULI,2024,"Reported OPM=-1829.0, calculated OPM=102.03"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,ICICIPRULI,TTM,"Reported OPM=321.0, calculated OPM=99.59"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDUSINDBK,2013,"Reported OPM=286.0, calculated OPM=27.88"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDUSINDBK,2014,"Reported OPM=335.0, calculated OPM=30.95"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDUSINDBK,2015,"Reported OPM=288.0, calculated OPM=32.33"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDUSINDBK,2016,"Reported OPM=329.0, calculated OPM=35.28"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDUSINDBK,2017,"Reported OPM=379.0, calculated OPM=39.46"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDUSINDBK,2018,"Reported OPM=942.0, calculated OPM=37.93"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDUSINDBK,2019,"Reported OPM=-437.0, calculated OPM=41.70"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDUSINDBK,2020,"Reported OPM=-553.0, calculated OPM=43.81"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDUSINDBK,2021,"Reported OPM=-2469.0, calculated OPM=55.16"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDUSINDBK,2022,"Reported OPM=-839.0, calculated OPM=51.39"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDUSINDBK,2023,"Reported OPM=2067.0, calculated OPM=42.69"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDUSINDBK,2024,"Reported OPM=2978.0, calculated OPM=38.55"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDUSINDBK,TTM,"Reported OPM=1323.0, calculated OPM=41.03"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,JIOFIN,2023,"Reported OPM=88.0, calculated OPM=86.67"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,KOTAKBANK,2013,"Reported OPM=-1789.0, calculated OPM=60.92"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,KOTAKBANK,2014,"Reported OPM=-1379.0, calculated OPM=58.84"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,KOTAKBANK,2015,"Reported OPM=-3366.0, calculated OPM=72.96"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,KOTAKBANK,2016,"Reported OPM=-2263.0, calculated OPM=56.57"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,KOTAKBANK,2017,"Reported OPM=-3965.0, calculated OPM=66.44"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,KOTAKBANK,2018,"Reported OPM=-4141.0, calculated OPM=66.87"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,KOTAKBANK,2019,"Reported OPM=-5114.0, calculated OPM=66.23"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,KOTAKBANK,2020,"Reported OPM=-5005.0, calculated OPM=67.45"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,KOTAKBANK,2021,"Reported OPM=-9958.0, calculated OPM=90.83"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,KOTAKBANK,2022,"Reported OPM=-8512.0, calculated OPM=90.98"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,KOTAKBANK,2023,"Reported OPM=-5746.0, calculated OPM=79.44"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,KOTAKBANK,2024,"Reported OPM=-13382.0, calculated OPM=83.67"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,KOTAKBANK,TTM,"Reported OPM=-14146.0, calculated OPM=79.42"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,SUNPHARMA,2024,"Reported OPM=28.0, calculated OPM=26.84"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDIGO,2013,"Reported OPM=855.0, calculated OPM=90.71"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDIGO,2014,"Reported OPM=433.0, calculated OPM=96.11"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDIGO,2015,"Reported OPM=1904.0, calculated OPM=86.33"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDIGO,2016,"Reported OPM=3164.0, calculated OPM=80.40"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDIGO,2017,"Reported OPM=2219.0, calculated OPM=88.06"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDIGO,2018,"Reported OPM=3030.0, calculated OPM=86.84"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDIGO,2019,"Reported OPM=-151.0, calculated OPM=100.53"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDIGO,2020,"Reported OPM=4069.0, calculated OPM=88.62"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDIGO,2021,"Reported OPM=2.0, calculated OPM=99.98"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDIGO,2022,"Reported OPM=558.0, calculated OPM=97.85"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDIGO,2023,"Reported OPM=6521.0, calculated OPM=88.02"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDIGO,2024,"Reported OPM=16331.0, calculated OPM=76.30"
+DQ-05,Operating-profit-margin cross-check,WARNING,profitandloss.xlsx,INDIGO,TTM,"Reported OPM=15908.0, calculated OPM=79.20"
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,AMBUJACEM,2020,dividend_payout=151.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,BHARTIARTL,2018,dividend_payout=194.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,BHARTIARTL,2019,dividend_payout=244.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,BHARTIARTL,2020,dividend_payout=-3.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,BHEL,2016,dividend_payout=-14.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,BHEL,2018,dividend_payout=151.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,BPCL,2020,dividend_payout=106.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,BPCL,2021,dividend_payout=102.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,BRITANNIA,2021,dividend_payout=204.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,COALINDIA,2014,dividend_payout=121.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,COALINDIA,2016,dividend_payout=121.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,COALINDIA,2017,dividend_payout=133.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,COALINDIA,2018,dividend_payout=146.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,DLF,2016,dividend_payout=117.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,DLF,2020,dividend_payout=-85.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,HINDALCO,2016,dividend_payout=-82.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,HINDUNILVR,2013,dividend_payout=104.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,HINDUNILVR,2021,dividend_payout=119.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,IOC,2020,dividend_payout=-437.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,ITC,2021,dividend_payout=101.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,JSWSTEEL,2016,dividend_payout=-67.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,M&M,2020,dividend_payout=205.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,NAUKRI,2015,dividend_payout=150.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,NAUKRI,2017,dividend_payout=-230.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,NAUKRI,2020,dividend_payout=-31.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,NAUKRI,2023,dividend_payout=-228.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,NESTLEIND,2019,dividend_payout=168.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,PNB,2016,dividend_payout=-2.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,SBIN,2017,dividend_payout=859.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,TATACONSUM,2016,dividend_payout=-999.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,TATAPOWER,2013,dividend_payout=-319.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,TATAPOWER,2014,dividend_payout=-114.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,TATAPOWER,2015,dividend_payout=210.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,TATASTEEL,2013,dividend_payout=-11.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,TATASTEEL,2015,dividend_payout=-20.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,TATASTEEL,2016,dividend_payout=-203.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,TATASTEEL,2017,dividend_payout=-23.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,TATASTEEL,2024,dividend_payout=-101.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,TECHM,2024,dividend_payout=150.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,TORNTPHARM,2022,dividend_payout=105.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,TRENT,2013,dividend_payout=-87.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,TRENT,2014,dividend_payout=-125.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,TRENT,2021,dividend_payout=-15.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,UNITDSPR,2013,dividend_payout=-31.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,VEDL,2015,dividend_payout=-8.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,VEDL,2016,dividend_payout=-8.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,VEDL,2020,dividend_payout=-22.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,VEDL,2023,dividend_payout=357.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,VEDL,2024,dividend_payout=259.0
+DQ-14,Dividend payout range,WARNING,profitandloss.xlsx,INDIGO,2019,dividend_payout=123.0
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,ABB,2022-06-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,ADANIENSOL,2021-03-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,ADANIENSOL,2021-11-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,ADANIENSOL,2023-06-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,ADANIENT,2020-09-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,ADANIENT,2021-12-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,ADANIENT,2024-09-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,ADANIGREEN,2021-02-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,ADANIGREEN,2022-08-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,ADANIPORTS,2021-01-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,ADANIPOWER,2023-06-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,AMBUJACEM,2022-11-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,APOLLOHOSP,2020-06-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,APOLLOHOSP,2021-12-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,APOLLOHOSP,2023-10-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,ASIANPAINT,2021-07-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,ASIANPAINT,2021-10-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,ATGL,2022-03-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,ATGL,2022-04-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,BAJAJ-AUTO,2024-01-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,BAJAJFINSV,2020-06-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,BAJAJFINSV,2021-01-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,BAJAJFINSV,2024-06-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,BAJFINANCE,2021-01-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,BAJFINANCE,2024-06-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,BAJFINANCE,2024-07-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,BEL,2020-12-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,BHARTIARTL,2022-04-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,BHARTIARTL,2023-05-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,BHEL,2022-12-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,BRITANNIA,2020-09-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,BRITANNIA,2022-09-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,CANBK,2020-03-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,CANBK,2023-05-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,CHOLAFIN,2022-12-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,CHOLAFIN,2024-11-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,CIPLA,2020-07-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,DABUR,2022-04-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,DIVISLAB,2020-04-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,DIVISLAB,2020-05-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,DLF,2022-03-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,DLF,2024-10-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,EICHERMOT,2021-12-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,EICHERMOT,2022-11-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,GAIL,2021-07-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,GRASIM,2022-03-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,HAVELLS,2024-11-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,HCLTECH,2024-01-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,HCLTECH,2024-06-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,HDFCBANK,2022-06-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,HDFCBANK,2023-08-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,HDFCLIFE,2020-01-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,HEROMOTOCO,2021-06-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,HEROMOTOCO,2022-09-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,HINDALCO,2023-08-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,HINDUNILVR,2022-06-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,HINDUNILVR,2024-03-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,HINDUNILVR,2024-08-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,ICICIGI,2024-02-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,ICICIPRULI,2020-08-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,INDIGO,2022-02-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,INDUSINDBK,2022-03-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,INFY,2021-09-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,IOC,2022-02-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,IOC,2022-08-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,IRCTC,2022-05-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,IRCTC,2023-01-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,IRCTC,2024-06-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,IRFC,2020-06-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,IRFC,2021-03-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,IRFC,2024-06-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,JINDALSTEL,2020-02-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,JINDALSTEL,2020-11-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,JINDALSTEL,2023-05-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,JIOFIN,2022-02-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,JIOFIN,2023-12-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,JIOFIN,2024-01-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,JIOFIN,2024-12-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,JSWENERGY,2020-11-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,JSWENERGY,2022-03-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,JSWENERGY,2023-04-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,JSWENERGY,2023-06-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,JSWENERGY,2023-09-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,JSWENERGY,2024-05-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,KOTAKBANK,2023-07-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,LICI,2020-07-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,LT,2023-03-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,LT,2024-10-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,MARUTI,2021-03-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,MOTHERSON,2020-05-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,MOTHERSON,2023-04-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,NAUKRI,2024-02-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,NESTLEIND,2023-01-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,NHPC,2023-11-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,ONGC,2022-06-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,PFC,2022-10-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,PFC,2023-10-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,PIDILITIND,2023-01-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,PNB,2022-06-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,POWERGRID,2024-11-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,RECLTD,2020-05-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,RECLTD,2021-03-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,RELIANCE,2022-10-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,RELIANCE,2024-07-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,SBIN,2021-07-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,SHREECEM,2021-02-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,SHREECEM,2023-11-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,SHREECEM,2024-09-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,SHREECEM,2024-10-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,SHRIRAMFIN,2022-02-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,SHRIRAMFIN,2022-07-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,SHRIRAMFIN,2024-05-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,SIEMENS,2021-07-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,TATASTEEL,2021-11-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,TCS,2024-07-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,TORNTPHARM,2020-01-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,TORNTPHARM,2022-11-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,TORNTPHARM,2023-09-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,TORNTPHARM,2024-11-01,OHLC relationship is inconsistent
+DQ-12,OHLC consistency,WARNING,stock_prices.xlsx,TRENT,2023-11-01,OHLC relationship is inconsistent
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,AMBUJACEM,2020,dividend_payout_ratio_pct=151.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,BHARTIARTL,2018,dividend_payout_ratio_pct=194.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,BHARTIARTL,2019,dividend_payout_ratio_pct=244.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,BHARTIARTL,2020,dividend_payout_ratio_pct=-3.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,BHEL,2016,dividend_payout_ratio_pct=-14.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,BHEL,2018,dividend_payout_ratio_pct=151.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,BPCL,2020,dividend_payout_ratio_pct=106.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,BPCL,2021,dividend_payout_ratio_pct=102.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,BRITANNIA,2021,dividend_payout_ratio_pct=204.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,COALINDIA,2014,dividend_payout_ratio_pct=121.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,COALINDIA,2016,dividend_payout_ratio_pct=121.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,COALINDIA,2017,dividend_payout_ratio_pct=133.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,COALINDIA,2018,dividend_payout_ratio_pct=146.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,DLF,2016,dividend_payout_ratio_pct=117.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,DLF,2020,dividend_payout_ratio_pct=-85.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,HINDALCO,2016,dividend_payout_ratio_pct=-82.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,HINDUNILVR,2013,dividend_payout_ratio_pct=104.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,HINDUNILVR,2021,dividend_payout_ratio_pct=119.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,IOC,2020,dividend_payout_ratio_pct=-437.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,ITC,2021,dividend_payout_ratio_pct=101.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,JSWSTEEL,2016,dividend_payout_ratio_pct=-67.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,M&M,2020,dividend_payout_ratio_pct=205.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,NAUKRI,2015,dividend_payout_ratio_pct=150.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,NAUKRI,2017,dividend_payout_ratio_pct=-230.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,NAUKRI,2020,dividend_payout_ratio_pct=-31.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,NAUKRI,2023,dividend_payout_ratio_pct=-228.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,NESTLEIND,2019,dividend_payout_ratio_pct=168.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,PNB,2016,dividend_payout_ratio_pct=-2.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,TATACONSUM,2016,dividend_payout_ratio_pct=-999.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,TATAPOWER,2013,dividend_payout_ratio_pct=-319.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,TATAPOWER,2014,dividend_payout_ratio_pct=-114.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,TATAPOWER,2015,dividend_payout_ratio_pct=210.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,TATASTEEL,2013,dividend_payout_ratio_pct=-11.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,TATASTEEL,2015,dividend_payout_ratio_pct=-20.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,TATASTEEL,2016,dividend_payout_ratio_pct=-203.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,TATASTEEL,2017,dividend_payout_ratio_pct=-23.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,TATASTEEL,2024,dividend_payout_ratio_pct=-101.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,TECHM,2024,dividend_payout_ratio_pct=150.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,TORNTPHARM,2022,dividend_payout_ratio_pct=105.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,TRENT,2013,dividend_payout_ratio_pct=-87.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,TRENT,2014,dividend_payout_ratio_pct=-125.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,TRENT,2021,dividend_payout_ratio_pct=-15.0
+DQ-14,Dividend payout range,WARNING,financial_ratios.xlsx,INDIGO,2019,dividend_payout_ratio_pct=123.0
+DQ-16,EPS sanity check,WARNING,financial_ratios.xlsx,JIOFIN,2023,Invalid EPS value: nan
+DQ-16,EPS sanity check,WARNING,financial_ratios.xlsx,LICI,2019,Invalid EPS value: nan
+DQ-16,EPS sanity check,WARNING,financial_ratios.xlsx,LICI,2020,Invalid EPS value: nan
+DQ-16,EPS sanity check,WARNING,financial_ratios.xlsx,SIEMENS,2011,Invalid EPS value: nan
