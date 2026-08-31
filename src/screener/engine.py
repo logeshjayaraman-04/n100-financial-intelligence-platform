@@ -1,12 +1,9 @@
-"""
-Sprint 3 - Screener Engine
+git add src/screener/presets.py"""
+Sprint 3 - Day 15
+Screener Filter Engine
 
-Day 15:
-Filter Engine Core
-
-Combines Sprint 2 financial ratios with P&L,
-market-cap and sector data to support configurable
-screener thresholds.
+Loads the latest available financial data and applies configurable
+threshold filters to the Nifty 100 universe.
 """
 
 from __future__ import annotations
@@ -19,7 +16,6 @@ import yaml
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-
 DEFAULT_CONFIG = PROJECT_ROOT / "config" / "screener_config.yaml"
 
 
@@ -28,11 +24,9 @@ def normalize_year(value: Any) -> int | None:
     if pd.isna(value):
         return None
 
-    text = str(value)
-
     import re
 
-    match = re.search(r"(\d{4})", text)
+    match = re.search(r"(\d{4})", str(value))
 
     if match is None:
         return None
@@ -47,19 +41,19 @@ def load_config(path: str | Path = DEFAULT_CONFIG) -> dict:
 
 
 def _latest_pnl(pnl: pd.DataFrame) -> pd.DataFrame:
-    """
-    Keep the latest non-TTM annual P&L row per company.
+    """Keep the latest non-TTM annual P&L row per company."""
 
-    TTM is excluded here because market-cap data is annual.
-    """
     data = pnl.copy()
 
     data["_year_num"] = data["year"].apply(normalize_year)
-
     data = data[data["_year_num"].notna()].copy()
 
-    # Prefer annual rows over TTM when both exist.
-    data["_is_ttm"] = data["year"].astype(str).str.upper().eq("TTM")
+    data["_is_ttm"] = (
+        data["year"]
+        .astype(str)
+        .str.upper()
+        .eq("TTM")
+    )
 
     data = data.sort_values(
         ["company_id", "_year_num", "_is_ttm"]
@@ -80,10 +74,10 @@ def build_screener_dataframe(
     """
     Build the unified latest-year screener dataset.
     """
+
     import sqlite3
 
     db_path = Path(db_path)
-
     db = sqlite3.connect(db_path)
 
     ratios = pd.read_sql_query(
@@ -103,7 +97,8 @@ def build_screener_dataframe(
             year,
             sales,
             net_profit,
-            eps
+            eps,
+            dividend_payout
         FROM profitandloss
         """,
         db,
@@ -125,19 +120,12 @@ def build_screener_dataframe(
 
     db.close()
 
-    # ---------------------------------------------------------
     # Normalize years
-    # ---------------------------------------------------------
-
     ratios["_year_num"] = ratios["year"].apply(normalize_year)
-
     pnl["_year_num"] = pnl["year"].apply(normalize_year)
     market_cap["_year_num"] = market_cap["year"].apply(normalize_year)
 
-    # ---------------------------------------------------------
     # Latest ratio row per company
-    # ---------------------------------------------------------
-
     ratios = ratios[
         ratios["_year_num"].notna()
     ].copy()
@@ -152,10 +140,7 @@ def build_screener_dataframe(
         )
     )
 
-    # ---------------------------------------------------------
     # Latest annual P&L
-    # ---------------------------------------------------------
-
     pnl = _latest_pnl(pnl)
 
     pnl = (
@@ -168,10 +153,7 @@ def build_screener_dataframe(
         )
     )
 
-    # ---------------------------------------------------------
     # Latest market-cap row
-    # ---------------------------------------------------------
-
     market_cap = (
         market_cap[
             market_cap["_year_num"].notna()
@@ -185,10 +167,7 @@ def build_screener_dataframe(
         )
     )
 
-    # ---------------------------------------------------------
     # Merge
-    # ---------------------------------------------------------
-
     result = ratios.merge(
         pnl[
             [
@@ -196,6 +175,7 @@ def build_screener_dataframe(
                 "sales",
                 "net_profit",
                 "eps",
+                "dividend_payout",
             ]
         ],
         on="company_id",
@@ -222,10 +202,7 @@ def build_screener_dataframe(
         how="left",
     )
 
-    # ---------------------------------------------------------
     # Standardized screener names
-    # ---------------------------------------------------------
-
     result["roe"] = result["return_on_equity_pct"]
     result["de"] = result["debt_to_equity"]
     result["fcf"] = result["free_cash_flow_cr"]
@@ -253,6 +230,8 @@ def _apply_min(
     column: str,
     threshold: Any,
 ) -> pd.DataFrame:
+    """Apply a minimum threshold."""
+
     if threshold is None:
         return df
 
@@ -267,6 +246,8 @@ def _apply_max(
     column: str,
     threshold: Any,
 ) -> pd.DataFrame:
+    """Apply a maximum threshold."""
+
     if threshold is None:
         return df
 
@@ -294,12 +275,12 @@ def apply_filters(
         "revenue_cagr_5yr_min": "revenue_cagr_5yr",
         "pat_cagr_5yr_min": "pat_cagr_5yr",
         "opm_min": "opm",
-        "dividend_yield_min": "dividend_yield",
         "market_cap_min": "market_cap",
         "net_profit_min": "net_profit",
         "eps_cagr_min": "eps_cagr",
         "asset_turnover_min": "asset_turnover",
         "sales_min": "sales",
+        "dividend_yield_min": "dividend_yield",
     }
 
     for threshold_name, column in minimum_filters.items():
@@ -308,6 +289,20 @@ def apply_filters(
             column,
             filters.get(threshold_name),
         )
+
+    # Dividend payout maximum
+    dividend_payout_max = filters.get(
+        "dividend_payout_max"
+    )
+
+    if dividend_payout_max is not None:
+        result = result[
+            result["dividend_payout_ratio_pct"].notna()
+            & (
+                result["dividend_payout_ratio_pct"]
+                < float(dividend_payout_max)
+            )
+        ]
 
     # Maximum filters
     result = _apply_max(
@@ -322,18 +317,37 @@ def apply_filters(
         filters.get("pb_max"),
     )
 
-    # D/E special handling
+    # Exact D/E filter
+    de_exact = filters.get("de_exact")
+
+    if de_exact is not None:
+        result = result[
+            result["de"].notna()
+            & (
+                result["de"] == float(de_exact)
+            )
+        ]
+
+    # D/E maximum with Financials carve-out
     de_max = filters.get("de_max")
 
     if de_max is not None:
+
         if skip_financials_for_de:
+
             non_financials = result[
-                result["broad_sector"].fillna("").str.strip().str.lower()
+                result["broad_sector"]
+                .fillna("")
+                .str.strip()
+                .str.lower()
                 != "financials"
             ]
 
             financials = result[
-                result["broad_sector"].fillna("").str.strip().str.lower()
+                result["broad_sector"]
+                .fillna("")
+                .str.strip()
+                .str.lower()
                 == "financials"
             ]
 
@@ -344,7 +358,10 @@ def apply_filters(
             )
 
             result = pd.concat(
-                [non_financials, financials],
+                [
+                    non_financials,
+                    financials,
+                ],
                 ignore_index=True,
             )
 
@@ -360,10 +377,11 @@ def apply_filters(
 
     if icr_min is not None:
         result = result[
-            result["icr_screener"] >= float(icr_min)
+            result["icr_screener"]
+            >= float(icr_min)
         ]
 
-    # Sort
+    # Sort by composite quality score
     if "composite_quality_score" in result.columns:
         result = result.sort_values(
             "composite_quality_score",
@@ -400,6 +418,7 @@ def run_screener(
 
 
 if __name__ == "__main__":
+
     config = load_config()
 
     df = build_screener_dataframe()
@@ -407,10 +426,20 @@ if __name__ == "__main__":
     print("=" * 80)
     print("DAY 15 — SCREENER ENGINE CHECK")
     print("=" * 80)
-    print(f"Companies available: {df['company_id'].nunique()}")
-    print(f"Rows available: {len(df)}")
+
+    print(
+        f"Companies available: "
+        f"{df['company_id'].nunique()}"
+    )
+
+    print(
+        f"Rows available: "
+        f"{len(df)}"
+    )
+
     print()
     print("Filterable metrics:")
+
     print(
         [
             "ROE",
