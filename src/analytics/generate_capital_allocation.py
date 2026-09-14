@@ -1,23 +1,52 @@
-import pandas as pd
+import sqlite3
 from pathlib import Path
 
+import pandas as pd
+
 from src.analytics.cashflow_kpis import (
-    cfo_quality_score,
     capital_allocation_pattern,
     cash_flow_sign,
 )
 
 
-INPUT_FILE = Path("data/processed/cashflow.csv")
-OUTPUT_FILE = Path("output/capital_allocation.csv")
+ROOT_DIR = Path(__file__).resolve().parents[2]
+DB_FILE = ROOT_DIR / "data" / "db" / "n100.db"
+OUTPUT_FILE = ROOT_DIR / "output" / "capital_allocation.csv"
 
 
 def main():
     print("Generating capital allocation report...")
 
-    df = pd.read_csv(INPUT_FILE)
+    conn = sqlite3.connect(DB_FILE)
 
-    required_columns = [
+    cashflow = pd.read_sql_query(
+        """
+        SELECT
+            company_id,
+            year,
+            operating_activity,
+            investing_activity,
+            financing_activity
+        FROM cashflow
+        ORDER BY company_id, year
+        """,
+        conn,
+    )
+
+    profit = pd.read_sql_query(
+        """
+        SELECT
+            company_id,
+            year,
+            net_profit
+        FROM profitandloss
+        """,
+        conn,
+    )
+
+    conn.close()
+
+    required_cashflow = [
         "company_id",
         "year",
         "operating_activity",
@@ -27,26 +56,38 @@ def main():
 
     missing = [
         column
-        for column in required_columns
-        if column not in df.columns
+        for column in required_cashflow
+        if column not in cashflow.columns
     ]
 
     if missing:
         raise RuntimeError(
-            f"Missing columns: {missing}"
+            f"Missing cash-flow columns: {missing}"
         )
+
+    merged = cashflow.merge(
+        profit,
+        on=["company_id", "year"],
+        how="left",
+    )
 
     results = []
 
-    for _, row in df.iterrows():
+    for _, row in merged.iterrows():
         cfo = row["operating_activity"]
         cfi = row["investing_activity"]
         cff = row["financing_activity"]
+        pat = row["net_profit"]
 
         ratio = None
 
-        # CFO/PAT is optional here because PAT is not
-        # available in the cash-flow file itself.
+        if (
+            pd.notna(cfo)
+            and pd.notna(pat)
+            and pat != 0
+        ):
+            ratio = float(cfo) / float(pat)
+
         pattern = capital_allocation_pattern(
             cfo=cfo,
             cfi=cfi,
@@ -80,6 +121,10 @@ def main():
     print()
     print("Capital allocation report created.")
     print("Rows:", len(result_df))
+    print(
+        "Companies:",
+        result_df["company_id"].nunique(),
+    )
     print("Output:", OUTPUT_FILE)
 
     print()
@@ -88,6 +133,12 @@ def main():
         result_df["pattern_label"]
         .value_counts()
         .to_string()
+    )
+
+    print()
+    print(
+        "Unique patterns:",
+        result_df["pattern_label"].nunique(),
     )
 
 

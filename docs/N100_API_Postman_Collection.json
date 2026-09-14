@@ -1,0 +1,185 @@
+{
+  "info": {
+    "name": "N100 Financial Intelligence Platform API",
+    "description": "Postman collection generated from the live FastAPI OpenAPI specification.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8000"
+    }
+  ],
+  "item": [
+    {
+      "name": "GET /api/v1/health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/v1/health"
+        }
+      }
+    },
+    {
+      "name": "GET /api/v1/companies",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/v1/companies"
+        }
+      }
+    },
+    {
+      "name": "GET /api/v1/companies/{ticker}/pl",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/v1/companies/{ticker}/pl"
+        }
+      }
+    },
+    {
+      "name": "GET /api/v1/companies/{ticker}/bs",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/v1/companies/{ticker}/bs"
+        }
+      }
+    },
+    {
+      "name": "GET /api/v1/companies/{ticker}/cashflow",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/v1/companies/{ticker}/cashflow"
+        }
+      }
+    },
+    {
+      "name": "GET /api/v1/companies/{ticker}/ratios",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/v1/companies/{ticker}/ratios"
+        }
+      }
+    },
+    {
+      "name": "GET /api/v1/companies/{ticker}/tearsheet",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/v1/companies/{ticker}/tearsheet"
+        }
+      }
+    },
+    {
+      "name": "GET /api/v1/companies/{ticker}",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/v1/companies/{ticker}"
+        }
+      }
+    },
+    {
+      "name": "GET /api/v1/screener",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/v1/screener"
+        }
+      }
+    },
+    {
+      "name": "GET /api/v1/sectors",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/v1/sectors"
+        }
+      }
+    },
+    {
+      "name": "GET /api/v1/sectors/{sector_name}/companies",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/v1/sectors/{sector_name}/companies"
+        }
+      }
+    },
+    {
+      "name": "GET /api/v1/peers",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/v1/peers"
+        }
+      }
+    },
+    {
+      "name": "GET /api/v1/peers/{ticker}",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/v1/peers/{ticker}"
+        }
+      }
+    },
+    {
+      "name": "GET /api/v1/peers/{ticker}/compare",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/v1/peers/{ticker}/compare"
+        }
+      }
+    },
+    {
+      "name": "GET /api/v1/valuation/{ticker}",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/v1/valuation/{ticker}"
+        }
+      }
+    },
+    {
+      "name": "GET /api/v1/portfolio/stats",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/v1/portfolio/stats"
+        }
+      }
+    },
+    {
+      "name": "GET /api/v1/documents/{ticker}",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/v1/documents/{ticker}"
+        }
+      }
+    }
+  ]
+}

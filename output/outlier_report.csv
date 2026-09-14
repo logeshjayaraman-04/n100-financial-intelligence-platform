@@ -1,0 +1,5 @@
+company_id,company_name,broad_sector,metric,z_score,issue
+INDIGO,Interglobe Aviation Ltd,Consumer Discretionary,return_on_equity_pct,3.603,Absolute sector Z-score > 3
+TATAMOTORS,Tata Motors Ltd,Consumer Discretionary,fcf_cagr_5yr,3.3508,Absolute sector Z-score > 3
+ADANIGREEN,Adani Green Energy Ltd,Energy,debt_to_equity,3.2615,Absolute sector Z-score > 3
+PNB,Punjab National Bank,Financials,return_on_equity_pct,3.326,Absolute sector Z-score > 3
