@@ -1,15 +1,17 @@
-from pathlib import Path
+"""Module providing N100 financial intelligence functionality."""
+
 import sqlite3
+from pathlib import Path
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
-
 
 ROOT = Path(__file__).resolve().parents[3]
 DB_PATH = ROOT / "data" / "db" / "n100.db"
 TEARSHEET_DIR = ROOT / "reports" / "tearsheets"
 
 router = APIRouter(tags=["Companies"])
+
 
 def get_connection():
     """Return a SQLite connection with row dictionaries."""

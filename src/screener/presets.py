@@ -10,10 +10,9 @@ from pathlib import Path
 import pandas as pd
 
 from .engine import (
-    build_screener_dataframe,
     apply_filters,
+    build_screener_dataframe,
 )
-
 
 # ============================================================
 # DAY 16 — PRESET DEFINITIONS
@@ -26,26 +25,22 @@ PRESETS = {
         "fcf_min": 0,
         "revenue_cagr_5yr_min": 10,
     },
-
     "Value Pick": {
         "pe_max": 20,
         "pb_max": 3.0,
         "de_max": 2.0,
         "dividend_yield_min": 1,
     },
-
     "Growth Accelerator": {
         "pat_cagr_5yr_min": 20,
         "revenue_cagr_5yr_min": 15,
         "de_max": 2.0,
     },
-
     "Dividend Champion": {
         "dividend_yield_min": 2,
         "dividend_payout_max": 80,
         "fcf_min": 0,
     },
-
     "Debt-Free Blue Chip": {
         "de_exact": 0,
         "roe_min": 12,
@@ -58,6 +53,7 @@ PRESETS = {
 # RUN ONE OF THE FIVE STANDARD PRESETS
 # ============================================================
 
+
 def run_preset(
     name: str,
     db_path: str | Path = "data/db/n100.db",
@@ -65,10 +61,7 @@ def run_preset(
     """Run one named preset."""
 
     if name not in PRESETS:
-        raise ValueError(
-            f"Unknown preset: {name}. "
-            f"Available: {list(PRESETS)}"
-        )
+        raise ValueError(f"Unknown preset: {name}. " f"Available: {list(PRESETS)}")
 
     df = build_screener_dataframe(db_path)
 
@@ -82,6 +75,7 @@ def run_preset(
 # ============================================================
 # DAY 16 — TURNAROUND WATCH
 # ============================================================
+
 
 def run_turnaround_watch(
     db_path: str | Path = "data/db/n100.db",
@@ -157,23 +151,15 @@ def run_turnaround_watch(
     for df in [pnl, balance, ratios]:
 
         df["_year_num"] = pd.to_numeric(
-            df["year"]
-            .astype(str)
-            .str.extract(r"(\d{4})")[0],
+            df["year"].astype(str).str.extract(r"(\d{4})")[0],
             errors="coerce",
         )
 
-    pnl = pnl.dropna(
-        subset=["_year_num"]
-    ).copy()
+    pnl = pnl.dropna(subset=["_year_num"]).copy()
 
-    balance = balance.dropna(
-        subset=["_year_num"]
-    ).copy()
+    balance = balance.dropna(subset=["_year_num"]).copy()
 
-    ratios = ratios.dropna(
-        subset=["_year_num"]
-    ).copy()
+    ratios = ratios.dropna(subset=["_year_num"]).copy()
 
     # ========================================================
     # 1. CALCULATE 3-YEAR REVENUE CAGR
@@ -181,17 +167,11 @@ def run_turnaround_watch(
 
     revenue_results = []
 
-    for company_id, group in pnl.groupby(
-        "company_id"
-    ):
+    for company_id, group in pnl.groupby("company_id"):
 
-        group = (
-            group
-            .sort_values("_year_num")
-            .drop_duplicates(
-                subset=["_year_num"],
-                keep="last",
-            )
+        group = group.sort_values("_year_num").drop_duplicates(
+            subset=["_year_num"],
+            keep="last",
         )
 
         group["sales"] = pd.to_numeric(
@@ -206,19 +186,13 @@ def run_turnaround_watch(
             )
         )
 
-        latest_year = int(
-            group["_year_num"].max()
-        )
+        latest_year = int(group["_year_num"].max())
 
         start_year = latest_year - 3
 
-        start_sales = values.get(
-            start_year
-        )
+        start_sales = values.get(start_year)
 
-        end_sales = values.get(
-            latest_year
-        )
+        end_sales = values.get(latest_year)
 
         revenue_cagr_3yr = None
 
@@ -232,12 +206,7 @@ def run_turnaround_watch(
         ):
 
             revenue_cagr_3yr = (
-                (
-                    float(end_sales)
-                    / float(start_sales)
-                )
-                ** (1 / 3)
-                - 1
+                (float(end_sales) / float(start_sales)) ** (1 / 3) - 1
             ) * 100
 
         revenue_results.append(
@@ -248,37 +217,23 @@ def run_turnaround_watch(
             }
         )
 
-    revenue_df = pd.DataFrame(
-        revenue_results
-    )
+    revenue_df = pd.DataFrame(revenue_results)
 
     # ========================================================
     # 2. GET LATEST FCF
     # ========================================================
 
-    ratios = (
-        ratios
-        .sort_values(
-            ["company_id", "_year_num"]
-        )
-        .drop_duplicates(
-            subset=[
-                "company_id",
-                "_year_num",
-            ],
-            keep="last",
-        )
+    ratios = ratios.sort_values(["company_id", "_year_num"]).drop_duplicates(
+        subset=[
+            "company_id",
+            "_year_num",
+        ],
+        keep="last",
     )
 
-    latest_ratios = (
-        ratios
-        .sort_values(
-            ["company_id", "_year_num"]
-        )
-        .drop_duplicates(
-            subset=["company_id"],
-            keep="last",
-        )
+    latest_ratios = ratios.sort_values(["company_id", "_year_num"]).drop_duplicates(
+        subset=["company_id"],
+        keep="last",
     )
 
     latest_ratios = latest_ratios[
@@ -300,30 +255,20 @@ def run_turnaround_watch(
     # 3. CALCULATE PREVIOUS-YEAR D/E
     # ========================================================
 
-    balance = (
-        balance
-        .sort_values(
-            ["company_id", "_year_num"]
-        )
-        .drop_duplicates(
-            subset=[
-                "company_id",
-                "_year_num",
-            ],
-            keep="last",
-        )
+    balance = balance.sort_values(["company_id", "_year_num"]).drop_duplicates(
+        subset=[
+            "company_id",
+            "_year_num",
+        ],
+        keep="last",
     )
 
-    balance["equity"] = (
-        pd.to_numeric(
-            balance["equity_capital"],
-            errors="coerce",
-        )
-        +
-        pd.to_numeric(
-            balance["reserves"],
-            errors="coerce",
-        )
+    balance["equity"] = pd.to_numeric(
+        balance["equity_capital"],
+        errors="coerce",
+    ) + pd.to_numeric(
+        balance["reserves"],
+        errors="coerce",
     )
 
     balance["borrowings"] = pd.to_numeric(
@@ -347,32 +292,19 @@ def run_turnaround_watch(
             valid,
             "borrowings",
         ]
-        /
-        balance.loc[
+        / balance.loc[
             valid,
             "equity",
         ]
     )
 
-    balance["previous_de"] = (
-        balance
-        .groupby("company_id")[
-            "calculated_de"
-        ]
-        .shift(1)
-    )
+    balance["previous_de"] = balance.groupby("company_id")["calculated_de"].shift(1)
 
     # Latest balance-sheet row per company
 
-    latest_balance = (
-        balance
-        .sort_values(
-            ["company_id", "_year_num"]
-        )
-        .drop_duplicates(
-            subset=["company_id"],
-            keep="last",
-        )
+    latest_balance = balance.sort_values(["company_id", "_year_num"]).drop_duplicates(
+        subset=["company_id"],
+        keep="last",
     )
 
     latest_balance = latest_balance[
@@ -385,8 +317,7 @@ def run_turnaround_watch(
     ].rename(
         columns={
             "_year_num": "latest_year",
-            "calculated_de":
-                "latest_de_from_balance",
+            "calculated_de": "latest_de_from_balance",
         }
     )
 
@@ -419,58 +350,31 @@ def run_turnaround_watch(
     # Revenue CAGR 3yr > 10%
 
     result = result[
-        result["revenue_cagr_3yr"].notna()
-        &
-        (
-            result["revenue_cagr_3yr"] > 10
-        )
+        result["revenue_cagr_3yr"].notna() & (result["revenue_cagr_3yr"] > 10)
     ]
 
     # Latest FCF > 0
 
-    result = result[
-        result["fcf"].notna()
-        &
-        (
-            result["fcf"] > 0
-        )
-    ]
+    result = result[result["fcf"].notna() & (result["fcf"] > 0)]
 
     # Latest D/E < previous D/E
 
     result = result[
-        result[
-            "latest_de_from_balance"
-        ].notna()
-        &
-        result[
-            "previous_de"
-        ].notna()
-        &
-        (
-            result[
-                "latest_de_from_balance"
-            ]
-            <
-            result[
-                "previous_de"
-            ]
-        )
+        result["latest_de_from_balance"].notna()
+        & result["previous_de"].notna()
+        & (result["latest_de_from_balance"] < result["previous_de"])
     ]
 
-    return (
-        result
-        .sort_values(
-            "revenue_cagr_3yr",
-            ascending=False,
-        )
-        .reset_index(drop=True)
-    )
+    return result.sort_values(
+        "revenue_cagr_3yr",
+        ascending=False,
+    ).reset_index(drop=True)
 
 
 # ============================================================
 # RUN ALL SIX PRESETS
 # ============================================================
+
 
 def run_all_presets(
     db_path: str | Path = "data/db/n100.db",
@@ -490,11 +394,7 @@ def run_all_presets(
 
     # Sixth preset
 
-    results["Turnaround Watch"] = (
-        run_turnaround_watch(
-            db_path
-        )
-    )
+    results["Turnaround Watch"] = run_turnaround_watch(db_path)
 
     return results
 
@@ -502,6 +402,7 @@ def run_all_presets(
 # ============================================================
 # PRINT DAY 16 REPORT
 # ============================================================
+
 
 def print_preset_results(
     db_path: str | Path = "data/db/n100.db",
@@ -512,9 +413,7 @@ def print_preset_results(
     print("DAY 16 — PRESET SCREENER CHECK")
     print("=" * 80)
 
-    results = run_all_presets(
-        db_path
-    )
+    results = run_all_presets(db_path)
 
     for name, result in results.items():
 
@@ -532,16 +431,12 @@ def print_preset_results(
 
             print(
                 "Unique companies:",
-                result[
-                    "company_id"
-                ].nunique(),
+                result["company_id"].nunique(),
             )
 
         if result.empty:
 
-            print(
-                "No companies matched."
-            )
+            print("No companies matched.")
 
             continue
 
@@ -568,19 +463,9 @@ def print_preset_results(
                 "dividend_payout_ratio_pct",
             ]
 
-        available = [
-            column
-            for column in columns
-            if column in result.columns
-        ]
+        available = [column for column in columns if column in result.columns]
 
-        print(
-            result[
-                available
-            ]
-            .head(10)
-            .to_string(index=False)
-        )
+        print(result[available].head(10).to_string(index=False))
 
 
 # ============================================================

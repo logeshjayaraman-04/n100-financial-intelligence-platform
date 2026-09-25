@@ -1,3 +1,5 @@
+"""Module providing N100 financial intelligence functionality."""
+
 import logging
 import sqlite3
 import time
@@ -7,13 +9,12 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.api.routers.companies import router as companies_router
+from src.api.routers.documents import router as documents_router
+from src.api.routers.peers import router as peers_router
+from src.api.routers.portfolio import router as portfolio_router
 from src.api.routers.screener import router as screener_router
 from src.api.routers.sectors import router as sectors_router
-from src.api.routers.peers import router as peers_router
 from src.api.routers.valuation import router as valuation_router
-from src.api.routers.portfolio import router as portfolio_router
-from src.api.routers.documents import router as documents_router
-
 
 ROOT = Path(__file__).resolve().parents[2]
 DB_PATH = ROOT / "data" / "db" / "n100.db"
@@ -48,6 +49,7 @@ app.add_middleware(
 
 @app.middleware("http")
 async def request_logging_middleware(request: Request, call_next):
+    """Handle request logging middleware."""
     start = time.perf_counter()
 
     response = await call_next(request)
@@ -66,6 +68,7 @@ async def request_logging_middleware(request: Request, call_next):
 
 
 def get_db_row_counts():
+    """Retrieve db row counts."""
     tables = [
         "companies",
         "financial_ratios",
@@ -85,9 +88,7 @@ def get_db_row_counts():
 
     try:
         for table in tables:
-            row = conn.execute(
-                f"SELECT COUNT(*) FROM {table}"
-            ).fetchone()
+            row = conn.execute(f"SELECT COUNT(*) FROM {table}").fetchone()
 
             counts[table] = row[0]
 
@@ -99,6 +100,7 @@ def get_db_row_counts():
 
 @app.get("/api/v1/health", tags=["Health"])
 def health():
+    """Handle health."""
     return {
         "status": "ok",
         "version": VERSION,

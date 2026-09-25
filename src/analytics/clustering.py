@@ -1,11 +1,12 @@
-from pathlib import Path
+"""Module providing N100 financial intelligence functionality."""
+
 import sqlite3
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
-
 
 ROOT = Path(__file__).resolve().parents[2]
 DB_PATH = ROOT / "data" / "db" / "n100.db"
@@ -180,8 +181,7 @@ def main():
 
     distances = model.transform(X_scaled)
     data["distance_from_centroid"] = [
-        distances[i, cluster_id]
-        for i, cluster_id in enumerate(data["cluster_id"])
+        distances[i, cluster_id] for i, cluster_id in enumerate(data["cluster_id"])
     ]
 
     profile = data.groupby("cluster_id")[FEATURES].mean()

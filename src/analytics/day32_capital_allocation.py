@@ -1,7 +1,8 @@
+"""Module providing N100 financial intelligence functionality."""
+
 from pathlib import Path
 
 import pandas as pd
-
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
 
@@ -25,6 +26,7 @@ EXPECTED_PATTERNS = [
 
 
 def main():
+    """Run the module's main workflow."""
     print("=== DAY 32 CAPITAL ALLOCATION ===")
 
     # --------------------------------------------------------
@@ -43,15 +45,11 @@ def main():
     ]
 
     missing = [
-        column
-        for column in required_capital_columns
-        if column not in capital.columns
+        column for column in required_capital_columns if column not in capital.columns
     ]
 
     if missing:
-        raise ValueError(
-            f"Missing capital allocation columns: {missing}"
-        )
+        raise ValueError(f"Missing capital allocation columns: {missing}")
 
     # --------------------------------------------------------
     # Basic validation
@@ -60,9 +58,7 @@ def main():
     company_count = capital["company_id"].nunique()
     row_count = len(capital)
 
-    duplicate_count = capital.duplicated(
-        ["company_id", "year"]
-    ).sum()
+    duplicate_count = capital.duplicated(["company_id", "year"]).sum()
 
     pattern_count = capital["pattern_label"].nunique()
 
@@ -74,9 +70,7 @@ def main():
     print("Unique patterns:", pattern_count)
 
     if duplicate_count != 0:
-        raise ValueError(
-            "Duplicate company-year rows detected."
-        )
+        raise ValueError("Duplicate company-year rows detected.")
 
     missing_patterns = [
         pattern
@@ -85,14 +79,10 @@ def main():
     ]
 
     if missing_patterns:
-        raise ValueError(
-            f"Missing expected patterns: {missing_patterns}"
-        )
+        raise ValueError(f"Missing expected patterns: {missing_patterns}")
 
     if pattern_count != 8:
-        raise ValueError(
-            f"Expected 8 patterns, found {pattern_count}."
-        )
+        raise ValueError(f"Expected 8 patterns, found {pattern_count}.")
 
     # --------------------------------------------------------
     # Pattern distribution
@@ -105,9 +95,7 @@ def main():
         .reset_index(name="row_count")
     )
 
-    summary["percentage"] = (
-        summary["row_count"] / row_count * 100
-    ).round(2)
+    summary["percentage"] = (summary["row_count"] / row_count * 100).round(2)
 
     summary.to_csv(
         PATTERN_SUMMARY_FILE,
@@ -139,9 +127,7 @@ def main():
     ]
 
     if missing:
-        raise ValueError(
-            f"Missing intelligence columns: {missing}"
-        )
+        raise ValueError(f"Missing intelligence columns: {missing}")
 
     # --------------------------------------------------------
     # Add latest capital allocation pattern
@@ -158,10 +144,7 @@ def main():
     )
 
     latest_capital = (
-        latest_capital
-        .sort_values(
-            ["company_id", "_year_sort"]
-        )
+        latest_capital.sort_values(["company_id", "_year_sort"])
         .groupby("company_id", as_index=False)
         .tail(1)
     )
@@ -171,12 +154,7 @@ def main():
             "company_id",
             "pattern_label",
         ]
-    ].rename(
-        columns={
-            "pattern_label":
-                "capital_allocation_pattern"
-        }
-    )
+    ].rename(columns={"pattern_label": "capital_allocation_pattern"})
 
     intelligence = intelligence.drop(
         columns=["capital_allocation_pattern"],
@@ -194,9 +172,7 @@ def main():
     # Validate latest pattern coverage
     # --------------------------------------------------------
 
-    missing_company_patterns = intelligence[
-        "capital_allocation_pattern"
-    ].isna().sum()
+    missing_company_patterns = intelligence["capital_allocation_pattern"].isna().sum()
 
     print()
     print(
@@ -205,9 +181,7 @@ def main():
     )
 
     if missing_company_patterns != 0:
-        raise ValueError(
-            "Some companies are missing capital allocation patterns."
-        )
+        raise ValueError("Some companies are missing capital allocation patterns.")
 
     # --------------------------------------------------------
     # Pattern changes
@@ -216,29 +190,18 @@ def main():
     history = capital.copy()
 
     history["_year_sort"] = (
-        history["year"]
-        .astype(str)
-        .str.extract(r"(\d{4})")[0]
-        .fillna("0")
-        .astype(int)
+        history["year"].astype(str).str.extract(r"(\d{4})")[0].fillna("0").astype(int)
     )
 
-    history = history.sort_values(
-        ["company_id", "_year_sort"]
-    )
+    history = history.sort_values(["company_id", "_year_sort"])
 
-    history["previous_pattern"] = (
-        history
-        .groupby("company_id")["pattern_label"]
-        .shift(1)
+    history["previous_pattern"] = history.groupby("company_id")["pattern_label"].shift(
+        1
     )
 
     changes = history[
         history["previous_pattern"].notna()
-        & (
-            history["previous_pattern"]
-            != history["pattern_label"]
-        )
+        & (history["previous_pattern"] != history["pattern_label"])
     ].copy()
 
     changes = changes[
@@ -248,11 +211,7 @@ def main():
             "previous_pattern",
             "pattern_label",
         ]
-    ].rename(
-        columns={
-            "pattern_label": "current_pattern"
-        }
-    )
+    ].rename(columns={"pattern_label": "current_pattern"})
 
     changes.to_csv(
         PATTERN_CHANGES_FILE,
@@ -285,9 +244,7 @@ def main():
     )
     print(
         "Latest patterns:",
-        intelligence[
-            "capital_allocation_pattern"
-        ].nunique(),
+        intelligence["capital_allocation_pattern"].nunique(),
     )
     print(
         "Pattern changes:",

@@ -1,9 +1,10 @@
-from pathlib import Path
+"""Module providing N100 financial intelligence functionality."""
+
 import sqlite3
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import pandas as pd
-
 
 ROOT = Path(__file__).resolve().parents[2]
 DB_PATH = ROOT / "data" / "db" / "n100.db"
@@ -77,8 +78,7 @@ def load_cluster_data():
     latest["fcf_cagr_5yr"] = latest["free_cash_flow_cr"]
 
     data = (
-        companies
-        .merge(sectors, on="company_id", how="left")
+        companies.merge(sectors, on="company_id", how="left")
         .merge(
             latest[
                 [
@@ -296,9 +296,7 @@ def main():
     print()
     print("=== CLUSTER PROFILE ===")
     print(
-        profile[
-            ["cluster_id", "cluster_name", "company_count"]
-        ].to_string(index=False)
+        profile[["cluster_id", "cluster_name", "company_count"]].to_string(index=False)
     )
 
     print()

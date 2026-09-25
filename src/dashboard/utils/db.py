@@ -1,3 +1,5 @@
+"""Module providing N100 financial intelligence functionality."""
+
 from __future__ import annotations
 
 import sqlite3
@@ -6,13 +8,7 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
-
-DB_PATH = (
-    Path(__file__).resolve().parents[3]
-    / "data"
-    / "db"
-    / "n100.db"
-)
+DB_PATH = Path(__file__).resolve().parents[3] / "data" / "db" / "n100.db"
 
 
 def _read_sql(query: str, params: tuple = ()) -> pd.DataFrame:
@@ -24,8 +20,7 @@ def _read_sql(query: str, params: tuple = ()) -> pd.DataFrame:
 @st.cache_data(ttl=600)
 def get_companies() -> pd.DataFrame:
     """Return the company master list with sector information."""
-    return _read_sql(
-        """
+    return _read_sql("""
         SELECT
             c.id AS company_id,
             c.company_name,
@@ -45,8 +40,7 @@ def get_companies() -> pd.DataFrame:
         LEFT JOIN sectors s
             ON c.id = s.company_id
         ORDER BY c.company_name
-        """
-    )
+        """)
 
 
 @st.cache_data(ttl=600)
@@ -120,13 +114,11 @@ def get_cf(ticker: str) -> pd.DataFrame:
 @st.cache_data(ttl=600)
 def get_sectors() -> pd.DataFrame:
     """Return sector mapping."""
-    return _read_sql(
-        """
+    return _read_sql("""
         SELECT *
         FROM sectors
         ORDER BY broad_sector, sub_sector, company_id
-        """
-    )
+        """)
 
 
 @st.cache_data(ttl=600)
@@ -147,9 +139,7 @@ def get_peers(group_name: str) -> pd.DataFrame:
 def get_valuation(ticker: str) -> pd.DataFrame:
     """Return valuation data for one company from the valuation workbook."""
     valuation_path = (
-        Path(__file__).resolve().parents[3]
-        / "output"
-        / "valuation_summary.xlsx"
+        Path(__file__).resolve().parents[3] / "output" / "valuation_summary.xlsx"
     )
 
     if not valuation_path.exists():
@@ -193,10 +183,8 @@ def get_reports(ticker: str) -> pd.DataFrame:
 @st.cache_data(ttl=600)
 def get_peer_groups() -> pd.DataFrame:
     """Return the peer-group membership table."""
-    return _read_sql(
-        """
+    return _read_sql("""
         SELECT *
         FROM peer_groups
         ORDER BY peer_group_name, company_id
-        """
-    )
+        """)

@@ -1,5 +1,8 @@
+"""Module providing N100 financial intelligence functionality."""
+
 from __future__ import annotations
 
+import pandas as pd
 import streamlit as st
 
 from src.dashboard.utils.db import (
@@ -7,12 +10,9 @@ from src.dashboard.utils.db import (
     get_reports,
 )
 
-
 st.title("Annual Reports")
 
-st.write(
-    "Access available annual reports and company filings."
-)
+st.write("Access available annual reports and company filings.")
 
 
 # ---------------------------------------------------------
@@ -51,8 +51,7 @@ if search_text.strip():
             search_lower,
             na=False,
         )
-        |
-        filtered["company_id"]
+        | filtered["company_id"]
         .astype(str)
         .str.lower()
         .str.contains(
@@ -65,8 +64,7 @@ if search_text.strip():
 if filtered.empty:
 
     st.warning(
-        "No matching company was found. "
-        "Please check the company name or ticker."
+        "No matching company was found. " "Please check the company name or ticker."
     )
 
     st.stop()
@@ -76,9 +74,7 @@ if filtered.empty:
 # Company selector
 # ---------------------------------------------------------
 
-filtered = filtered.sort_values(
-    "company_name"
-)
+filtered = filtered.sort_values("company_name")
 
 
 company_labels = (
@@ -95,9 +91,7 @@ selected_label = st.selectbox(
 )
 
 
-selected_row = filtered.iloc[
-    company_labels.index(selected_label)
-]
+selected_row = filtered.iloc[company_labels.index(selected_label)]
 
 
 ticker = selected_row["company_id"]
@@ -107,13 +101,9 @@ ticker = selected_row["company_id"]
 # Company information
 # ---------------------------------------------------------
 
-st.subheader(
-    selected_row["company_name"]
-)
+st.subheader(selected_row["company_name"])
 
-st.caption(
-    f"Ticker: {ticker}"
-)
+st.caption(f"Ticker: {ticker}")
 
 
 # ---------------------------------------------------------
@@ -125,10 +115,7 @@ reports = get_reports(ticker)
 
 if reports.empty:
 
-    st.warning(
-        "No annual reports are available "
-        "for this company."
-    )
+    st.warning("No annual reports are available " "for this company.")
 
     st.stop()
 
@@ -140,25 +127,16 @@ if reports.empty:
 reports = reports.copy()
 
 
-reports["year_text"] = (
-    reports["year"]
-    .astype(str)
+reports["year_text"] = reports["year"].astype(str)
+
+
+reports["year_num"] = reports["year_text"].str.extract(
+    r"(\d{4})",
+    expand=False,
 )
 
 
-reports["year_num"] = (
-    reports["year_text"]
-    .str.extract(
-        r"(\d{4})",
-        expand=False,
-    )
-)
-
-
-reports["year_num"] = (
-    reports["year_num"]
-    .astype("Int64")
-)
+reports["year_num"] = reports["year_num"].astype("Int64")
 
 
 reports = reports.sort_values(
@@ -171,19 +149,12 @@ reports = reports.sort_values(
 # Available years
 # ---------------------------------------------------------
 
-available_years = [
-    int(year)
-    for year in reports["year_num"]
-    .dropna()
-    .unique()
-]
+available_years = [int(year) for year in reports["year_num"].dropna().unique()]
 
 
 if not available_years:
 
-    st.warning(
-        "Annual report years could not be determined."
-    )
+    st.warning("Annual report years could not be determined.")
 
     st.stop()
 
@@ -198,27 +169,18 @@ selected_year = st.selectbox(
 # Selected report
 # ---------------------------------------------------------
 
-selected_reports = reports[
-    reports["year_num"]
-    == selected_year
-]
+selected_reports = reports[reports["year_num"] == selected_year]
 
 
 if selected_reports.empty:
 
-    st.warning(
-        "No report is available for "
-        f"{selected_year}."
-    )
+    st.warning("No report is available for " f"{selected_year}.")
 
 else:
 
     for _, report in selected_reports.iterrows():
 
-        report_url = report.get(
-            "annual_report"
-        )
-
+        report_url = report.get("annual_report")
 
         # Convert database value to string
         if report_url is None:
@@ -227,15 +189,9 @@ else:
 
         else:
 
-            report_url = str(
-                report_url
-            ).strip()
+            report_url = str(report_url).strip()
 
-
-        st.subheader(
-            f"Annual Report {selected_year}"
-        )
-
+        st.subheader(f"Annual Report {selected_year}")
 
         # -------------------------------------------------
         # Missing URL
@@ -243,50 +199,29 @@ else:
 
         if not report_url:
 
-            st.error(
-                "Unavailable — no report link "
-                "is stored for this year."
-            )
+            st.error("Unavailable — no report link " "is stored for this year.")
 
             continue
-
 
         # -------------------------------------------------
         # Basic URL validation
         # -------------------------------------------------
 
-        valid_url = (
-            report_url.startswith(
-                "http://"
-            )
-            or report_url.startswith(
-                "https://"
-            )
-        )
-
+        valid_url = report_url.startswith(("http://", "https://"))
 
         if not valid_url:
 
-            st.error(
-                "Unavailable — the stored report "
-                "link is not a valid web URL."
-            )
+            st.error("Unavailable — the stored report " "link is not a valid web URL.")
 
             continue
-
 
         # -------------------------------------------------
         # Report link
         # -------------------------------------------------
 
-        st.success(
-            f"Annual Report {selected_year} available"
-        )
+        st.success(f"Annual Report {selected_year} available")
 
-
-        st.markdown(
-            f"[Open BSE Annual Report]({report_url})"
-        )
+        st.markdown(f"[Open BSE Annual Report]({report_url})")
 
 
 # ---------------------------------------------------------
@@ -301,31 +236,20 @@ history_rows = []
 
 for _, report in reports.iterrows():
 
-    year = report.get(
-        "year_num"
-    )
+    year = report.get("year_num")
 
-    report_url = report.get(
-        "annual_report"
-    )
-
+    report_url = report.get("annual_report")
 
     if report_url is None:
         report_url = ""
 
-    report_url = str(
-        report_url
-    ).strip()
-
+    report_url = str(report_url).strip()
 
     if not report_url:
 
         status = "Unavailable"
 
-    elif (
-        report_url.startswith("http://")
-        or report_url.startswith("https://")
-    ):
+    elif report_url.startswith(("http://", "https://")):
 
         status = "Available"
 
@@ -333,14 +257,9 @@ for _, report in reports.iterrows():
 
         status = "Unavailable"
 
-
     history_rows.append(
         {
-            "Year": (
-                int(year)
-                if year == year
-                else "N/A"
-            ),
+            "Year": int(year) if pd.notna(year) else "N/A",
             "Status": status,
             "Report": report_url,
         }
@@ -353,24 +272,15 @@ for row in history_rows:
     status = row["Status"]
     report_url = row["Report"]
 
-
     if status == "Available":
 
-        st.markdown(
-            f"**{year}** — "
-            f"🟢 Available — "
-            f"[Open Report]({report_url})"
-        )
+        st.markdown(f"**{year}** — " f"🟢 Available — " f"[Open Report]({report_url})")
 
     else:
 
-        st.markdown(
-            f"**{year}** — "
-            "🔴 Unavailable"
-        )
+        st.markdown(f"**{year}** — " "🔴 Unavailable")
 
 
 st.caption(
-    "Report availability is based on the document "
-    "links stored in the database."
+    "Report availability is based on the document " "links stored in the database."
 )

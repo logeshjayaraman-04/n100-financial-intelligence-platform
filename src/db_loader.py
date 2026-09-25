@@ -1,7 +1,9 @@
-from pathlib import Path
-import sqlite3
-import pandas as pd
+"""Module providing N100 financial intelligence functionality."""
 
+import sqlite3
+from pathlib import Path
+
+import pandas as pd
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
@@ -40,6 +42,7 @@ def native_value(value):
 
 
 def load_database():
+    """Retrieve database."""
     DB_DIR.mkdir(parents=True, exist_ok=True)
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -50,44 +53,28 @@ def load_database():
         connection.execute("PRAGMA foreign_keys = OFF")
 
         for table in reversed(TABLE_ORDER):
-            connection.execute(
-                f'DROP TABLE IF EXISTS "{table}"'
-            )
+            connection.execute(f'DROP TABLE IF EXISTS "{table}"')
 
-        schema = SCHEMA_PATH.read_text(
-            encoding="utf-8"
-        )
+        schema = SCHEMA_PATH.read_text(encoding="utf-8")
 
         connection.executescript(schema)
 
         # FK enforcement ON for actual loading.
-        connection.execute(
-            "PRAGMA foreign_keys = ON"
-        )
+        connection.execute("PRAGMA foreign_keys = ON")
 
         print("Loading N100 database...")
 
         # Load companies first.
         companies_file = PROCESSED_DIR / "companies.csv"
 
-        companies_df = pd.read_csv(
-            companies_file
-        )
+        companies_df = pd.read_csv(companies_file)
 
-        company_ids = set(
-            companies_df["id"]
-            .dropna()
-            .astype(str)
-            .str.strip()
-        )
+        company_ids = set(companies_df["id"].dropna().astype(str).str.strip())
 
         audit_rows = []
 
         for table_name in TABLE_ORDER:
-            csv_file = (
-                PROCESSED_DIR /
-                f"{table_name}.csv"
-            )
+            csv_file = PROCESSED_DIR / f"{table_name}.csv"
 
             if not csv_file.exists():
                 continue
@@ -106,34 +93,22 @@ def load_database():
                     before = len(load_df)
 
                     load_df["company_id"] = (
-                        load_df["company_id"]
-                        .astype(str)
-                        .str.strip()
+                        load_df["company_id"].astype(str).str.strip()
                     )
 
                     # Correct known source ticker typo.
-                    load_df["company_id"] = (
-                        load_df["company_id"]
-                        .replace({
-                            "AGTL": "ATGL"
-                        })
+                    load_df["company_id"] = load_df["company_id"].replace(
+                        {"AGTL": "ATGL"}
                     )
 
-                    load_df = load_df[
-                        load_df["company_id"].isin(
-                            company_ids
-                        )
-                    ].copy()
+                    load_df = load_df[load_df["company_id"].isin(company_ids)].copy()
 
                     rejected = before - len(load_df)
                 else:
                     rejected = 0
 
             rows = [
-                tuple(
-                    native_value(value)
-                    for value in row
-                )
+                tuple(native_value(value) for value in row)
                 for row in load_df.itertuples(
                     index=False,
                     name=None,
@@ -142,14 +117,9 @@ def load_database():
 
             columns = list(load_df.columns)
 
-            quoted_columns = ", ".join(
-                f'"{column}"'
-                for column in columns
-            )
+            quoted_columns = ", ".join(f'"{column}"' for column in columns)
 
-            placeholders = ", ".join(
-                "?" for _ in columns
-            )
+            placeholders = ", ".join("?" for _ in columns)
 
             sql = (
                 f'INSERT INTO "{table_name}" '
@@ -176,17 +146,10 @@ def load_database():
                         "table_name": table_name,
                         "source_file": csv_file.name,
                         "rows_loaded": len(rows),
-                        "rows_rejected": (
-                            rejected
-                            if table_name != "companies"
-                            else 0
-                        ),
+                        "rows_rejected": (rejected if table_name != "companies" else 0),
                         "status": (
                             "SUCCESS"
-                            if (
-                                table_name == "companies"
-                                or rejected == 0
-                            )
+                            if (table_name == "companies" or rejected == 0)
                             else "FILTERED_INVALID_FK"
                         ),
                     }
@@ -195,10 +158,7 @@ def load_database():
             except Exception as exc:
                 connection.rollback()
 
-                print(
-                    f"ERROR loading {table_name}: "
-                    f"{type(exc).__name__}: {exc}"
-                )
+                print(f"ERROR loading {table_name}: " f"{type(exc).__name__}: {exc}")
 
                 audit_rows.append(
                     {
@@ -211,20 +171,14 @@ def load_database():
                 )
 
         # Final FK check.
-        fk_errors = connection.execute(
-            "PRAGMA foreign_key_check"
-        ).fetchall()
+        fk_errors = connection.execute("PRAGMA foreign_key_check").fetchall()
 
         if fk_errors:
-            print(
-                "Foreign-key violations:"
-            )
+            print("Foreign-key violations:")
             for error in fk_errors:
                 print(error)
         else:
-            print(
-                "Foreign-key check: 0 violations"
-            )
+            print("Foreign-key check: 0 violations")
 
         connection.commit()
 
@@ -244,13 +198,9 @@ def load_database():
             index=False,
         )
 
-        print(
-            f"\nDatabase created: {DB_PATH}"
-        )
+        print(f"\nDatabase created: {DB_PATH}")
 
-        print(
-            f"Load audit saved: {AUDIT_PATH}"
-        )
+        print(f"Load audit saved: {AUDIT_PATH}")
 
     finally:
         connection.close()

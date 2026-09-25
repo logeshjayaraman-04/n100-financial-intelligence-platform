@@ -1,13 +1,14 @@
-from pathlib import Path
+"""Module providing N100 financial intelligence functionality."""
+
 import csv
 import math
 import sqlite3
+from pathlib import Path
 
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
 from reportlab.pdfgen import canvas
-
 
 # ============================================================
 # PATHS
@@ -35,7 +36,9 @@ CONTENT_W = PAGE_W - 2 * MARGIN
 # HELPERS
 # ============================================================
 
+
 def safe_float(value):
+    """Handle safe float."""
     try:
         if value is None:
             return None
@@ -52,6 +55,7 @@ def safe_float(value):
 
 
 def fmt(value, decimals=2):
+    """Handle fmt."""
     value = safe_float(value)
 
     if value is None:
@@ -61,6 +65,7 @@ def fmt(value, decimals=2):
 
 
 def fmt_pct(value):
+    """Handle fmt pct."""
     value = safe_float(value)
 
     if value is None:
@@ -70,6 +75,7 @@ def fmt_pct(value):
 
 
 def trend_arrow(current, previous):
+    """Handle trend arrow."""
     current = safe_float(current)
     previous = safe_float(previous)
 
@@ -86,6 +92,7 @@ def trend_arrow(current, previous):
 
 
 def latest_by_company(rows):
+    """Handle latest by company."""
     result = {}
 
     for row in rows:
@@ -95,6 +102,7 @@ def latest_by_company(rows):
 
 
 def previous_by_company(rows):
+    """Handle previous by company."""
     result = {}
     grouped = {}
 
@@ -112,12 +120,13 @@ def previous_by_company(rows):
 # DATABASE
 # ============================================================
 
+
 def load_data():
+    """Retrieve data."""
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
 
-    companies = conn.execute(
-        """
+    companies = conn.execute("""
         SELECT
             c.id AS company_id,
             c.company_name,
@@ -127,32 +136,25 @@ def load_data():
         LEFT JOIN sectors s
             ON s.company_id = c.id
         ORDER BY c.id
-        """
-    ).fetchall()
+        """).fetchall()
 
-    ratios = conn.execute(
-        """
+    ratios = conn.execute("""
         SELECT *
         FROM financial_ratios
         ORDER BY company_id, year
-        """
-    ).fetchall()
+        """).fetchall()
 
-    pl = conn.execute(
-        """
+    pl = conn.execute("""
         SELECT *
         FROM profitandloss
         ORDER BY company_id, year
-        """
-    ).fetchall()
+        """).fetchall()
 
-    cf = conn.execute(
-        """
+    cf = conn.execute("""
         SELECT *
         FROM cashflow
         ORDER BY company_id, year
-        """
-    ).fetchall()
+        """).fetchall()
 
     conn.close()
 
@@ -163,7 +165,9 @@ def load_data():
 # OUTPUT DATA
 # ============================================================
 
+
 def load_cashflow_intelligence():
+    """Retrieve cashflow intelligence."""
     path = ROOT / "output" / "cashflow_intelligence.xlsx"
 
     if not path.exists():
@@ -201,6 +205,7 @@ def load_cashflow_intelligence():
 
 
 def load_capital_allocation():
+    """Retrieve capital allocation."""
     path = ROOT / "output" / "capital_allocation.csv"
 
     if not path.exists():
@@ -217,9 +222,7 @@ def load_capital_allocation():
         reader = csv.DictReader(f)
 
         for row in reader:
-            company_id = str(
-                row.get("company_id", "")
-            ).strip()
+            company_id = str(row.get("company_id", "")).strip()
 
             if not company_id:
                 continue
@@ -233,7 +236,9 @@ def load_capital_allocation():
 # DRAWING
 # ============================================================
 
+
 def draw_header(c, title, subtitle):
+    """Render header."""
     c.setFillColor(colors.HexColor("#17365D"))
 
     c.rect(
@@ -271,9 +276,8 @@ def draw_header(c, title, subtitle):
 
 
 def draw_footer(c, page_number, total_pages):
-    c.setStrokeColor(
-        colors.HexColor("#C8D2DC")
-    )
+    """Render footer."""
+    c.setStrokeColor(colors.HexColor("#C8D2DC"))
 
     c.line(
         MARGIN,
@@ -282,9 +286,7 @@ def draw_footer(c, page_number, total_pages):
         10 * mm,
     )
 
-    c.setFillColor(
-        colors.HexColor("#666666")
-    )
+    c.setFillColor(colors.HexColor("#666666"))
 
     c.setFont(
         "Helvetica",
@@ -305,9 +307,8 @@ def draw_footer(c, page_number, total_pages):
 
 
 def section_title(c, x, y, title, width=CONTENT_W):
-    c.setFillColor(
-        colors.HexColor("#EAF0F5")
-    )
+    """Handle section title."""
+    c.setFillColor(colors.HexColor("#EAF0F5"))
 
     c.roundRect(
         x,
@@ -319,9 +320,7 @@ def section_title(c, x, y, title, width=CONTENT_W):
         stroke=0,
     )
 
-    c.setFillColor(
-        colors.HexColor("#17365D")
-    )
+    c.setFillColor(colors.HexColor("#17365D"))
 
     c.setFont(
         "Helvetica-Bold",
@@ -346,6 +345,7 @@ def draw_table(
     row_h=7 * mm,
     font_size=6.5,
 ):
+    """Render table."""
     if not rows:
         return y
 
@@ -358,19 +358,13 @@ def draw_table(
             text_color = colors.white
             font = "Helvetica-Bold"
         else:
-            fill = (
-                colors.HexColor("#F7F9FB")
-                if row_index % 2 == 0
-                else colors.white
-            )
+            fill = colors.HexColor("#F7F9FB") if row_index % 2 == 0 else colors.white
             text_color = colors.HexColor("#222222")
             font = "Helvetica"
 
         c.setFillColor(fill)
 
-        c.setStrokeColor(
-            colors.HexColor("#D5DDE4")
-        )
+        c.setStrokeColor(colors.HexColor("#D5DDE4"))
 
         c.rect(
             x,
@@ -385,17 +379,9 @@ def draw_table(
 
         for i, cell in enumerate(row):
 
-            text = (
-                ""
-                if cell is None
-                else str(cell)
-            )
+            text = "" if cell is None else str(cell)
 
-            text = (
-                text
-                .replace("\n", " ")
-                [:34]
-            )
+            text = text.replace("\n", " ")[:34]
 
             c.setFillColor(text_color)
 
@@ -426,11 +412,10 @@ def draw_kpi_card(
     label,
     value,
 ):
+    """Render kpi card."""
     c.setFillColor(colors.white)
 
-    c.setStrokeColor(
-        colors.HexColor("#D0D7DE")
-    )
+    c.setStrokeColor(colors.HexColor("#D0D7DE"))
 
     c.roundRect(
         x,
@@ -442,9 +427,7 @@ def draw_kpi_card(
         stroke=1,
     )
 
-    c.setFillColor(
-        colors.HexColor("#666666")
-    )
+    c.setFillColor(colors.HexColor("#666666"))
 
     c.setFont(
         "Helvetica",
@@ -457,9 +440,7 @@ def draw_kpi_card(
         label[:24],
     )
 
-    c.setFillColor(
-        colors.HexColor("#17365D")
-    )
+    c.setFillColor(colors.HexColor("#17365D"))
 
     c.setFont(
         "Helvetica-Bold",
@@ -477,6 +458,7 @@ def draw_kpi_card(
 # PORTFOLIO OVERVIEW
 # ============================================================
 
+
 def draw_overview_page(
     c,
     companies,
@@ -487,6 +469,7 @@ def draw_overview_page(
     allocations,
     total_pages,
 ):
+    """Render overview page."""
     draw_header(
         c,
         "N100 FINANCIAL INTELLIGENCE",
@@ -507,14 +490,9 @@ def draw_overview_page(
     sector_counts = {}
 
     for company in companies:
-        sector = (
-            company["broad_sector"]
-            or "Unclassified"
-        )
+        sector = company["broad_sector"] or "Unclassified"
 
-        sector_counts[sector] = (
-            sector_counts.get(sector, 0) + 1
-        )
+        sector_counts[sector] = sector_counts.get(sector, 0) + 1
 
     distress_counts = {
         "High": 0,
@@ -524,9 +502,7 @@ def draw_overview_page(
 
     for row in intelligence.values():
 
-        level = str(
-            row.get("distress_level", "")
-        ).strip()
+        level = str(row.get("distress_level", "")).strip()
 
         if level in distress_counts:
             distress_counts[level] += 1
@@ -535,19 +511,13 @@ def draw_overview_page(
 
     for row in allocations.values():
 
-        pattern = str(
-            row.get("pattern_label", "N/A")
-        ).strip()
+        pattern = str(row.get("pattern_label", "N/A")).strip()
 
-        allocation_counts[pattern] = (
-            allocation_counts.get(pattern, 0) + 1
-        )
+        allocation_counts[pattern] = allocation_counts.get(pattern, 0) + 1
 
     # KPI cards
     gap = 3 * mm
-    card_w = (
-        CONTENT_W - 3 * gap
-    ) / 4
+    card_w = (CONTENT_W - 3 * gap) / 4
 
     card_h = 19 * mm
 
@@ -609,11 +579,7 @@ def draw_overview_page(
         key=lambda item: (-item[1], item[0]),
     ):
 
-        pct = (
-            count / company_count * 100
-            if company_count
-            else 0
-        )
+        pct = count / company_count * 100 if company_count else 0
 
         sector_rows.append(
             [
@@ -644,9 +610,7 @@ def draw_overview_page(
 
     # Risk and capital allocation
     half_gap = 6 * mm
-    half_w = (
-        CONTENT_W - half_gap
-    ) / 2
+    half_w = (CONTENT_W - half_gap) / 2
 
     y_left = section_title(
         c,
@@ -676,11 +640,7 @@ def draw_overview_page(
         font_size=6.2,
     )
 
-    x_right = (
-        MARGIN
-        + half_w
-        + half_gap
-    )
+    x_right = MARGIN + half_w + half_gap
 
     y_right = section_title(
         c,
@@ -731,6 +691,7 @@ def draw_overview_page(
 # COMPANY PAGE
 # ============================================================
 
+
 def draw_company_page(
     c,
     company,
@@ -742,23 +703,14 @@ def draw_company_page(
     page_number,
     total_pages,
 ):
-    company_id = str(
-        company["company_id"]
-    )
+    """Render company page."""
+    company_id = str(company["company_id"])
 
-    company_name = str(
-        company["company_name"]
-    )
+    company_name = str(company["company_name"])
 
-    sector = (
-        company["broad_sector"]
-        or "Unclassified"
-    )
+    sector = company["broad_sector"] or "Unclassified"
 
-    sub_sector = (
-        company["sub_sector"]
-        or "N/A"
-    )
+    sub_sector = company["sub_sector"] or "N/A"
 
     ratios = ratios_by_company.get(
         company_id,
@@ -775,35 +727,15 @@ def draw_company_page(
         [],
     )
 
-    latest_ratio = (
-        ratios[-1]
-        if ratios
-        else None
-    )
+    latest_ratio = ratios[-1] if ratios else None
 
-    previous_ratio = (
-        ratios[-2]
-        if len(ratios) >= 2
-        else None
-    )
+    previous_ratio = ratios[-2] if len(ratios) >= 2 else None
 
-    latest_pl = (
-        pl[-1]
-        if pl
-        else None
-    )
+    latest_pl = pl[-1] if pl else None
 
-    previous_pl = (
-        pl[-2]
-        if len(pl) >= 2
-        else None
-    )
+    pl[-2] if len(pl) >= 2 else None
 
-    latest_cf = (
-        cf[-1]
-        if cf
-        else None
-    )
+    latest_cf = cf[-1] if cf else None
 
     draw_header(
         c,
@@ -813,9 +745,7 @@ def draw_company_page(
 
     y = PAGE_H - 28 * mm
 
-    c.setFillColor(
-        colors.HexColor("#444444")
-    )
+    c.setFillColor(colors.HexColor("#444444"))
 
     c.setFont(
         "Helvetica",
@@ -832,44 +762,26 @@ def draw_company_page(
 
     # Company KPIs
     gap = 3 * mm
-    card_w = (
-        CONTENT_W - 3 * gap
-    ) / 4
+    card_w = (CONTENT_W - 3 * gap) / 4
 
     card_h = 18 * mm
 
     cards = [
         (
             "Revenue",
-            fmt(
-                latest_pl["sales"]
-                if latest_pl
-                else None
-            ),
+            fmt(latest_pl["sales"] if latest_pl else None),
         ),
         (
             "Net Profit",
-            fmt(
-                latest_pl["net_profit"]
-                if latest_pl
-                else None
-            ),
+            fmt(latest_pl["net_profit"] if latest_pl else None),
         ),
         (
             "CFO",
-            fmt(
-                latest_cf["operating_activity"]
-                if latest_cf
-                else None
-            ),
+            fmt(latest_cf["operating_activity"] if latest_cf else None),
         ),
         (
             "FCF",
-            fmt(
-                latest_ratio["free_cash_flow_cr"]
-                if latest_ratio
-                else None
-            ),
+            fmt(latest_ratio["free_cash_flow_cr"] if latest_ratio else None),
         ),
     ]
 
@@ -908,95 +820,47 @@ def draw_company_page(
         ],
         [
             "ROE",
-            fmt_pct(
-                latest_ratio["return_on_equity_pct"]
-                if latest_ratio
-                else None
-            ),
-            fmt_pct(
-                previous_ratio["return_on_equity_pct"]
-                if previous_ratio
-                else None
-            ),
+            fmt_pct(latest_ratio["return_on_equity_pct"] if latest_ratio else None),
+            fmt_pct(previous_ratio["return_on_equity_pct"] if previous_ratio else None),
             trend_arrow(
-                latest_ratio["return_on_equity_pct"]
-                if latest_ratio
-                else None,
-                previous_ratio["return_on_equity_pct"]
-                if previous_ratio
-                else None,
+                latest_ratio["return_on_equity_pct"] if latest_ratio else None,
+                previous_ratio["return_on_equity_pct"] if previous_ratio else None,
             ),
         ],
         [
             "Revenue CAGR 5Y",
-            fmt_pct(
-                latest_ratio["revenue_cagr_5yr"]
-                if latest_ratio
-                else None
-            ),
+            fmt_pct(latest_ratio["revenue_cagr_5yr"] if latest_ratio else None),
             "—",
             "→",
         ],
         [
             "PAT CAGR 5Y",
-            fmt_pct(
-                latest_ratio["pat_cagr_5yr"]
-                if latest_ratio
-                else None
-            ),
+            fmt_pct(latest_ratio["pat_cagr_5yr"] if latest_ratio else None),
             "—",
             "→",
         ],
         [
             "EPS CAGR 5Y",
-            fmt_pct(
-                latest_ratio["eps_cagr_5yr"]
-                if latest_ratio
-                else None
-            ),
+            fmt_pct(latest_ratio["eps_cagr_5yr"] if latest_ratio else None),
             "—",
             "→",
         ],
         [
             "Debt / Equity",
-            fmt(
-                latest_ratio["debt_to_equity"]
-                if latest_ratio
-                else None
-            ),
-            fmt(
-                previous_ratio["debt_to_equity"]
-                if previous_ratio
-                else None
-            ),
+            fmt(latest_ratio["debt_to_equity"] if latest_ratio else None),
+            fmt(previous_ratio["debt_to_equity"] if previous_ratio else None),
             trend_arrow(
-                previous_ratio["debt_to_equity"]
-                if previous_ratio
-                else None,
-                latest_ratio["debt_to_equity"]
-                if latest_ratio
-                else None,
+                previous_ratio["debt_to_equity"] if previous_ratio else None,
+                latest_ratio["debt_to_equity"] if latest_ratio else None,
             ),
         ],
         [
             "Interest Coverage",
-            fmt(
-                latest_ratio["interest_coverage"]
-                if latest_ratio
-                else None
-            ),
-            fmt(
-                previous_ratio["interest_coverage"]
-                if previous_ratio
-                else None
-            ),
+            fmt(latest_ratio["interest_coverage"] if latest_ratio else None),
+            fmt(previous_ratio["interest_coverage"] if previous_ratio else None),
             trend_arrow(
-                latest_ratio["interest_coverage"]
-                if latest_ratio
-                else None,
-                previous_ratio["interest_coverage"]
-                if previous_ratio
-                else None,
+                latest_ratio["interest_coverage"] if latest_ratio else None,
+                previous_ratio["interest_coverage"] if previous_ratio else None,
             ),
         ],
     ]
@@ -1037,21 +901,13 @@ def draw_company_page(
     ]
 
     # Map ratios/cashflow by year
-    ratio_by_year = {
-        str(row["year"]): row
-        for row in ratios
-    }
+    ratio_by_year = {str(row["year"]): row for row in ratios}
 
-    cf_by_year = {
-        str(row["year"]): row
-        for row in cf
-    }
+    cf_by_year = {str(row["year"]): row for row in cf}
 
     for pl_row in pl[-6:]:
 
-        year = str(
-            pl_row["year"]
-        )
+        year = str(pl_row["year"])
 
         ratio = ratio_by_year.get(year)
         cf_row = cf_by_year.get(year)
@@ -1061,16 +917,8 @@ def draw_company_page(
                 year,
                 fmt(pl_row["sales"]),
                 fmt(pl_row["net_profit"]),
-                fmt(
-                    cf_row["operating_activity"]
-                    if cf_row
-                    else None
-                ),
-                fmt(
-                    ratio["free_cash_flow_cr"]
-                    if ratio
-                    else None
-                ),
+                fmt(cf_row["operating_activity"] if cf_row else None),
+                fmt(ratio["free_cash_flow_cr"] if ratio else None),
             ]
         )
 
@@ -1177,7 +1025,9 @@ def draw_company_page(
 # MAIN
 # ============================================================
 
+
 def main():
+    """Run the module's main workflow."""
     print("=== DAY 35 PORTFOLIO SUMMARY ===")
 
     (
@@ -1187,9 +1037,7 @@ def main():
         cf,
     ) = load_data()
 
-    print(
-        f"Companies found: {len(companies)}"
-    )
+    print(f"Companies found: {len(companies)}")
 
     intelligence = load_cashflow_intelligence()
     allocations = load_capital_allocation()
@@ -1224,13 +1072,9 @@ def main():
         pageCompression=1,
     )
 
-    c.setTitle(
-        "N100 Financial Intelligence - Portfolio Summary"
-    )
+    c.setTitle("N100 Financial Intelligence - Portfolio Summary")
 
-    c.setAuthor(
-        "N100 Financial Intelligence Platform"
-    )
+    c.setAuthor("N100 Financial Intelligence Platform")
 
     # --------------------------------------------------------
     # Page 1: portfolio overview
@@ -1258,9 +1102,7 @@ def main():
         start=2,
     ):
 
-        company_id = str(
-            company["company_id"]
-        )
+        company_id = str(company["company_id"])
 
         draw_company_page(
             c,
@@ -1276,25 +1118,16 @@ def main():
 
         c.showPage()
 
-        print(
-            f"Added page: {company_id} | "
-            f"{company['company_name']}"
-        )
+        print(f"Added page: {company_id} | " f"{company['company_name']}")
 
     c.save()
 
     print()
-    print(
-        f"Portfolio pages: {total_pages}"
-    )
+    print(f"Portfolio pages: {total_pages}")
 
-    print(
-        f"Output: {OUTPUT_FILE}"
-    )
+    print(f"Output: {OUTPUT_FILE}")
 
-    print(
-        "=== DAY 35 PORTFOLIO SUMMARY COMPLETE ==="
-    )
+    print("=== DAY 35 PORTFOLIO SUMMARY COMPLETE ===")
 
 
 if __name__ == "__main__":

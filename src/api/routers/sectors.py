@@ -1,8 +1,9 @@
-from pathlib import Path
+"""Module providing N100 financial intelligence functionality."""
+
 import sqlite3
+from pathlib import Path
 
 from fastapi import APIRouter, HTTPException
-
 
 ROOT = Path(__file__).resolve().parents[3]
 DB_PATH = ROOT / "data" / "db" / "n100.db"
@@ -23,8 +24,7 @@ def list_sectors():
     conn = get_connection()
 
     try:
-        rows = conn.execute(
-            """
+        rows = conn.execute("""
             SELECT
                 broad_sector,
                 COUNT(DISTINCT company_id) AS company_count,
@@ -32,8 +32,7 @@ def list_sectors():
             FROM sectors
             GROUP BY broad_sector
             ORDER BY broad_sector
-            """
-        ).fetchall()
+            """).fetchall()
 
         return {
             "count": len(rows),

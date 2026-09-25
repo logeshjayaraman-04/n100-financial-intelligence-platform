@@ -1,3 +1,5 @@
+"""Module providing N100 financial intelligence functionality."""
+
 from __future__ import annotations
 
 import pandas as pd
@@ -10,12 +12,9 @@ from src.dashboard.utils.db import (
     get_ratios,
 )
 
-
 st.title("Sector Analysis")
 
-st.write(
-    "Explore company fundamentals and sector-level benchmarks."
-)
+st.write("Explore company fundamentals and sector-level benchmarks.")
 
 
 # ---------------------------------------------------------
@@ -33,13 +32,7 @@ if companies.empty:
 # Sector selector
 # ---------------------------------------------------------
 
-sectors = sorted(
-    companies["broad_sector"]
-    .dropna()
-    .astype(str)
-    .unique()
-    .tolist()
-)
+sectors = sorted(companies["broad_sector"].dropna().astype(str).unique().tolist())
 
 
 if not sectors:
@@ -53,16 +46,11 @@ selected_sector = st.selectbox(
 )
 
 
-sector_df = companies[
-    companies["broad_sector"].astype(str)
-    == selected_sector
-].copy()
+sector_df = companies[companies["broad_sector"].astype(str) == selected_sector].copy()
 
 
 if sector_df.empty:
-    st.warning(
-        "No companies are available for this sector."
-    )
+    st.warning("No companies are available for this sector.")
     st.stop()
 
 
@@ -94,16 +82,12 @@ for _, company in sector_df.iterrows():
         errors="coerce",
     )
 
-    ratios = ratios.dropna(
-        subset=["year_num"]
-    )
+    ratios = ratios.dropna(subset=["year_num"])
 
     if ratios.empty:
         continue
 
-    ratios = ratios.sort_values(
-        "year_num"
-    )
+    ratios = ratios.sort_values("year_num")
 
     latest = ratios.iloc[-1]
 
@@ -125,43 +109,29 @@ for _, company in sector_df.iterrows():
             errors="coerce",
         )
 
-        pl = pl.dropna(
-            subset=["year_num"]
-        )
+        pl = pl.dropna(subset=["year_num"])
 
         if not pl.empty:
 
-            pl = pl.sort_values(
-                "year_num"
-            )
+            pl = pl.sort_values("year_num")
 
             latest_pl = pl.iloc[-1]
 
-            revenue = latest_pl.get(
-                "sales"
-            )
+            revenue = latest_pl.get("sales")
 
     financial_rows.append(
         {
             "company_id": company_id,
-            "company_name": company[
-                "company_name"
-            ],
-            "sub_sector": company[
-                "sub_sector"
-            ],
+            "company_name": company["company_name"],
+            "sub_sector": company["sub_sector"],
             "revenue": revenue,
-            "roe": latest.get(
-                "return_on_equity_pct"
-            ),
+            "roe": latest.get("return_on_equity_pct"),
             "market_cap": None,
         }
     )
 
 
-financial_df = pd.DataFrame(
-    financial_rows
-)
+financial_df = pd.DataFrame(financial_rows)
 
 
 # ---------------------------------------------------------
@@ -173,12 +143,7 @@ try:
     import sqlite3
     from pathlib import Path
 
-    db_path = (
-        Path(__file__).resolve().parents[3]
-        / "data"
-        / "db"
-        / "n100.db"
-    )
+    db_path = Path(__file__).resolve().parents[3] / "data" / "db" / "n100.db"
 
     with sqlite3.connect(db_path) as conn:
 
@@ -210,15 +175,10 @@ if not market_cap_df.empty:
         errors="coerce",
     )
 
-    market_cap_df = market_cap_df.dropna(
-        subset=["year_num"]
-    )
+    market_cap_df = market_cap_df.dropna(subset=["year_num"])
 
     market_cap_df = (
-        market_cap_df
-        .sort_values(
-            "year_num"
-        )
+        market_cap_df.sort_values("year_num")
         .groupby(
             "company_id",
             as_index=False,
@@ -239,9 +199,7 @@ if not market_cap_df.empty:
         how="left",
     )
 
-    financial_df["market_cap"] = (
-        financial_df["market_cap_crore"]
-    )
+    financial_df["market_cap"] = financial_df["market_cap_crore"]
 
 
 # ---------------------------------------------------------
@@ -266,9 +224,7 @@ for column in [
 # Bubble chart
 # ---------------------------------------------------------
 
-st.subheader(
-    f"{selected_sector} — Company Overview"
-)
+st.subheader(f"{selected_sector} — Company Overview")
 
 
 bubble_df = financial_df.dropna(
@@ -281,19 +237,12 @@ bubble_df = financial_df.dropna(
 
 if bubble_df.empty:
 
-    st.info(
-        "Revenue and ROE data are not available "
-        "for this sector."
-    )
+    st.info("Revenue and ROE data are not available " "for this sector.")
 
 else:
 
     # Prevent zero/negative marker sizes.
-    bubble_df["bubble_size"] = (
-        bubble_df["market_cap"]
-        .fillna(0)
-        .clip(lower=1)
-    )
+    bubble_df["bubble_size"] = bubble_df["market_cap"].fillna(0).clip(lower=1)
 
     fig = px.scatter(
         bubble_df,
@@ -315,20 +264,17 @@ else:
             "bubble_size": "Market Cap",
             "sub_sector": "Sub-sector",
         },
-        title=(
-            f"{selected_sector} — "
-            "Revenue vs ROE"
-        ),
+        title=(f"{selected_sector} — " "Revenue vs ROE"),
     )
 
     fig.update_layout(
         height=600,
-        margin=dict(
-            l=50,
-            r=40,
-            t=70,
-            b=50,
-        ),
+        margin={
+            "l": 50,
+            "r": 40,
+            "t": 70,
+            "b": 50,
+        },
     )
 
     st.plotly_chart(
@@ -375,42 +321,33 @@ for label, column in kpi_columns.items():
     )
 
 
-median_df = pd.DataFrame(
-    median_rows
-)
+median_df = pd.DataFrame(median_rows)
 
 
 if median_df.empty:
 
-    st.info(
-        "Sector median data is not available."
-    )
+    st.info("Sector median data is not available.")
 
 else:
 
-    median_df["Median"] = median_df[
-        "Median"
-    ].round(2)
+    median_df["Median"] = median_df["Median"].round(2)
 
     fig = px.bar(
         median_df,
         x="Metric",
         y="Median",
         text="Median",
-        title=(
-            f"{selected_sector} — "
-            "Sector Median"
-        ),
+        title=(f"{selected_sector} — " "Sector Median"),
     )
 
     fig.update_layout(
         height=450,
-        margin=dict(
-            l=50,
-            r=40,
-            t=70,
-            b=50,
-        ),
+        margin={
+            "l": 50,
+            "r": 40,
+            "t": 70,
+            "b": 50,
+        },
     )
 
     st.plotly_chart(

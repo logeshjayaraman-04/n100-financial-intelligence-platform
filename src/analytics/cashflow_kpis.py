@@ -1,8 +1,10 @@
-from pathlib import Path
-import sqlite3
-import pandas as pd
-import numpy as np
+"""Module providing N100 financial intelligence functionality."""
 
+import sqlite3
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
 DB_FILE = ROOT_DIR / "data" / "db" / "n100.db"
@@ -16,7 +18,9 @@ DISTRESS_FILE = OUTPUT_DIR / "distress_alerts.csv"
 # SPRINT 2 / DAY 11 KPI HELPERS
 # ============================================================
 
+
 def free_cash_flow(operating_activity, investing_activity):
+    """Handle free cash flow."""
     if pd.isna(operating_activity) or pd.isna(investing_activity):
         return None
 
@@ -24,6 +28,7 @@ def free_cash_flow(operating_activity, investing_activity):
 
 
 def cfo_quality_score(cfo, pat):
+    """Handle cfo quality score."""
     if pd.isna(cfo) or pd.isna(pat) or pat == 0:
         return None
 
@@ -31,6 +36,7 @@ def cfo_quality_score(cfo, pat):
 
 
 def cfo_quality_label(score):
+    """Handle cfo quality label."""
     if score is None or pd.isna(score):
         return "Unavailable"
 
@@ -44,6 +50,7 @@ def cfo_quality_label(score):
 
 
 def capex_intensity(investing_activity, sales):
+    """Handle capex intensity."""
     if pd.isna(investing_activity) or pd.isna(sales) or sales == 0:
         return None
 
@@ -51,6 +58,7 @@ def capex_intensity(investing_activity, sales):
 
 
 def capex_intensity_label(value):
+    """Handle capex intensity label."""
     if value is None or pd.isna(value):
         return "Unavailable"
 
@@ -64,6 +72,7 @@ def capex_intensity_label(value):
 
 
 def fcf_conversion_rate(fcf, operating_profit):
+    """Handle fcf conversion rate."""
     if pd.isna(fcf) or pd.isna(operating_profit) or operating_profit == 0:
         return None
 
@@ -71,6 +80,7 @@ def fcf_conversion_rate(fcf, operating_profit):
 
 
 def cash_flow_sign(value):
+    """Handle cash flow sign."""
     if pd.isna(value):
         return "0"
 
@@ -89,6 +99,7 @@ def capital_allocation_pattern(
     cff,
     cfo_pat_ratio=None,
 ):
+    """Handle capital allocation pattern."""
     if cfo < 0 and cfi < 0 and cff < 0:
         return "Pre-Revenue"
 
@@ -123,7 +134,9 @@ def capital_allocation_pattern(
 # DAY 31 CASH FLOW INTELLIGENCE
 # ============================================================
 
+
 def load_table(conn, table, columns):
+    """Retrieve table."""
     query = f"""
         SELECT {", ".join(columns)}
         FROM {table}
@@ -133,6 +146,7 @@ def load_table(conn, table, columns):
 
 
 def period_sort(value):
+    """Handle period sort."""
     if pd.isna(value):
         return -1
 
@@ -153,6 +167,7 @@ def period_sort(value):
 
 
 def latest(df, company_id):
+    """Handle latest."""
     rows = df[df["company_id"] == company_id].copy()
 
     if rows.empty:
@@ -165,6 +180,7 @@ def latest(df, company_id):
 
 
 def previous(df, company_id):
+    """Handle previous."""
     rows = df[df["company_id"] == company_id].copy()
 
     if len(rows) < 2:
@@ -177,6 +193,7 @@ def previous(df, company_id):
 
 
 def number(value):
+    """Handle number."""
     if pd.isna(value):
         return np.nan
 
@@ -187,6 +204,7 @@ def number(value):
 
 
 def cfo_pat_quality(cfo, pat):
+    """Handle cfo pat quality."""
     if pd.isna(cfo) or pd.isna(pat):
         return np.nan, "Unavailable"
 
@@ -212,6 +230,7 @@ def cfo_pat_quality(cfo, pat):
 
 
 def capex_intensity_day31(capex, cfo, sales):
+    """Handle capex intensity day31."""
     if pd.isna(capex):
         return np.nan, "Unavailable"
 
@@ -243,6 +262,7 @@ def distress_level(
     previous_debt,
     current_debt,
 ):
+    """Handle distress level."""
     signals = []
 
     if not pd.isna(cfo) and cfo < 0:
@@ -278,6 +298,7 @@ def distress_level(
 
 
 def deleveraging(previous_debt, current_debt):
+    """Handle deleveraging."""
     if pd.isna(previous_debt) or pd.isna(current_debt):
         return "Unavailable", np.nan
 
@@ -305,7 +326,9 @@ def deleveraging(previous_debt, current_debt):
 # MAIN DAY 31 GENERATION
 # ============================================================
 
+
 def main():
+    """Run the module's main workflow."""
     print("=== CASH FLOW INTELLIGENCE ===")
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -394,8 +417,6 @@ def main():
         b = latest(bs, company_id)
         bp = previous(bs, company_id)
 
-        c = latest(cf, company_id)
-
         if r is None:
             continue
 
@@ -411,11 +432,7 @@ def main():
 
         current_debt = number(r["total_debt_cr"])
 
-        previous_debt = (
-            number(rp["total_debt_cr"])
-            if rp is not None
-            else np.nan
-        )
+        previous_debt = number(rp["total_debt_cr"]) if rp is not None else np.nan
 
         if b is not None:
             balance_debt = number(b["borrowings"])
@@ -541,27 +558,18 @@ def main():
         "Composite_quality_score",
     ]
 
-    missing = [
-        col
-        for col in required
-        if col not in intelligence.columns
-    ]
+    missing = [col for col in required if col not in intelligence.columns]
 
     if missing:
-        raise ValueError(
-            f"Missing required columns: {missing}"
-        )
+        raise ValueError(f"Missing required columns: {missing}")
 
     if len(intelligence) != len(companies):
         raise ValueError(
-            f"Expected {len(companies)} companies, "
-            f"processed {len(intelligence)}."
+            f"Expected {len(companies)} companies, " f"processed {len(intelligence)}."
         )
 
     if intelligence["company_id"].duplicated().any():
-        raise ValueError(
-            "Duplicate company IDs detected."
-        )
+        raise ValueError("Duplicate company IDs detected.")
 
     intelligence.to_excel(
         INTELLIGENCE_FILE,
@@ -577,14 +585,9 @@ def main():
     print()
     print("=== VALIDATION ===")
 
-    print(
-        f"Companies processed: {len(intelligence)}"
-    )
+    print(f"Companies processed: {len(intelligence)}")
 
-    print(
-        f"Unique companies: "
-        f"{intelligence['company_id'].nunique()}"
-    )
+    print(f"Unique companies: " f"{intelligence['company_id'].nunique()}")
 
     print(
         "High distress:",
@@ -603,16 +606,14 @@ def main():
 
     print(
         "Strong/Healthy CFO-PAT:",
-        intelligence["CFO_PAT_quality"].isin(
-            ["Strong", "Healthy"]
-        ).sum(),
+        intelligence["CFO_PAT_quality"].isin(["Strong", "Healthy"]).sum(),
     )
 
     print(
         "Deleveraging companies:",
-        intelligence["Deleveraging_status"].isin(
-            ["Strong Deleveraging", "Deleveraging"]
-        ).sum(),
+        intelligence["Deleveraging_status"]
+        .isin(["Strong Deleveraging", "Deleveraging"])
+        .sum(),
     )
 
     print()

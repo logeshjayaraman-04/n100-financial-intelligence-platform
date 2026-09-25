@@ -10,7 +10,6 @@ from pathlib import Path
 
 import pandas as pd
 
-
 TITLE_ROW_FILES = {
     "analysis.xlsx",
     "balancesheet.xlsx",
@@ -133,6 +132,7 @@ def normalize_year(value: object) -> int | str | None:
 
     return None
 
+
 def read_excel_normalized(
     file_path: str | Path,
     *,
@@ -172,13 +172,8 @@ def main() -> None:
     for file_path in sorted(raw_dir.glob("*.xlsx")):
         df = read_excel_normalized(file_path)
 
-        print(
-            f"{file_path.name}: "
-            f"{len(df)} rows, "
-            f"{len(df.columns)} columns"
-        )
+        print(f"{file_path.name}: " f"{len(df)} rows, " f"{len(df.columns)} columns")
 
 
 if __name__ == "__main__":
     main()
-    

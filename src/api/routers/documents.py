@@ -1,5 +1,7 @@
-from pathlib import Path
+"""Module providing N100 financial intelligence functionality."""
+
 import sqlite3
+from pathlib import Path
 
 from fastapi import APIRouter, HTTPException
 
@@ -10,6 +12,7 @@ router = APIRouter(tags=["Documents"])
 
 
 def get_connection():
+    """Retrieve connection."""
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
@@ -17,6 +20,7 @@ def get_connection():
 
 @router.get("/documents/{ticker}")
 def company_documents(ticker: str):
+    """Handle company documents."""
     conn = get_connection()
 
     try:

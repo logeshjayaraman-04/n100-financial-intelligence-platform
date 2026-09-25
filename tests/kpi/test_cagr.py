@@ -1,14 +1,14 @@
 from src.analytics.cagr import (
-    calculate_cagr,
-    revenue_cagr,
-    pat_cagr,
-    eps_cagr,
+    BOTH_NEGATIVE,
     CAGR_OK,
     DECLINE_TO_LOSS,
-    TURNAROUND,
-    BOTH_NEGATIVE,
-    ZERO_BASE,
     INSUFFICIENT,
+    TURNAROUND,
+    ZERO_BASE,
+    calculate_cagr,
+    eps_cagr,
+    pat_cagr,
+    revenue_cagr,
 )
 
 

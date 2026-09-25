@@ -1,3 +1,5 @@
+"""Module providing N100 financial intelligence functionality."""
+
 from __future__ import annotations
 
 import pandas as pd
@@ -5,7 +7,6 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from dashboard.utils.db import get_companies, get_peer_groups, get_peers
-
 
 st.title("Peer Comparison")
 st.caption("Compare a company against its selected peer group using 8 peer metrics.")
@@ -31,13 +32,7 @@ if peer_groups.empty:
 # PEER GROUP SELECTOR
 # =========================================================
 
-groups = sorted(
-    peer_groups["peer_group_name"]
-    .dropna()
-    .astype(str)
-    .unique()
-    .tolist()
-)
+groups = sorted(peer_groups["peer_group_name"].dropna().astype(str).unique().tolist())
 
 selected_group = st.selectbox(
     "Peer Group",
@@ -62,38 +57,22 @@ peer_data["company_id"] = peer_data["company_id"].astype(str)
 # COMPANY LIST FOR SELECTED PEER GROUP
 # =========================================================
 
-group_company_ids = (
-    peer_data["company_id"]
-    .dropna()
-    .astype(str)
-    .unique()
-    .tolist()
-)
+group_company_ids = peer_data["company_id"].dropna().astype(str).unique().tolist()
 
 available_companies = companies[
-    companies["company_id"]
-    .astype(str)
-    .isin(group_company_ids)
+    companies["company_id"].astype(str).isin(group_company_ids)
 ].copy()
 
 
 if available_companies.empty:
-    st.warning(
-        "No companies are available for the selected peer group."
-    )
+    st.warning("No companies are available for the selected peer group.")
     st.stop()
 
 
-available_companies = available_companies.sort_values(
-    "company_name"
-)
+available_companies = available_companies.sort_values("company_name")
 
 
-company_options = (
-    available_companies["company_id"]
-    .astype(str)
-    .tolist()
-)
+company_options = available_companies["company_id"].astype(str).tolist()
 
 company_labels = {
     str(row["company_id"]): str(row["company_name"])
@@ -124,15 +103,11 @@ st.subheader(company_name)
 # COMPANY PEER DATA
 # =========================================================
 
-company_peer = peer_data[
-    peer_data["company_id"] == str(selected_company)
-].copy()
+company_peer = peer_data[peer_data["company_id"] == str(selected_company)].copy()
 
 
 if company_peer.empty:
-    st.info(
-        "This company does not have percentile data in the selected peer group."
-    )
+    st.info("This company does not have percentile data in the selected peer group.")
     st.stop()
 
 
@@ -140,13 +115,7 @@ if company_peer.empty:
 # SELECT UP TO 8 METRICS
 # =========================================================
 
-metrics = (
-    company_peer["metric"]
-    .dropna()
-    .astype(str)
-    .drop_duplicates()
-    .tolist()
-)
+metrics = company_peer["metric"].dropna().astype(str).drop_duplicates().tolist()
 
 metrics = metrics[:8]
 
@@ -167,9 +136,7 @@ radar_values = []
 
 for metric in metrics:
 
-    metric_row = company_peer[
-        company_peer["metric"].astype(str) == metric
-    ]
+    metric_row = company_peer[company_peer["metric"].astype(str) == metric]
 
     if metric_row.empty:
         radar_values.append(0)
@@ -212,19 +179,19 @@ fig.add_trace(
 
 
 fig.update_layout(
-    polar=dict(
-        radialaxis=dict(
-            visible=True,
-            range=[0, 100],
-        )
-    ),
+    polar={
+        "radialaxis": {
+            "visible": True,
+            "range": [0, 100],
+        }
+    },
     height=520,
-    margin=dict(
-        l=30,
-        r=30,
-        t=40,
-        b=30,
-    ),
+    margin={
+        "l": 30,
+        "r": 30,
+        "t": 40,
+        "b": 30,
+    },
 )
 
 
@@ -246,9 +213,7 @@ comparison_rows = []
 
 for metric in metrics:
 
-    metric_row = company_peer[
-        company_peer["metric"].astype(str) == metric
-    ]
+    metric_row = company_peer[company_peer["metric"].astype(str) == metric]
 
     company_value = None
     company_percentile = None
@@ -257,9 +222,7 @@ for metric in metrics:
 
         company_value = metric_row.iloc[0]["value"]
 
-        company_percentile = metric_row.iloc[0][
-            "percentile_rank"
-        ]
+        company_percentile = metric_row.iloc[0]["percentile_rank"]
 
     comparison_rows.append(
         {
@@ -295,13 +258,11 @@ if not comparison_df.empty:
         errors="coerce",
     ).dropna()
 
-
     if not valid_percentiles.empty:
 
         average_percentile = valid_percentiles.mean()
 
         col1, col2, col3 = st.columns(3)
-
 
         with col1:
             st.metric(
@@ -309,13 +270,11 @@ if not comparison_df.empty:
                 f"{average_percentile:.1f}",
             )
 
-
         with col2:
             st.metric(
                 "Metrics Compared",
                 len(valid_percentiles),
             )
-
 
         with col3:
 
@@ -330,7 +289,6 @@ if not comparison_df.empty:
 
             else:
                 benchmark = "Weak"
-
 
             st.metric(
                 "Benchmark",

@@ -23,7 +23,6 @@ from typing import Any
 import pandas as pd
 import yaml
 
-
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CONFIG = PROJECT_ROOT / "config" / "screener_config.yaml"
 
@@ -31,6 +30,7 @@ DEFAULT_CONFIG = PROJECT_ROOT / "config" / "screener_config.yaml"
 # ============================================================
 # GENERAL HELPERS
 # ============================================================
+
 
 def normalize_year(value: Any) -> int | None:
     """Extract a four-digit year from values such as 'Mar 2024'."""
@@ -64,37 +64,24 @@ def _latest_pnl(
 
     data = pnl.copy()
 
-    data["_year_num"] = data["year"].apply(
-        normalize_year
-    )
+    data["_year_num"] = data["year"].apply(normalize_year)
 
-    data = data[
-        data["_year_num"].notna()
-    ].copy()
+    data = data[data["_year_num"].notna()].copy()
 
-    data["_is_ttm"] = (
-        data["year"]
-        .astype(str)
-        .str.upper()
-        .eq("TTM")
-    )
+    data["_is_ttm"] = data["year"].astype(str).str.upper().eq("TTM")
 
-    data = data.sort_values(
-        ["company_id", "_year_num", "_is_ttm"]
-    )
+    data = data.sort_values(["company_id", "_year_num", "_is_ttm"])
 
-    return (
-        data.drop_duplicates(
-            subset=["company_id", "_year_num"],
-            keep="first",
-        )
-        .reset_index(drop=True)
-    )
+    return data.drop_duplicates(
+        subset=["company_id", "_year_num"],
+        keep="first",
+    ).reset_index(drop=True)
 
 
 # ============================================================
 # P10 / P90 NORMALISATION
 # ============================================================
+
 
 def _winsor_scale_series(
     series: pd.Series,
@@ -145,10 +132,7 @@ def _winsor_scale_series(
         upper=p90,
     )
 
-    scaled = (
-        (clipped - p10)
-        / (p90 - p10)
-    ) * 100
+    scaled = ((clipped - p10) / (p90 - p10)) * 100
 
     if not higher_is_better:
         scaled = 100 - scaled
@@ -181,11 +165,7 @@ def _winsor_scale_series(
         upper=p90,
     )
 
-    scaled = (
-        (clipped - p10)
-        / (p90 - p10)
-        * 100.0
-    )
+    scaled = (clipped - p10) / (p90 - p10) * 100.0
 
     if not higher_is_better:
         scaled = 100.0 - scaled
@@ -223,6 +203,7 @@ def _sector_relative_score(
     )
 
     def score_group(group: pd.DataFrame) -> pd.Series:
+        """Handle score group."""
         vals = group["value"]
 
         if len(vals) == 1:
@@ -235,16 +216,25 @@ def _sector_relative_score(
 
         return scores
 
-    scored = working.loc[valid].groupby(
-        "sector",
-        group_keys=False,
-    ).apply(score_group)
+    scored = (
+        working.loc[valid]
+        .groupby(
+            "sector",
+            group_keys=False,
+        )
+        .apply(score_group)
+    )
 
     result.loc[scored.index] = scored.astype(float)
 
-    return result.clip(0, 100)# ============================================================
+    return result.clip(
+        0, 100
+    )  # ============================================================
+
+
 # COMPOSITE QUALITY SCORE
 # ============================================================
+
 
 def _calculate_fcf_cagr(
     ratios: pd.DataFrame,
@@ -266,69 +256,42 @@ def _calculate_fcf_cagr(
         ]
     ].copy()
 
-    data["_year_num"] = data["year"].apply(
-        normalize_year
-    )
+    data["_year_num"] = data["year"].apply(normalize_year)
 
     data["free_cash_flow_cr"] = pd.to_numeric(
         data["free_cash_flow_cr"],
         errors="coerce",
     )
 
-    data = data[
-        data["_year_num"].notna()
-    ].copy()
+    data = data[data["_year_num"].notna()].copy()
 
-    data = (
-        data.sort_values(
-            ["company_id", "_year_num"]
-        )
-        .drop_duplicates(
-            subset=[
-                "company_id",
-                "_year_num",
-            ],
-            keep="last",
-        )
+    data = data.sort_values(["company_id", "_year_num"]).drop_duplicates(
+        subset=[
+            "company_id",
+            "_year_num",
+        ],
+        keep="last",
     )
 
     records = []
 
-    for company_id, group in data.groupby(
-        "company_id"
-    ):
+    for company_id, group in data.groupby("company_id"):
 
-        group = group.sort_values(
-            "_year_num"
-        )
+        group = group.sort_values("_year_num")
 
-        latest_year = int(
-            group["_year_num"].max()
-        )
+        latest_year = int(group["_year_num"].max())
 
-        latest = group[
-            group["_year_num"] == latest_year
-        ]
+        latest = group[group["_year_num"] == latest_year]
 
-        previous = group[
-            group["_year_num"]
-            == latest_year - 5
-        ]
+        previous = group[group["_year_num"] == latest_year - 5]
 
         fcf_cagr = pd.NA
 
-        if (
-            not latest.empty
-            and not previous.empty
-        ):
+        if not latest.empty and not previous.empty:
 
-            end_value = latest[
-                "free_cash_flow_cr"
-            ].iloc[-1]
+            end_value = latest["free_cash_flow_cr"].iloc[-1]
 
-            start_value = previous[
-                "free_cash_flow_cr"
-            ].iloc[-1]
+            start_value = previous["free_cash_flow_cr"].iloc[-1]
 
             if (
                 pd.notna(start_value)
@@ -337,12 +300,7 @@ def _calculate_fcf_cagr(
                 and float(end_value) > 0
             ):
                 fcf_cagr = (
-                    (
-                        float(end_value)
-                        / float(start_value)
-                    )
-                    ** (1 / 5)
-                    - 1
+                    (float(end_value) / float(start_value)) ** (1 / 5) - 1
                 ) * 100.0
 
         records.append(
@@ -387,32 +345,20 @@ def _add_composite_quality_score(
     # ROCE
     # --------------------------------------------------------
 
-    companies_path = (
-        PROJECT_ROOT
-        / "data"
-        / "processed"
-        / "companies.csv"
-    )
+    companies_path = PROJECT_ROOT / "data" / "processed" / "companies.csv"
 
     if companies_path.exists():
 
-        companies = pd.read_csv(
-            companies_path
-        )
+        companies = pd.read_csv(companies_path)
 
         company_columns = [
             "id",
             "roce_percentage",
         ]
 
-        if all(
-            c in companies.columns
-            for c in company_columns
-        ):
+        if all(c in companies.columns for c in company_columns):
 
-            roce = companies[
-                company_columns
-            ].copy()
+            roce = companies[company_columns].copy()
 
             roce = roce.rename(
                 columns={
@@ -449,26 +395,20 @@ def _add_composite_quality_score(
         errors="coerce",
     )
 
-    valid_pat = (
-        pat.notna()
-        & (pat != 0)
-    )
+    valid_pat = pat.notna() & (pat != 0)
 
     df.loc[
         valid_pat,
         "cfo_pat_ratio",
     ] = (
-        cfo[valid_pat]
-        / pat[valid_pat]
+        cfo[valid_pat] / pat[valid_pat]
     )
 
     # --------------------------------------------------------
     # FCF CAGR
     # --------------------------------------------------------
 
-    fcf_cagr = _calculate_fcf_cagr(
-        ratios_history
-    )
+    fcf_cagr = _calculate_fcf_cagr(ratios_history)
 
     df = df.merge(
         fcf_cagr,
@@ -484,7 +424,8 @@ def _add_composite_quality_score(
         pd.to_numeric(
             df["fcf"],
             errors="coerce",
-        ) > 0
+        )
+        > 0
     ).astype(float) * 100.0
 
     # --------------------------------------------------------
@@ -579,14 +520,11 @@ def _add_composite_quality_score(
         ("score_roe", 15.0),
         ("score_roce", 10.0),
         ("score_npm", 10.0),
-
         ("score_fcf_cagr", 15.0),
         ("score_cfo_pat", 10.0),
         ("fcf_positive_flag", 5.0),
-
         ("score_revenue_cagr", 10.0),
         ("score_pat_cagr", 10.0),
-
         ("score_de", 10.0),
         ("score_icr", 5.0),
     ]
@@ -610,19 +548,13 @@ def _add_composite_quality_score(
 
         valid = values.notna()
 
-        numerator.loc[valid] += (
-            values.loc[valid]
-            * weight
-        )
+        numerator.loc[valid] += values.loc[valid] * weight
 
         denominator.loc[valid] += weight
 
     # Renormalise available weights so missing metrics
     # cannot push the score outside 0-100.
-    df["composite_quality_score"] = (
-        numerator
-        / denominator
-    )
+    df["composite_quality_score"] = numerator / denominator
 
     df.loc[
         denominator == 0,
@@ -646,6 +578,7 @@ def _add_composite_quality_score(
 # BUILD SCREENER DATAFRAME
 # ============================================================
 
+
 def build_screener_dataframe(
     db_path: str | Path = "data/db/n100.db",
 ) -> pd.DataFrame:
@@ -657,9 +590,7 @@ def build_screener_dataframe(
 
     db_path = Path(db_path)
 
-    db = sqlite3.connect(
-        db_path
-    )
+    db = sqlite3.connect(db_path)
 
     ratios = pd.read_sql_query(
         "SELECT * FROM financial_ratios",
@@ -712,52 +643,32 @@ def build_screener_dataframe(
     # Normalize years
     # --------------------------------------------------------
 
-    ratios["_year_num"] = ratios[
-        "year"
-    ].apply(normalize_year)
+    ratios["_year_num"] = ratios["year"].apply(normalize_year)
 
-    pnl["_year_num"] = pnl[
-        "year"
-    ].apply(normalize_year)
+    pnl["_year_num"] = pnl["year"].apply(normalize_year)
 
-    market_cap["_year_num"] = market_cap[
-        "year"
-    ].apply(normalize_year)
+    market_cap["_year_num"] = market_cap["year"].apply(normalize_year)
 
     # --------------------------------------------------------
     # Latest ratio row per company
     # --------------------------------------------------------
 
-    ratios = ratios[
-        ratios["_year_num"].notna()
-    ].copy()
+    ratios = ratios[ratios["_year_num"].notna()].copy()
 
-    ratios = (
-        ratios.sort_values(
-            ["company_id", "_year_num"]
-        )
-        .drop_duplicates(
-            subset=["company_id"],
-            keep="last",
-        )
+    ratios = ratios.sort_values(["company_id", "_year_num"]).drop_duplicates(
+        subset=["company_id"],
+        keep="last",
     )
 
     # --------------------------------------------------------
     # Latest annual P&L
     # --------------------------------------------------------
 
-    pnl = _latest_pnl(
-        pnl
-    )
+    pnl = _latest_pnl(pnl)
 
-    pnl = (
-        pnl.sort_values(
-            ["company_id", "_year_num"]
-        )
-        .drop_duplicates(
-            subset=["company_id"],
-            keep="last",
-        )
+    pnl = pnl.sort_values(["company_id", "_year_num"]).drop_duplicates(
+        subset=["company_id"],
+        keep="last",
     )
 
     # --------------------------------------------------------
@@ -765,12 +676,8 @@ def build_screener_dataframe(
     # --------------------------------------------------------
 
     market_cap = (
-        market_cap[
-            market_cap["_year_num"].notna()
-        ]
-        .sort_values(
-            ["company_id", "_year_num"]
-        )
+        market_cap[market_cap["_year_num"].notna()]
+        .sort_values(["company_id", "_year_num"])
         .drop_duplicates(
             subset=["company_id"],
             keep="last",
@@ -819,61 +726,35 @@ def build_screener_dataframe(
     # Standardised screener names
     # --------------------------------------------------------
 
-    result["roe"] = result[
-        "return_on_equity_pct"
-    ]
+    result["roe"] = result["return_on_equity_pct"]
 
-    result["de"] = result[
-        "debt_to_equity"
-    ]
+    result["de"] = result["debt_to_equity"]
 
-    result["fcf"] = result[
-        "free_cash_flow_cr"
-    ]
+    result["fcf"] = result["free_cash_flow_cr"]
 
-    result["opm"] = result[
-        "operating_profit_margin_pct"
-    ]
+    result["opm"] = result["operating_profit_margin_pct"]
 
-    result["pe"] = result[
-        "pe_ratio"
-    ]
+    result["pe"] = result["pe_ratio"]
 
-    result["pb"] = result[
-        "pb_ratio"
-    ]
+    result["pb"] = result["pb_ratio"]
 
-    result["dividend_yield"] = result[
-        "dividend_yield_pct"
-    ]
+    result["dividend_yield"] = result["dividend_yield_pct"]
 
-    result["icr"] = result[
-        "interest_coverage"
-    ]
+    result["icr"] = result["interest_coverage"]
 
-    result["market_cap"] = result[
-        "market_cap_crore"
-    ]
+    result["market_cap"] = result["market_cap_crore"]
 
-    result["eps_cagr"] = result[
-        "eps_cagr_5yr"
-    ]
+    result["eps_cagr"] = result["eps_cagr_5yr"]
 
-    result["asset_turnover"] = result[
-        "asset_turnover"
-    ]
+    result["asset_turnover"] = result["asset_turnover"]
 
-    result["sales"] = result[
-        "sales"
-    ]
+    result["sales"] = result["sales"]
 
     # --------------------------------------------------------
     # Debt-free companies behave as infinite ICR.
     # --------------------------------------------------------
 
-    result["icr_screener"] = result[
-        "icr"
-    ].fillna(float("inf"))
+    result["icr_screener"] = result["icr"].fillna(float("inf"))
 
     # --------------------------------------------------------
     # Recalculate composite score correctly.
@@ -884,14 +765,13 @@ def build_screener_dataframe(
         ratios_history,
     )
 
-    return result.reset_index(
-        drop=True
-    )
+    return result.reset_index(drop=True)
 
 
 # ============================================================
 # FILTER HELPERS
 # ============================================================
+
 
 def _apply_min(
     df: pd.DataFrame,
@@ -908,13 +788,7 @@ def _apply_min(
         errors="coerce",
     )
 
-    return df[
-        values.notna()
-        & (
-            values
-            >= float(threshold)
-        )
-    ]
+    return df[values.notna() & (values >= float(threshold))]
 
 
 def _apply_max(
@@ -932,18 +806,13 @@ def _apply_max(
         errors="coerce",
     )
 
-    return df[
-        values.notna()
-        & (
-            values
-            <= float(threshold)
-        )
-    ]
+    return df[values.notna() & (values <= float(threshold))]
 
 
 # ============================================================
 # APPLY SCREENER FILTERS
 # ============================================================
+
 
 def apply_filters(
     df: pd.DataFrame,
@@ -979,37 +848,23 @@ def apply_filters(
         result = _apply_min(
             result,
             column,
-            filters.get(
-                threshold_name
-            ),
+            filters.get(threshold_name),
         )
 
     # --------------------------------------------------------
     # Dividend payout maximum
     # --------------------------------------------------------
 
-    dividend_payout_max = filters.get(
-        "dividend_payout_max"
-    )
+    dividend_payout_max = filters.get("dividend_payout_max")
 
     if dividend_payout_max is not None:
 
         values = pd.to_numeric(
-            result[
-                "dividend_payout_ratio_pct"
-            ],
+            result["dividend_payout_ratio_pct"],
             errors="coerce",
         )
 
-        result = result[
-            values.notna()
-            & (
-                values
-                < float(
-                    dividend_payout_max
-                )
-            )
-        ]
+        result = result[values.notna() & (values < float(dividend_payout_max))]
 
     # --------------------------------------------------------
     # P/E maximum
@@ -1018,9 +873,7 @@ def apply_filters(
     result = _apply_max(
         result,
         "pe",
-        filters.get(
-            "pe_max"
-        ),
+        filters.get("pe_max"),
     )
 
     # --------------------------------------------------------
@@ -1030,18 +883,14 @@ def apply_filters(
     result = _apply_max(
         result,
         "pb",
-        filters.get(
-            "pb_max"
-        ),
+        filters.get("pb_max"),
     )
 
     # --------------------------------------------------------
     # Exact D/E
     # --------------------------------------------------------
 
-    de_exact = filters.get(
-        "de_exact"
-    )
+    de_exact = filters.get("de_exact")
 
     if de_exact is not None:
 
@@ -1050,13 +899,7 @@ def apply_filters(
             errors="coerce",
         )
 
-        result = result[
-            values.notna()
-            & (
-                values
-                == float(de_exact)
-            )
-        ]
+        result = result[values.notna() & (values == float(de_exact))]
 
     # --------------------------------------------------------
     # D/E maximum
@@ -1065,31 +908,19 @@ def apply_filters(
     # filter when requested.
     # --------------------------------------------------------
 
-    de_max = filters.get(
-        "de_max"
-    )
+    de_max = filters.get("de_max")
 
     if de_max is not None:
 
         if skip_financials_for_de:
 
             sector = (
-                result[
-                    "broad_sector"
-                ]
-                .fillna("")
-                .astype(str)
-                .str.strip()
-                .str.lower()
+                result["broad_sector"].fillna("").astype(str).str.strip().str.lower()
             )
 
-            non_financials = result[
-                sector != "financials"
-            ]
+            non_financials = result[sector != "financials"]
 
-            financials = result[
-                sector == "financials"
-            ]
+            financials = result[sector == "financials"]
 
             non_financials = _apply_max(
                 non_financials,
@@ -1119,41 +950,30 @@ def apply_filters(
     # Debt-free companies have infinity and always pass.
     # --------------------------------------------------------
 
-    icr_min = filters.get(
-        "icr_min"
-    )
+    icr_min = filters.get("icr_min")
 
     if icr_min is not None:
 
-        result = result[
-            result[
-                "icr_screener"
-            ]
-            >= float(icr_min)
-        ]
+        result = result[result["icr_screener"] >= float(icr_min)]
 
     # --------------------------------------------------------
     # Sort by composite quality score
     # --------------------------------------------------------
 
-    if (
-        "composite_quality_score"
-        in result.columns
-    ):
+    if "composite_quality_score" in result.columns:
 
         result = result.sort_values(
             "composite_quality_score",
             ascending=False,
         )
 
-    return result.reset_index(
-        drop=True
-    )
+    return result.reset_index(drop=True)
 
 
 # ============================================================
 # PUBLIC SCREENER API
 # ============================================================
+
 
 def run_screener(
     filters: dict[str, Any],
@@ -1198,15 +1018,9 @@ if __name__ == "__main__":
     print("DAY 15 — SCREENER ENGINE CHECK")
     print("=" * 80)
 
-    print(
-        f"Companies available: "
-        f"{df['company_id'].nunique()}"
-    )
+    print(f"Companies available: " f"{df['company_id'].nunique()}")
 
-    print(
-        f"Rows available: "
-        f"{len(df)}"
-    )
+    print(f"Rows available: " f"{len(df)}")
 
     print()
 
@@ -1241,7 +1055,4 @@ if __name__ == "__main__":
         f"{df['composite_quality_score'].max():.2f}"
     )
 
-    print(
-        "Scores above 100: "
-        f"{(df['composite_quality_score'] > 100).sum()}"
-    )
+    print("Scores above 100: " f"{(df['composite_quality_score'] > 100).sum()}")

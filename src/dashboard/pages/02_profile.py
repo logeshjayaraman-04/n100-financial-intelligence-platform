@@ -1,3 +1,5 @@
+"""Module providing N100 financial intelligence functionality."""
+
 from __future__ import annotations
 
 import pandas as pd
@@ -6,11 +8,10 @@ import streamlit as st
 
 from src.dashboard.utils.db import (
     get_companies,
-    get_ratios,
     get_pl,
     get_pros_cons,
+    get_ratios,
 )
-
 
 st.title("Company Profile")
 
@@ -40,12 +41,8 @@ if search_text.strip():
     search = search_text.strip().lower()
 
     matches = companies[
-        companies["company_id"]
-        .astype(str)
-        .str.lower()
-        .str.contains(search, na=False)
-        |
-        companies["company_name"]
+        companies["company_id"].astype(str).str.lower().str.contains(search, na=False)
+        | companies["company_name"]
         .astype(str)
         .str.lower()
         .str.contains(search, na=False)
@@ -80,9 +77,7 @@ else:
 # Company information
 # ---------------------------------------------------------
 
-company_row = companies[
-    companies["company_id"] == selected_company
-].iloc[0]
+company_row = companies[companies["company_id"] == selected_company].iloc[0]
 
 
 company_name = company_row["company_name"]
@@ -121,29 +116,18 @@ with info1:
 
 with info2:
     st.write("**Sector**")
-    st.write(
-        sector
-        if pd.notna(sector)
-        else "N/A"
-    )
+    st.write(sector if pd.notna(sector) else "N/A")
 
 
 with info3:
     st.write("**Sub-sector**")
-    st.write(
-        sub_sector
-        if pd.notna(sub_sector)
-        else "N/A"
-    )
+    st.write(sub_sector if pd.notna(sub_sector) else "N/A")
 
 
 with info4:
     st.write("**NSE Profile**")
 
-    if (
-        pd.notna(nse_profile)
-        and str(nse_profile).strip()
-    ):
+    if pd.notna(nse_profile) and str(nse_profile).strip():
         st.link_button(
             "Open NSE Profile",
             str(nse_profile),
@@ -152,10 +136,7 @@ with info4:
         st.write("N/A")
 
 
-if (
-    pd.notna(about)
-    and str(about).strip()
-):
+if pd.notna(about) and str(about).strip():
     st.info(str(about))
 
 
@@ -163,24 +144,16 @@ if (
 # Load financial data
 # ---------------------------------------------------------
 
-ratios = get_ratios(
-    str(selected_company)
-)
+ratios = get_ratios(str(selected_company))
 
-pl = get_pl(
-    str(selected_company)
-)
+pl = get_pl(str(selected_company))
 
-pros_cons = get_pros_cons(
-    str(selected_company)
-)
+pros_cons = get_pros_cons(str(selected_company))
 
 
 if ratios.empty:
 
-    st.warning(
-        "Financial ratio data is not available for this company."
-    )
+    st.warning("Financial ratio data is not available for this company.")
 
     st.stop()
 
@@ -191,38 +164,26 @@ if ratios.empty:
 
 ratios = ratios.copy()
 
-ratios["year_text"] = (
-    ratios["year"]
-    .astype(str)
-)
+ratios["year_text"] = ratios["year"].astype(str)
 
 ratios["year_num"] = pd.to_numeric(
-    ratios["year_text"]
-    .str.extract(r"(\d{4})")[0],
+    ratios["year_text"].str.extract(r"(\d{4})")[0],
     errors="coerce",
 )
 
-ratios = ratios.sort_values(
-    "year_num"
-)
+ratios = ratios.sort_values("year_num")
 
 
 # ---------------------------------------------------------
 # Latest ratio record
 # ---------------------------------------------------------
 
-latest_ratio = (
-    ratios
-    .dropna(subset=["year_num"])
-    .tail(1)
-)
+latest_ratio = ratios.dropna(subset=["year_num"]).tail(1)
 
 
 if latest_ratio.empty:
 
-    st.warning(
-        "Latest financial data is not available."
-    )
+    st.warning("Latest financial data is not available.")
 
     st.stop()
 
@@ -234,18 +195,17 @@ latest = latest_ratio.iloc[0]
 # Formatting helper
 # ---------------------------------------------------------
 
+
 def safe_number(
     value,
     suffix="",
 ):
+    """Handle safe number."""
     if pd.isna(value):
         return "N/A"
 
     try:
-        return (
-            f"{float(value):.2f}"
-            f"{suffix}"
-        )
+        return f"{float(value):.2f}" f"{suffix}"
     except (
         TypeError,
         ValueError,
@@ -259,9 +219,7 @@ def safe_number(
 
 st.divider()
 
-st.subheader(
-    "Key Financial Metrics"
-)
+st.subheader("Key Financial Metrics")
 
 
 k1, k2, k3, k4, k5, k6 = st.columns(6)
@@ -272,9 +230,7 @@ with k1:
     st.metric(
         "ROE",
         safe_number(
-            latest.get(
-                "return_on_equity_pct"
-            ),
+            latest.get("return_on_equity_pct"),
             "%",
         ),
     )
@@ -285,9 +241,7 @@ with k2:
     st.metric(
         "ROCE",
         safe_number(
-            company_row.get(
-                "roce_percentage"
-            ),
+            company_row.get("roce_percentage"),
             "%",
         ),
     )
@@ -298,9 +252,7 @@ with k3:
     st.metric(
         "Net Profit Margin",
         safe_number(
-            latest.get(
-                "net_profit_margin_pct"
-            ),
+            latest.get("net_profit_margin_pct"),
             "%",
         ),
     )
@@ -310,11 +262,7 @@ with k4:
 
     st.metric(
         "D/E",
-        safe_number(
-            latest.get(
-                "debt_to_equity"
-            )
-        ),
+        safe_number(latest.get("debt_to_equity")),
     )
 
 
@@ -323,9 +271,7 @@ with k5:
     st.metric(
         "Revenue CAGR 5yr",
         safe_number(
-            latest.get(
-                "revenue_cagr_5yr"
-            ),
+            latest.get("revenue_cagr_5yr"),
             "%",
         ),
     )
@@ -336,9 +282,7 @@ with k6:
     st.metric(
         "FCF",
         safe_number(
-            latest.get(
-                "free_cash_flow_cr"
-            ),
+            latest.get("free_cash_flow_cr"),
             " Cr",
         ),
     )
@@ -350,9 +294,7 @@ with k6:
 
 st.divider()
 
-st.subheader(
-    "Revenue and Net Profit — 10 Year History"
-)
+st.subheader("Revenue and Net Profit — 10 Year History")
 
 
 if not pl.empty:
@@ -360,9 +302,7 @@ if not pl.empty:
     pl = pl.copy()
 
     pl["year_num"] = pd.to_numeric(
-        pl["year"]
-        .astype(str)
-        .str.extract(r"(\d{4})")[0],
+        pl["year"].astype(str).str.extract(r"(\d{4})")[0],
         errors="coerce",
     )
 
@@ -384,18 +324,12 @@ if not pl.empty:
                 "net_profit",
             ]
         ]
-        .dropna(
-            subset=["year_num"]
-        )
-        .sort_values(
-            "year_num"
-        )
+        .dropna(subset=["year_num"])
+        .sort_values("year_num")
         .tail(10)
     )
 
-
     fig = go.Figure()
-
 
     fig.add_trace(
         go.Bar(
@@ -405,7 +339,6 @@ if not pl.empty:
         )
     )
 
-
     fig.add_trace(
         go.Bar(
             x=pl_chart["year_num"],
@@ -414,20 +347,18 @@ if not pl.empty:
         )
     )
 
-
     fig.update_layout(
         barmode="group",
         height=450,
         xaxis_title="Year",
         yaxis_title="₹ Crore",
-        margin=dict(
-            l=20,
-            r=20,
-            t=40,
-            b=20,
-        ),
+        margin={
+            "l": 20,
+            "r": 20,
+            "t": 40,
+            "b": 20,
+        },
     )
-
 
     st.plotly_chart(
         fig,
@@ -436,18 +367,14 @@ if not pl.empty:
 
 else:
 
-    st.info(
-        "Profit and loss history is not available."
-    )
+    st.info("Profit and loss history is not available.")
 
 
 # ---------------------------------------------------------
 # ROE and ROCE
 # ---------------------------------------------------------
 
-st.subheader(
-    "ROE and ROCE — 10 Year History"
-)
+st.subheader("ROE and ROCE — 10 Year History")
 
 
 roe_chart = ratios[
@@ -459,9 +386,7 @@ roe_chart = ratios[
 
 
 roe_chart["roe"] = pd.to_numeric(
-    roe_chart[
-        "return_on_equity_pct"
-    ],
+    roe_chart["return_on_equity_pct"],
     errors="coerce",
 )
 
@@ -473,12 +398,8 @@ roe_chart = (
             "roe",
         ]
     ]
-    .dropna(
-        subset=["year_num"]
-    )
-    .sort_values(
-        "year_num"
-    )
+    .dropna(subset=["year_num"])
+    .sort_values("year_num")
     .tail(10)
 )
 
@@ -507,9 +428,7 @@ fig2.add_trace(
 # ---------------------------------------------------------
 
 roce_value = pd.to_numeric(
-    company_row.get(
-        "roce_percentage"
-    ),
+    company_row.get("roce_percentage"),
     errors="coerce",
 )
 
@@ -519,8 +438,7 @@ if pd.notna(roce_value):
     fig2.add_trace(
         go.Scatter(
             x=roe_chart["year_num"],
-            y=[roce_value]
-            * len(roe_chart),
+            y=[roce_value] * len(roe_chart),
             mode="lines+markers",
             name="ROCE",
         )
@@ -531,12 +449,12 @@ fig2.update_layout(
     height=450,
     xaxis_title="Year",
     yaxis_title="Percentage",
-    margin=dict(
-        l=20,
-        r=20,
-        t=40,
-        b=20,
-    ),
+    margin={
+        "l": 20,
+        "r": 20,
+        "t": 40,
+        "b": 20,
+    },
 )
 
 
@@ -552,16 +470,12 @@ st.plotly_chart(
 
 st.divider()
 
-st.subheader(
-    "Pros and Cons"
-)
+st.subheader("Pros and Cons")
 
 
 if pros_cons.empty:
 
-    st.info(
-        "Pros and cons information is not available."
-    )
+    st.info("Pros and cons information is not available.")
 
 else:
 
@@ -577,59 +491,34 @@ else:
         "",
     )
 
-
     left, right = st.columns(2)
-
 
     with left:
 
-        st.markdown(
-            "### ✅ Pros"
-        )
+        st.markdown("### ✅ Pros")
 
-        if (
-            pd.notna(pros)
-            and str(pros).strip()
-        ):
+        if pd.notna(pros) and str(pros).strip():
 
-            for item in str(
-                pros
-            ).split("\n"):
+            for item in str(pros).split("\n"):
 
                 if item.strip():
-                    st.success(
-                        item.strip()
-                    )
+                    st.success(item.strip())
 
         else:
 
-            st.info(
-                "No pros available."
-            )
-
+            st.info("No pros available.")
 
     with right:
 
-        st.markdown(
-            "### ❌ Cons"
-        )
+        st.markdown("### ❌ Cons")
 
-        if (
-            pd.notna(cons)
-            and str(cons).strip()
-        ):
+        if pd.notna(cons) and str(cons).strip():
 
-            for item in str(
-                cons
-            ).split("\n"):
+            for item in str(cons).split("\n"):
 
                 if item.strip():
-                    st.error(
-                        item.strip()
-                    )
+                    st.error(item.strip())
 
         else:
 
-            st.info(
-                "No cons available."
-            )
+            st.info("No cons available.")

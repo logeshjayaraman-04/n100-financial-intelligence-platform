@@ -1,9 +1,12 @@
+"""Module providing N100 financial intelligence functionality."""
+
 from financial_engine import analyze_company
 from peer_engine import build_peer_comparison
 from stock_engine import calculate_stock_metrics
 
 
 def print_intelligence_report(company_id):
+    """Handle print intelligence report."""
     financial = analyze_company(company_id)
 
     if not financial:
@@ -27,37 +30,18 @@ def print_intelligence_report(company_id):
     print()
     print("FINANCIAL HEALTH")
     print("-" * 80)
-    print(
-        f"Sales growth:       {financial['sales_growth_pct']:.2f}%"
-    )
-    print(
-        f"Profit growth:      {financial['profit_growth_pct']:.2f}%"
-    )
-    print(
-        f"Operating margin:   {financial['operating_margin_pct']:.2f}%"
-    )
-    print(
-        f"ROE:                {financial['roe_pct']:.2f}%"
-    )
-    print(
-        f"Debt / Equity:      {financial['debt_to_equity']:.2f}"
-    )
-    print(
-        f"Interest coverage:  {financial['interest_coverage']:.2f}"
-    )
-    print(
-        f"Free cash flow:     {financial['free_cash_flow_cr']:.2f} Cr"
-    )
-    print(
-        f"Latest EPS:         {financial['eps']:.2f}"
-    )
+    print(f"Sales growth:       {financial['sales_growth_pct']:.2f}%")
+    print(f"Profit growth:      {financial['profit_growth_pct']:.2f}%")
+    print(f"Operating margin:   {financial['operating_margin_pct']:.2f}%")
+    print(f"ROE:                {financial['roe_pct']:.2f}%")
+    print(f"Debt / Equity:      {financial['debt_to_equity']:.2f}")
+    print(f"Interest coverage:  {financial['interest_coverage']:.2f}")
+    print(f"Free cash flow:     {financial['free_cash_flow_cr']:.2f} Cr")
+    print(f"Latest EPS:         {financial['eps']:.2f}")
 
     print()
     print("=" * 80)
-    print(
-        f"FINANCIAL HEALTH SCORE: "
-        f"{financial['health_score']} / 100"
-    )
+    print(f"FINANCIAL HEALTH SCORE: " f"{financial['health_score']} / 100")
     print("=" * 80)
 
     if peers:
@@ -71,22 +55,14 @@ def print_intelligence_report(company_id):
         print()
         print("PEER POSITION")
         print("-" * 80)
-        print(
-            f"Rank: {ranking} of {len(peers)}"
-        )
+        print(f"Rank: {ranking} of {len(peers)}")
 
         print()
-        print(
-            f"{'Company':<35}"
-            f"{'Score':>10}"
-        )
+        print(f"{'Company':<35}" f"{'Score':>10}")
         print("-" * 50)
 
         for peer in peers:
-            print(
-                f"{peer['company'][:35]:<35}"
-                f"{peer['health_score']:>10}"
-            )
+            print(f"{peer['company'][:35]:<35}" f"{peer['health_score']:>10}")
 
     else:
         print()
@@ -98,24 +74,12 @@ def print_intelligence_report(company_id):
         print()
         print("STOCK PERFORMANCE")
         print("-" * 80)
-        print(
-            f"Price records:     {stock['price_records']}"
-        )
-        print(
-            f"First price:       {stock['first_price']:.2f}"
-        )
-        print(
-            f"Latest price:      {stock['latest_price']:.2f}"
-        )
-        print(
-            f"Highest price:     {stock['highest_price']:.2f}"
-        )
-        print(
-            f"Lowest price:      {stock['lowest_price']:.2f}"
-        )
-        print(
-            f"Total return:      {stock['total_return_pct']:.2f}%"
-        )
+        print(f"Price records:     {stock['price_records']}")
+        print(f"First price:       {stock['first_price']:.2f}")
+        print(f"Latest price:      {stock['latest_price']:.2f}")
+        print(f"Highest price:     {stock['highest_price']:.2f}")
+        print(f"Lowest price:      {stock['lowest_price']:.2f}")
+        print(f"Total return:      {stock['total_return_pct']:.2f}%")
 
     else:
         print()

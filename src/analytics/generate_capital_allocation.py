@@ -1,3 +1,5 @@
+"""Module providing N100 financial intelligence functionality."""
+
 import sqlite3
 from pathlib import Path
 
@@ -8,13 +10,13 @@ from src.analytics.cashflow_kpis import (
     cash_flow_sign,
 )
 
-
 ROOT_DIR = Path(__file__).resolve().parents[2]
 DB_FILE = ROOT_DIR / "data" / "db" / "n100.db"
 OUTPUT_FILE = ROOT_DIR / "output" / "capital_allocation.csv"
 
 
 def main():
+    """Run the module's main workflow."""
     print("Generating capital allocation report...")
 
     conn = sqlite3.connect(DB_FILE)
@@ -54,16 +56,10 @@ def main():
         "financing_activity",
     ]
 
-    missing = [
-        column
-        for column in required_cashflow
-        if column not in cashflow.columns
-    ]
+    missing = [column for column in required_cashflow if column not in cashflow.columns]
 
     if missing:
-        raise RuntimeError(
-            f"Missing cash-flow columns: {missing}"
-        )
+        raise RuntimeError(f"Missing cash-flow columns: {missing}")
 
     merged = cashflow.merge(
         profit,
@@ -81,11 +77,7 @@ def main():
 
         ratio = None
 
-        if (
-            pd.notna(cfo)
-            and pd.notna(pat)
-            and pat != 0
-        ):
+        if pd.notna(cfo) and pd.notna(pat) and pat != 0:
             ratio = float(cfo) / float(pat)
 
         pattern = capital_allocation_pattern(
@@ -129,11 +121,7 @@ def main():
 
     print()
     print("Pattern counts:")
-    print(
-        result_df["pattern_label"]
-        .value_counts()
-        .to_string()
-    )
+    print(result_df["pattern_label"].value_counts().to_string())
 
     print()
     print(

@@ -17,14 +17,13 @@ Requirements:
 - Median summary row
 """
 
-from pathlib import Path
 import sqlite3
+from pathlib import Path
 
 import pandas as pd
 from openpyxl import load_workbook
-from openpyxl.styles import PatternFill, Font, Alignment
+from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
-
 
 DB_PATH = Path("data/db/n100.db")
 COMPANIES_PATH = Path("data/processed/companies.csv")
@@ -60,8 +59,9 @@ METRICS = [
 # LOAD DATA
 # ============================================================
 
-def load_data():
 
+def load_data():
+    """Retrieve financial ratios, companies, and peer groups."""
     db = sqlite3.connect(DB_PATH)
 
     ratios = pd.read_sql_query(
@@ -71,13 +71,8 @@ def load_data():
 
     db.close()
 
-    companies = pd.read_csv(
-        COMPANIES_PATH
-    )
-
-    peer_groups = pd.read_csv(
-        PEER_GROUPS_PATH
-    )
+    companies = pd.read_csv(COMPANIES_PATH)
+    peer_groups = pd.read_csv(PEER_GROUPS_PATH)
 
     return (
         ratios,
@@ -90,11 +85,12 @@ def load_data():
 # PREPARE LATEST FINANCIAL DATA
 # ============================================================
 
+
 def prepare_latest_data(
     ratios,
     companies,
 ):
-
+    """Prepare the latest financial data for each company."""
     df = ratios.copy()
 
     # --------------------------------------------------------
@@ -102,25 +98,18 @@ def prepare_latest_data(
     # --------------------------------------------------------
 
     df["_year_num"] = pd.to_numeric(
-        df["year"]
-        .astype(str)
-        .str.extract(
-            r"(\d{4})"
-        )[0],
+        df["year"].astype(str).str.extract(r"(\d{4})")[0],
         errors="coerce",
     )
 
-    df = df.dropna(
-        subset=["_year_num"]
-    )
+    df = df.dropna(subset=["_year_num"])
 
     # --------------------------------------------------------
     # Latest row per company
     # --------------------------------------------------------
 
     df = (
-        df
-        .sort_values(
+        df.sort_values(
             [
                 "company_id",
                 "_year_num",
@@ -139,7 +128,6 @@ def prepare_latest_data(
     # --------------------------------------------------------
 
     if "roce" not in df.columns:
-
         roce = companies[
             [
                 "id",
@@ -167,7 +155,6 @@ def prepare_latest_data(
     market_db = sqlite3.connect(DB_PATH)
 
     try:
-
         market = pd.read_sql_query(
             """
             SELECT
@@ -178,9 +165,7 @@ def prepare_latest_data(
             """,
             market_db,
         )
-
     finally:
-
         market_db.close()
 
     market["_year_num"] = pd.to_numeric(
@@ -189,8 +174,7 @@ def prepare_latest_data(
     )
 
     market = (
-        market
-        .sort_values(
+        market.sort_values(
             [
                 "company_id",
                 "_year_num",
@@ -251,19 +235,16 @@ def prepare_latest_data(
 # CREATE REPORT DATA
 # ============================================================
 
+
 def build_peer_sheet(
     peer_group_name,
     peer_members,
     latest,
 ):
+    """Build a peer-group comparison dataframe."""
+    members = peer_members["company_id"].tolist()
 
-    members = peer_members[
-        "company_id"
-    ].tolist()
-
-    df = latest[
-        latest["company_id"].isin(members)
-    ].copy()
+    df = latest[latest["company_id"].isin(members)].copy()
 
     if df.empty:
         return None
@@ -272,15 +253,9 @@ def build_peer_sheet(
     # Benchmark mapping
     # --------------------------------------------------------
 
-    benchmark_map = peer_members.set_index(
-        "company_id"
-    )["is_benchmark"].to_dict()
+    benchmark_map = peer_members.set_index("company_id")["is_benchmark"].to_dict()
 
-    df["is_benchmark"] = df[
-        "company_id"
-    ].map(
-        benchmark_map
-    ).fillna(False)
+    df["is_benchmark"] = df["company_id"].map(benchmark_map).fillna(False)
 
     # --------------------------------------------------------
     # Build output
@@ -288,29 +263,20 @@ def build_peer_sheet(
 
     output = pd.DataFrame()
 
-    output["company_id"] = df[
-        "company_id"
-    ]
-
-    output["company_name"] = df[
-        "company_name"
-    ]
+    output["company_id"] = df["company_id"]
+    output["company_name"] = df["company_name"]
 
     # --------------------------------------------------------
     # 20 metric columns
     # --------------------------------------------------------
 
     for display_name, source_column in METRICS:
-
         if source_column in df.columns:
-
             output[display_name] = pd.to_numeric(
                 df[source_column],
                 errors="coerce",
             )
-
         else:
-
             output[display_name] = pd.NA
 
     # --------------------------------------------------------
@@ -318,65 +284,43 @@ def build_peer_sheet(
     # --------------------------------------------------------
 
     for display_name, source_column in METRICS:
+        values = pd.to_numeric(
+            output[display_name],
+            errors="coerce",
+        )
 
         if display_name == "D/E":
-
-            values = pd.to_numeric(
-                output[display_name],
-                errors="coerce",
+            rank = (
+                values.rank(
+                    pct=True,
+                    ascending=False,
+                    method="average",
+                )
+                * 100
             )
-
-            rank = values.rank(
-                pct=True,
-                ascending=False,
-                method="average",
-            ) * 100
-
         else:
-
-            values = pd.to_numeric(
-                output[display_name],
-                errors="coerce",
+            rank = (
+                values.rank(
+                    pct=True,
+                    ascending=True,
+                    method="average",
+                )
+                * 100
             )
 
-            rank = values.rank(
-                pct=True,
-                ascending=True,
-                method="average",
-            ) * 100
-
-        output[
-            f"{display_name} Percentile"
-        ] = rank
+        output[f"{display_name} Percentile"] = rank
 
     # --------------------------------------------------------
     # Keep benchmark at top
     # --------------------------------------------------------
 
-    benchmark_ids = [
-        company_id
-        for company_id, flag
-        in benchmark_map.items()
-        if bool(flag)
-    ]
+    if benchmark_map:
+        output["_benchmark"] = output["company_id"].map(benchmark_map).fillna(False)
 
-    if benchmark_ids:
-
-        output["_benchmark"] = (
-            output["company_id"]
-            .isin(benchmark_ids)
-        )
-
-        output = (
-            output
-            .sort_values(
-                "_benchmark",
-                ascending=False,
-            )
-            .drop(
-                columns="_benchmark"
-            )
-        )
+        output = output.sort_values(
+            "_benchmark",
+            ascending=False,
+        ).drop(columns="_benchmark")
 
     return output
 
@@ -385,10 +329,9 @@ def build_peer_sheet(
 # WRITE EXCEL
 # ============================================================
 
-def write_excel(
-    peer_sheets
-):
 
+def write_excel(peer_sheets):
+    """Write the peer comparison workbook and apply formatting."""
     OUTPUT_PATH.parent.mkdir(
         parents=True,
         exist_ok=True,
@@ -398,23 +341,13 @@ def write_excel(
         OUTPUT_PATH,
         engine="openpyxl",
     ) as writer:
-
         for sheet_name, df in peer_sheets.items():
-
             if df is None or df.empty:
-
-                pd.DataFrame(
-                    {
-                        "Message": [
-                            "No data available"
-                        ]
-                    }
-                ).to_excel(
+                pd.DataFrame({"Message": ["No data available"]}).to_excel(
                     writer,
                     sheet_name=sheet_name[:31],
                     index=False,
                 )
-
                 continue
 
             df.to_excel(
@@ -427,9 +360,7 @@ def write_excel(
     # Formatting
     # --------------------------------------------------------
 
-    workbook = load_workbook(
-        OUTPUT_PATH
-    )
+    workbook = load_workbook(OUTPUT_PATH)
 
     green_fill = PatternFill(
         fill_type="solid",
@@ -446,28 +377,19 @@ def write_excel(
         fgColor="FFC7CE",
     )
 
-    benchmark_fill = PatternFill(
-        fill_type="solid",
-        fgColor="FFD966",
-    )
-
     header_fill = PatternFill(
         fill_type="solid",
         fgColor="D9EAF7",
     )
 
-    header_font = Font(
-        bold=True
-    )
+    header_font = Font(bold=True)
 
     for worksheet in workbook.worksheets:
-
         # ----------------------------------------------------
         # Header
         # ----------------------------------------------------
 
         for cell in worksheet[1]:
-
             cell.font = header_font
             cell.fill = header_fill
             cell.alignment = Alignment(
@@ -484,27 +406,18 @@ def write_excel(
         percentile_columns = []
 
         for cell in worksheet[1]:
-
-            if (
-                "Percentile"
-                in str(cell.value)
-            ):
-
-                percentile_columns.append(
-                    cell.column
-                )
+            if "Percentile" in str(cell.value):
+                percentile_columns.append(cell.column)
 
         # ----------------------------------------------------
         # Percentile colouring
         # ----------------------------------------------------
 
         for col_idx in percentile_columns:
-
             for row_idx in range(
                 2,
                 worksheet.max_row + 1,
             ):
-
                 cell = worksheet.cell(
                     row=row_idx,
                     column=col_idx,
@@ -514,59 +427,16 @@ def write_excel(
                     continue
 
                 try:
-
-                    value = float(
-                        cell.value
-                    )
-
-                except (
-                    TypeError,
-                    ValueError,
-                ):
-
+                    value = float(cell.value)
+                except (TypeError, ValueError):
                     continue
 
                 if value >= 75:
-
                     cell.fill = green_fill
-
                 elif value <= 25:
-
                     cell.fill = red_fill
-
                 else:
-
                     cell.fill = yellow_fill
-
-        # ----------------------------------------------------
-        # Benchmark row
-        # ----------------------------------------------------
-
-        company_id_column = None
-
-        for cell in worksheet[1]:
-
-            if cell.value == "company_id":
-
-                company_id_column = cell.column
-                break
-
-        if company_id_column is not None:
-
-            sheet_name = worksheet.title
-
-            # Find benchmark using original data.
-            peer_info = peer_sheets.get(
-                sheet_name
-            )
-
-            if peer_info is not None:
-
-                benchmark_ids = set()
-
-                for _, row in peer_info.iterrows():
-
-                    pass
 
         # ----------------------------------------------------
         # Add median summary row
@@ -583,25 +453,19 @@ def write_excel(
         worksheet.cell(
             row=median_row,
             column=1,
-        ).font = Font(
-            bold=True
-        )
+        ).font = Font(bold=True)
 
         # Find numeric metric columns
         for col_idx in range(
             3,
             worksheet.max_column + 1,
         ):
-
             header = worksheet.cell(
                 row=1,
                 column=col_idx,
             ).value
 
-            if (
-                header is None
-                or "Percentile" in str(header)
-            ):
+            if header is None or "Percentile" in str(header):
                 continue
 
             values = []
@@ -610,7 +474,6 @@ def write_excel(
                 2,
                 worksheet.max_row - 1,
             ):
-
                 value = worksheet.cell(
                     row=row_idx,
                     column=col_idx,
@@ -620,25 +483,15 @@ def write_excel(
                     continue
 
                 try:
-                    values.append(
-                        float(value)
-                    )
-                except (
-                    TypeError,
-                    ValueError,
-                ):
-                    pass
+                    values.append(float(value))
+                except (TypeError, ValueError):
+                    continue
 
             if values:
-
                 worksheet.cell(
                     row=median_row,
                     column=col_idx,
-                    value=float(
-                        pd.Series(
-                            values
-                        ).median()
-                    ),
+                    value=float(pd.Series(values).median()),
                 )
 
         # ----------------------------------------------------
@@ -646,69 +499,32 @@ def write_excel(
         # ----------------------------------------------------
 
         for column_cells in worksheet.columns:
-
             max_length = 0
 
-            column_letter = get_column_letter(
-                column_cells[0].column
-            )
+            column_letter = get_column_letter(column_cells[0].column)
 
             for cell in column_cells:
+                length = len(str(cell.value))
+                max_length = max(
+                    max_length,
+                    length,
+                )
 
-                try:
-
-                    length = len(
-                        str(cell.value)
-                    )
-
-                    max_length = max(
-                        max_length,
-                        length,
-                    )
-
-                except Exception:
-
-                    pass
-
-            worksheet.column_dimensions[
-                column_letter
-            ].width = min(
+            worksheet.column_dimensions[column_letter].width = min(
                 max_length + 2,
                 30,
             )
 
-    # --------------------------------------------------------
-    # Re-apply benchmark highlighting correctly
-    # --------------------------------------------------------
-
-    for sheet_name, peer_df in peer_sheets.items():
-
-        if peer_df is None:
-            continue
-
-        worksheet = workbook[
-            sheet_name[:31]
-        ]
-
-        peer_lookup = {}
-
-        # The source peer dataframe is reconstructed
-        # from the peer group information stored below.
-        # Benchmark identification is performed from the
-        # company IDs marked in peer_group_source.
-        peer_lookup[sheet_name] = True
-
-    workbook.save(
-        OUTPUT_PATH
-    )
+    workbook.save(OUTPUT_PATH)
 
 
 # ============================================================
 # MAIN
 # ============================================================
 
-def main():
 
+def main():
+    """Run the peer comparison Excel report workflow."""
     print("=" * 80)
     print("DAY 20 — PEER COMPARISON EXCEL REPORT")
     print("=" * 80)
@@ -731,20 +547,13 @@ def main():
 
     print(
         "Peer groups:",
-        peer_groups[
-            "peer_group_name"
-        ].nunique(),
+        peer_groups["peer_group_name"].nunique(),
     )
 
     peer_sheets = {}
 
-    for peer_group_name, members in peer_groups.groupby(
-        "peer_group_name"
-    ):
-
-        print(
-            f"Creating sheet: {peer_group_name}"
-        )
+    for peer_group_name, members in peer_groups.groupby("peer_group_name"):
+        print(f"Creating sheet: {peer_group_name}")
 
         sheet = build_peer_sheet(
             peer_group_name,
@@ -752,13 +561,9 @@ def main():
             latest,
         )
 
-        peer_sheets[
-            peer_group_name
-        ] = sheet
+        peer_sheets[peer_group_name] = sheet
 
-    write_excel(
-        peer_sheets
-    )
+    write_excel(peer_sheets)
 
     print()
     print("=" * 80)

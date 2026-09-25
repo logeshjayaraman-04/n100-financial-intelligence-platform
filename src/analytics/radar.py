@@ -19,13 +19,12 @@ For companies without a peer group, a standalone chart is generated
 using the Nifty 100 average as the reference.
 """
 
-from pathlib import Path
 import sqlite3
+from pathlib import Path
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-
 
 DB_PATH = Path("data/db/n100.db")
 PEER_GROUPS_PATH = Path("data/processed/peer_groups.csv")
@@ -48,8 +47,9 @@ METRICS = [
 # LOAD DATA
 # ============================================================
 
-def load_data():
 
+def load_data():
+    """Retrieve data."""
     db = sqlite3.connect(DB_PATH)
 
     ratios = pd.read_sql_query(
@@ -64,9 +64,7 @@ def load_data():
 
     db.close()
 
-    peer_groups = pd.read_csv(
-        PEER_GROUPS_PATH
-    )
+    peer_groups = pd.read_csv(PEER_GROUPS_PATH)
 
     return (
         ratios,
@@ -79,12 +77,13 @@ def load_data():
 # PREPARE DATA
 # ============================================================
 
+
 def prepare_data(
     ratios,
     companies,
     peer_groups,
 ):
-
+    """Prepare data."""
     df = ratios.copy()
 
     # --------------------------------------------------------
@@ -98,15 +97,10 @@ def prepare_data(
             errors="coerce",
         )
 
-    elif (
-        "return_on_capital_employed_pct"
-        in df.columns
-    ):
+    elif "return_on_capital_employed_pct" in df.columns:
 
         df["roce_value"] = pd.to_numeric(
-            df[
-                "return_on_capital_employed_pct"
-            ],
+            df["return_on_capital_employed_pct"],
             errors="coerce",
         )
 
@@ -181,11 +175,7 @@ def prepare_data(
     # --------------------------------------------------------
 
     df["_year_num"] = pd.to_numeric(
-        df["year"]
-        .astype(str)
-        .str.extract(
-            r"(\d{4})"
-        )[0],
+        df["year"].astype(str).str.extract(r"(\d{4})")[0],
         errors="coerce",
     )
 
@@ -193,22 +183,15 @@ def prepare_data(
     # Latest available row per company
     # --------------------------------------------------------
 
-    df = (
-        df
-        .dropna(
-            subset=["_year_num"]
-        )
-        .sort_values(
-            [
-                "company_id",
-                "_year_num",
-            ]
-        )
+    df = df.dropna(subset=["_year_num"]).sort_values(
+        [
+            "company_id",
+            "_year_num",
+        ]
     )
 
     latest = (
-        df
-        .groupby(
+        df.groupby(
             "company_id",
             as_index=False,
         )
@@ -240,11 +223,12 @@ def prepare_data(
 # NORMALISATION
 # ============================================================
 
+
 def normalise_values(
     values,
     reference,
 ):
-
+    """Handle normalise values."""
     combined = pd.concat(
         [
             values,
@@ -263,13 +247,9 @@ def normalise_values(
     if valid.empty:
         return 0.5
 
-    low = valid.quantile(
-        0.10
-    )
+    low = valid.quantile(0.10)
 
-    high = valid.quantile(
-        0.90
-    )
+    high = valid.quantile(0.90)
 
     if high == low:
         return 0.5
@@ -291,15 +271,13 @@ def normalise_values(
         high,
     )
 
-    return float(
-        (value - low)
-        / (high - low)
-    )
+    return float((value - low) / (high - low))
 
 
 # ============================================================
 # RADAR CHART
 # ============================================================
+
 
 def create_radar_chart(
     company_id,
@@ -308,7 +286,7 @@ def create_radar_chart(
     all_rows,
     output_path,
 ):
-
+    """Build or generate radar chart."""
     angles = np.linspace(
         0,
         2 * np.pi,
@@ -332,21 +310,15 @@ def create_radar_chart(
 
     for metric in METRICS:
 
-        company_raw = company_row[
-            metric
-        ]
+        company_raw = company_row[metric]
 
         if peer_rows is not None and not peer_rows.empty:
 
-            reference_raw = peer_rows[
-                metric
-            ]
+            reference_raw = peer_rows[metric]
 
         else:
 
-            reference_raw = all_rows[
-                metric
-            ]
+            reference_raw = all_rows[metric]
 
         company_score = normalise_values(
             pd.Series([company_raw]),
@@ -379,29 +351,19 @@ def create_radar_chart(
             company_score = 1 - company_score
             peer_score = 1 - peer_score
 
-        company_values.append(
-            company_score
-        )
+        company_values.append(company_score)
 
-        peer_values.append(
-            peer_score
-        )
+        peer_values.append(peer_score)
 
-    company_values.append(
-        company_values[0]
-    )
+    company_values.append(company_values[0])
 
-    peer_values.append(
-        peer_values[0]
-    )
+    peer_values.append(peer_values[0])
 
     # --------------------------------------------------------
     # Plot
     # --------------------------------------------------------
 
-    fig = plt.figure(
-        figsize=(8, 8)
-    )
+    fig = plt.figure(figsize=(8, 8))
 
     ax = fig.add_subplot(
         111,
@@ -429,9 +391,7 @@ def create_radar_chart(
         label="Peer Average",
     )
 
-    ax.set_xticks(
-        angles[:-1]
-    )
+    ax.set_xticks(angles[:-1])
 
     ax.set_xticklabels(
         METRICS,
@@ -462,9 +422,7 @@ def create_radar_chart(
         fontsize=8,
     )
 
-    peer_name = company_row.get(
-        "peer_group_name"
-    )
+    peer_name = company_row.get("peer_group_name")
 
     if pd.isna(peer_name):
         peer_name = "Nifty 100 Average"
@@ -498,8 +456,9 @@ def create_radar_chart(
 # GENERATE ALL CHARTS
 # ============================================================
 
-def generate_charts():
 
+def generate_charts():
+    """Build or generate charts."""
     print("=" * 80)
     print("DAY 19 — RADAR CHART GENERATION")
     print("=" * 80)
@@ -530,13 +489,9 @@ def generate_charts():
 
     for _, company_row in latest.iterrows():
 
-        company_id = company_row[
-            "company_id"
-        ]
+        company_id = company_row["company_id"]
 
-        peer_group = company_row[
-            "peer_group_name"
-        ]
+        peer_group = company_row["peer_group_name"]
 
         if pd.isna(peer_group):
 
@@ -544,17 +499,9 @@ def generate_charts():
 
         else:
 
-            peer_rows = latest[
-                latest[
-                    "peer_group_name"
-                ]
-                == peer_group
-            ]
+            peer_rows = latest[latest["peer_group_name"] == peer_group]
 
-        output_path = (
-            OUTPUT_DIR
-            / f"{company_id}_radar.png"
-        )
+        output_path = OUTPUT_DIR / f"{company_id}_radar.png"
 
         create_radar_chart(
             company_id,

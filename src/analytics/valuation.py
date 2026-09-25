@@ -1,11 +1,12 @@
+"""Module providing N100 financial intelligence functionality."""
+
 from __future__ import annotations
 
-from pathlib import Path
 import sqlite3
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
-
 
 # =========================================================
 # Paths
@@ -13,38 +14,25 @@ import pandas as pd
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
 
-DB_PATH = (
-    ROOT_DIR
-    / "data"
-    / "db"
-    / "n100.db"
-)
+DB_PATH = ROOT_DIR / "data" / "db" / "n100.db"
 
-OUTPUT_DIR = (
-    ROOT_DIR
-    / "output"
-)
+OUTPUT_DIR = ROOT_DIR / "output"
 
-SUMMARY_PATH = (
-    OUTPUT_DIR
-    / "valuation_summary.xlsx"
-)
+SUMMARY_PATH = OUTPUT_DIR / "valuation_summary.xlsx"
 
-FLAGS_PATH = (
-    OUTPUT_DIR
-    / "valuation_flags.csv"
-)
+FLAGS_PATH = OUTPUT_DIR / "valuation_flags.csv"
 
 
 # =========================================================
 # Database helper
 # =========================================================
 
+
 def read_sql(
     query: str,
     params: tuple = (),
 ) -> pd.DataFrame:
-
+    """Retrieve sql."""
     with sqlite3.connect(DB_PATH) as conn:
 
         return pd.read_sql_query(
@@ -58,10 +46,10 @@ def read_sql(
 # Load company master
 # =========================================================
 
-def load_companies() -> pd.DataFrame:
 
-    return read_sql(
-        """
+def load_companies() -> pd.DataFrame:
+    """Retrieve companies."""
+    return read_sql("""
         SELECT
             c.id AS company_id,
             c.company_name,
@@ -70,18 +58,17 @@ def load_companies() -> pd.DataFrame:
         LEFT JOIN sectors s
             ON c.id = s.company_id
         ORDER BY c.company_name
-        """
-    )
+        """)
 
 
 # =========================================================
 # Load market valuation data
 # =========================================================
 
-def load_market_cap() -> pd.DataFrame:
 
-    return read_sql(
-        """
+def load_market_cap() -> pd.DataFrame:
+    """Retrieve market cap."""
+    return read_sql("""
         SELECT
             company_id,
             year,
@@ -92,38 +79,36 @@ def load_market_cap() -> pd.DataFrame:
             ev_ebitda,
             dividend_yield_pct
         FROM market_cap
-        """
-    )
+        """)
 
 
 # =========================================================
 # Load financial ratios
 # =========================================================
 
-def load_ratios() -> pd.DataFrame:
 
-    return read_sql(
-        """
+def load_ratios() -> pd.DataFrame:
+    """Retrieve ratios."""
+    return read_sql("""
         SELECT
             company_id,
             year,
             free_cash_flow_cr
         FROM financial_ratios
-        """
-    )
+        """)
 
 
 # =========================================================
 # Year extraction
 # =========================================================
 
+
 def extract_year(
     series: pd.Series,
 ) -> pd.Series:
-
+    """Handle extract year."""
     return pd.to_numeric(
-        series.astype(str)
-        .str.extract(
+        series.astype(str).str.extract(
             r"(\d{4})",
             expand=False,
         ),
@@ -135,15 +120,14 @@ def extract_year(
 # Latest valuation record
 # =========================================================
 
+
 def latest_market_data(
     market_cap: pd.DataFrame,
 ) -> pd.DataFrame:
-
+    """Handle latest market data."""
     market_cap = market_cap.copy()
 
-    market_cap["year_num"] = extract_year(
-        market_cap["year"]
-    )
+    market_cap["year_num"] = extract_year(market_cap["year"])
 
     market_cap = market_cap.dropna(
         subset=[
@@ -160,8 +144,7 @@ def latest_market_data(
     )
 
     latest = (
-        market_cap
-        .groupby(
+        market_cap.groupby(
             "company_id",
             as_index=False,
         )
@@ -176,15 +159,14 @@ def latest_market_data(
 # FCF data
 # =========================================================
 
+
 def latest_fcf(
     ratios: pd.DataFrame,
 ) -> pd.DataFrame:
-
+    """Handle latest fcf."""
     ratios = ratios.copy()
 
-    ratios["year_num"] = extract_year(
-        ratios["year"]
-    )
+    ratios["year_num"] = extract_year(ratios["year"])
 
     ratios = ratios.dropna(
         subset=[
@@ -201,8 +183,7 @@ def latest_fcf(
     )
 
     latest = (
-        ratios
-        .groupby(
+        ratios.groupby(
             "company_id",
             as_index=False,
         )
@@ -222,15 +203,14 @@ def latest_fcf(
 # Five-year median P/E
 # =========================================================
 
+
 def calculate_five_year_median_pe(
     market_cap: pd.DataFrame,
 ) -> pd.DataFrame:
-
+    """Calculate five year median pe."""
     data = market_cap.copy()
 
-    data["year_num"] = extract_year(
-        data["year"]
-    )
+    data["year_num"] = extract_year(data["year"])
 
     data["pe_ratio"] = pd.to_numeric(
         data["pe_ratio"],
@@ -252,27 +232,18 @@ def calculate_five_year_median_pe(
     )
 
     # Latest five available years per company.
-    data = (
-        data
-        .groupby(
-            "company_id",
-            group_keys=False,
-        )
-        .tail(5)
-    )
+    data = data.groupby(
+        "company_id",
+        group_keys=False,
+    ).tail(5)
 
     median_pe = (
-        data
-        .groupby(
+        data.groupby(
             "company_id",
             as_index=False,
         )["pe_ratio"]
         .median()
-        .rename(
-            columns={
-                "pe_ratio": "5yr_median_PE"
-            }
-        )
+        .rename(columns={"pe_ratio": "5yr_median_PE"})
     )
 
     return median_pe
@@ -282,14 +253,13 @@ def calculate_five_year_median_pe(
 # Sector median P/E
 # =========================================================
 
+
 def calculate_sector_median_pe(
     market_cap: pd.DataFrame,
     companies: pd.DataFrame,
 ) -> pd.DataFrame:
-
-    data = latest_market_data(
-        market_cap
-    )
+    """Calculate sector median pe."""
+    data = latest_market_data(market_cap)
 
     data["pe_ratio"] = pd.to_numeric(
         data["pe_ratio"],
@@ -315,8 +285,7 @@ def calculate_sector_median_pe(
     )
 
     sector_median = (
-        data
-        .dropna(
+        data.dropna(
             subset=[
                 "broad_sector",
                 "pe_ratio",
@@ -327,12 +296,7 @@ def calculate_sector_median_pe(
             as_index=False,
         )["pe_ratio"]
         .median()
-        .rename(
-            columns={
-                "pe_ratio":
-                    "sector_median_PE"
-            }
-        )
+        .rename(columns={"pe_ratio": "sector_median_PE"})
     )
 
     return sector_median
@@ -342,14 +306,13 @@ def calculate_sector_median_pe(
 # Valuation flag
 # =========================================================
 
+
 def valuation_flag(
     pe,
     sector_median,
 ):
-
-    if pd.isna(pe) or pd.isna(
-        sector_median
-    ):
+    """Handle valuation flag."""
+    if pd.isna(pe) or pd.isna(sector_median):
         return "N/A"
 
     if sector_median <= 0:
@@ -368,55 +331,41 @@ def valuation_flag(
 # Build valuation summary
 # =========================================================
 
-def build_valuation_summary() -> pd.DataFrame:
 
+def build_valuation_summary() -> pd.DataFrame:
+    """Build or generate valuation summary."""
     companies = load_companies()
 
     market_cap = load_market_cap()
 
     ratios = load_ratios()
 
-
     # -----------------------------------------------------
     # Latest market data
     # -----------------------------------------------------
 
-    latest = latest_market_data(
-        market_cap
-    )
-
+    latest = latest_market_data(market_cap)
 
     # -----------------------------------------------------
     # Latest FCF
     # -----------------------------------------------------
 
-    fcf = latest_fcf(
-        ratios
-    )
-
+    fcf = latest_fcf(ratios)
 
     # -----------------------------------------------------
     # Five-year median P/E
     # -----------------------------------------------------
 
-    median_pe = (
-        calculate_five_year_median_pe(
-            market_cap
-        )
-    )
-
+    median_pe = calculate_five_year_median_pe(market_cap)
 
     # -----------------------------------------------------
     # Sector median P/E
     # -----------------------------------------------------
 
-    sector_median = (
-        calculate_sector_median_pe(
-            market_cap,
-            companies,
-        )
+    sector_median = calculate_sector_median_pe(
+        market_cap,
+        companies,
     )
-
 
     # -----------------------------------------------------
     # Merge company information
@@ -436,13 +385,11 @@ def build_valuation_summary() -> pd.DataFrame:
         how="left",
     )
 
-
     summary = summary.merge(
         fcf,
         on="company_id",
         how="left",
     )
-
 
     summary = summary.merge(
         median_pe,
@@ -450,13 +397,11 @@ def build_valuation_summary() -> pd.DataFrame:
         how="left",
     )
 
-
     summary = summary.merge(
         sector_median,
         on="broad_sector",
         how="left",
     )
-
 
     # -----------------------------------------------------
     # Numeric conversion
@@ -472,7 +417,6 @@ def build_valuation_summary() -> pd.DataFrame:
         "sector_median_PE",
     ]
 
-
     for column in numeric_columns:
 
         summary[column] = pd.to_numeric(
@@ -480,75 +424,29 @@ def build_valuation_summary() -> pd.DataFrame:
             errors="coerce",
         )
 
-
     # -----------------------------------------------------
     # FCF Yield
     # -----------------------------------------------------
 
     summary["FCF_yield_pct"] = np.where(
-        (
-            summary[
-                "market_cap_crore"
-            ].notna()
-            &
-            (
-                summary[
-                    "market_cap_crore"
-                ] != 0
-            )
-        ),
-        (
-            summary[
-                "free_cash_flow_cr"
-            ]
-            /
-            summary[
-                "market_cap_crore"
-            ]
-            * 100
-        ),
+        (summary["market_cap_crore"].notna() & (summary["market_cap_crore"] != 0)),
+        (summary["free_cash_flow_cr"] / summary["market_cap_crore"] * 100),
         np.nan,
     )
-
 
     # -----------------------------------------------------
     # P/E vs sector median
     # -----------------------------------------------------
 
-    summary[
-        "PE_vs_sector_median_pct"
-    ] = np.where(
+    summary["PE_vs_sector_median_pct"] = np.where(
         (
-            summary[
-                "pe_ratio"
-            ].notna()
-            &
-            summary[
-                "sector_median_PE"
-            ].notna()
-            &
-            (
-                summary[
-                    "sector_median_PE"
-                ] != 0
-            )
+            summary["pe_ratio"].notna()
+            & summary["sector_median_PE"].notna()
+            & (summary["sector_median_PE"] != 0)
         ),
-        (
-            (
-                summary[
-                    "pe_ratio"
-                ]
-                /
-                summary[
-                    "sector_median_PE"
-                ]
-            )
-            - 1
-        )
-        * 100,
+        ((summary["pe_ratio"] / summary["sector_median_PE"]) - 1) * 100,
         np.nan,
     )
-
 
     # -----------------------------------------------------
     # Valuation flag
@@ -560,15 +458,10 @@ def build_valuation_summary() -> pd.DataFrame:
             sector_pe,
         )
         for pe, sector_pe in zip(
-            summary[
-                "pe_ratio"
-            ],
-            summary[
-                "sector_median_PE"
-            ],
+            summary["pe_ratio"],
+            summary["sector_median_PE"],
         )
     ]
-
 
     # -----------------------------------------------------
     # Required output columns
@@ -589,7 +482,6 @@ def build_valuation_summary() -> pd.DataFrame:
         ]
     ].copy()
 
-
     # -----------------------------------------------------
     # Friendly column names
     # -----------------------------------------------------
@@ -602,16 +494,12 @@ def build_valuation_summary() -> pd.DataFrame:
         }
     )
 
-
     summary = summary.sort_values(
         [
             "broad_sector",
             "company_name",
         ]
-    ).reset_index(
-        drop=True
-    )
-
+    ).reset_index(drop=True)
 
     return summary
 
@@ -620,15 +508,15 @@ def build_valuation_summary() -> pd.DataFrame:
 # Write output files
 # =========================================================
 
+
 def write_outputs(
     summary: pd.DataFrame,
 ) -> None:
-
+    """Write or export outputs."""
     OUTPUT_DIR.mkdir(
         parents=True,
         exist_ok=True,
     )
-
 
     # -----------------------------------------------------
     # Excel summary
@@ -638,7 +526,6 @@ def write_outputs(
         SUMMARY_PATH,
         index=False,
     )
-
 
     # -----------------------------------------------------
     # Flags CSV
@@ -653,7 +540,6 @@ def write_outputs(
         )
     ].copy()
 
-
     flags.to_csv(
         FLAGS_PATH,
         index=False,
@@ -664,58 +550,30 @@ def write_outputs(
 # Main
 # =========================================================
 
-def main():
 
-    print(
-        "Building valuation summary..."
-    )
+def main():
+    """Run the module's main workflow."""
+    print("Building valuation summary...")
 
     summary = build_valuation_summary()
 
+    print(f"Companies: {len(summary)}")
 
-    print(
-        f"Companies: {len(summary)}"
-    )
+    print("\nFlag counts:")
 
+    print(summary["flag"].value_counts(dropna=False))
 
-    print(
-        "\nFlag counts:"
-    )
+    print("\nMissing values:")
 
-    print(
-        summary[
-            "flag"
-        ].value_counts(
-            dropna=False
-        )
-    )
+    print(summary.isna().sum())
 
+    write_outputs(summary)
 
-    print(
-        "\nMissing values:"
-    )
+    print("\nCreated:")
 
-    print(
-        summary.isna().sum()
-    )
+    print(SUMMARY_PATH)
 
-
-    write_outputs(
-        summary
-    )
-
-
-    print(
-        "\nCreated:"
-    )
-
-    print(
-        SUMMARY_PATH
-    )
-
-    print(
-        FLAGS_PATH
-    )
+    print(FLAGS_PATH)
 
 
 if __name__ == "__main__":

@@ -1,9 +1,10 @@
-from pathlib import Path
+"""Module providing N100 financial intelligence functionality."""
+
 import csv
 import sqlite3
+from pathlib import Path
 
 from tearsheet import generate_tearsheet
-
 
 ROOT = Path(__file__).resolve().parents[2]
 DB_PATH = ROOT / "data" / "db" / "n100.db"
@@ -42,15 +43,14 @@ def count_financial_years(conn, company_id):
 
 
 def get_companies():
+    """Retrieve companies."""
     conn = sqlite3.connect(DB_PATH)
 
-    rows = conn.execute(
-        """
+    rows = conn.execute("""
         SELECT id, company_name
         FROM companies
         ORDER BY id
-        """
-    ).fetchall()
+        """).fetchall()
 
     conn.close()
 
@@ -58,6 +58,7 @@ def get_companies():
 
 
 def main():
+    """Run the module's main workflow."""
     print("=== DAY 34 FULL TEARSHEET BATCH ===")
 
     companies = get_companies()
@@ -85,9 +86,7 @@ def main():
             )
 
             print(
-                f"SKIPPED: {company_id} | "
-                f"{company_name} | "
-                f"{year_count} years"
+                f"SKIPPED: {company_id} | " f"{company_name} | " f"{year_count} years"
             )
 
             continue
@@ -105,9 +104,7 @@ def main():
             )
 
             print(
-                f"Generated: {company_id} | "
-                f"{company_name} | "
-                f"{year_count} years"
+                f"Generated: {company_id} | " f"{company_name} | " f"{year_count} years"
             )
 
         except Exception as exc:
@@ -120,11 +117,7 @@ def main():
                 }
             )
 
-            print(
-                f"FAILED: {company_id} | "
-                f"{company_name} | "
-                f"{exc}"
-            )
+            print(f"FAILED: {company_id} | " f"{company_name} | " f"{exc}")
 
     conn.close()
 

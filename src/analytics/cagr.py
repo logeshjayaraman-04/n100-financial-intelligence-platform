@@ -6,9 +6,6 @@ Revenue, PAT and EPS CAGR calculations
 with all required edge-case flags.
 """
 
-from typing import Optional
-
-
 CAGR_OK = "OK"
 DECLINE_TO_LOSS = "DECLINE_TO_LOSS"
 TURNAROUND = "TURNAROUND"
@@ -18,10 +15,10 @@ INSUFFICIENT = "INSUFFICIENT"
 
 
 def calculate_cagr(
-    start_value: float | int | None,
-    end_value: float | int | None,
+    start_value: float | None,
+    end_value: float | None,
     years: int | None,
-) -> tuple[Optional[float], str]:
+) -> tuple[float | None, str]:
     """
     Calculate CAGR.
 
@@ -32,11 +29,7 @@ def calculate_cagr(
         (cagr_value, flag)
     """
 
-    if (
-        start_value is None
-        or end_value is None
-        or years is None
-    ):
+    if start_value is None or end_value is None or years is None:
         return None, INSUFFICIENT
 
     if years <= 0:
@@ -75,10 +68,10 @@ def calculate_cagr(
 
 
 def revenue_cagr(
-    start_revenue: float | int | None,
-    end_revenue: float | int | None,
+    start_revenue: float | None,
+    end_revenue: float | None,
     years: int | None,
-) -> tuple[Optional[float], str]:
+) -> tuple[float | None, str]:
     """
     Calculate Revenue CAGR.
     """
@@ -91,10 +84,10 @@ def revenue_cagr(
 
 
 def pat_cagr(
-    start_pat: float | int | None,
-    end_pat: float | int | None,
+    start_pat: float | None,
+    end_pat: float | None,
     years: int | None,
-) -> tuple[Optional[float], str]:
+) -> tuple[float | None, str]:
     """
     Calculate PAT / Net Profit CAGR.
     """
@@ -107,10 +100,10 @@ def pat_cagr(
 
 
 def eps_cagr(
-    start_eps: float | int | None,
-    end_eps: float | int | None,
+    start_eps: float | None,
+    end_eps: float | None,
     years: int | None,
-) -> tuple[Optional[float], str]:
+) -> tuple[float | None, str]:
     """
     Calculate EPS CAGR.
     """

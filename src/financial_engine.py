@@ -1,6 +1,7 @@
-from pathlib import Path
-import sqlite3
+"""Module providing N100 financial intelligence functionality."""
 
+import sqlite3
+from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DB_PATH = PROJECT_ROOT / "data" / "db" / "n100.db"
@@ -223,6 +224,8 @@ if __name__ == "__main__":
         print("Ratio records:", len(summary["ratios"]))
         print("Market records:", len(summary["market_data"]))
         print("Stock price records:", len(summary["stock_prices"]))
+
+
 def calculate_growth(values):
     """Calculate CAGR-style growth between first and last valid values."""
     if len(values) < 2:
@@ -249,7 +252,6 @@ def calculate_financial_health(company_id):
 
     pnl = summary["profit_loss"]
     ratios = summary["ratios"]
-    cashflow = summary["cash_flow"]
 
     result = {
         "company_id": company_id,
@@ -271,17 +273,13 @@ def calculate_financial_health(company_id):
     # -------------------------
 
     sales = [
-        row["sales"]
-        for row in pnl
-        if row["sales"] is not None
-        and row["sales"] > 0
+        row["sales"] for row in pnl if row["sales"] is not None and row["sales"] > 0
     ]
 
     profits = [
         row["net_profit"]
         for row in pnl
-        if row["net_profit"] is not None
-        and row["net_profit"] > 0
+        if row["net_profit"] is not None and row["net_profit"] > 0
     ]
 
     result["sales_growth_pct"] = calculate_growth(sales)
@@ -294,9 +292,7 @@ def calculate_financial_health(company_id):
     if pnl:
         latest_pnl = pnl[-1]
 
-        result["latest_opm_pct"] = (
-            latest_pnl["opm_percentage"]
-        )
+        result["latest_opm_pct"] = latest_pnl["opm_percentage"]
 
         result["latest_eps"] = latest_pnl["eps"]
 
@@ -307,25 +303,17 @@ def calculate_financial_health(company_id):
     if ratios:
         latest_ratio = ratios[-1]
 
-        result["latest_roe_pct"] = (
-            latest_ratio["return_on_equity_pct"]
-        )
+        result["latest_roe_pct"] = latest_ratio["return_on_equity_pct"]
 
-        result["latest_debt_to_equity"] = (
-            latest_ratio["debt_to_equity"]
-        )
+        result["latest_debt_to_equity"] = latest_ratio["debt_to_equity"]
 
-        result["latest_interest_coverage"] = (
-            latest_ratio["interest_coverage"]
-        )
+        result["latest_interest_coverage"] = latest_ratio["interest_coverage"]
 
-        result["latest_free_cash_flow_cr"] = (
-            latest_ratio["free_cash_flow_cr"]
-        )
+        result["latest_free_cash_flow_cr"] = latest_ratio["free_cash_flow_cr"]
 
-        result["latest_cash_from_operations_cr"] = (
-            latest_ratio["cash_from_operations_cr"]
-        )
+        result["latest_cash_from_operations_cr"] = latest_ratio[
+            "cash_from_operations_cr"
+        ]
 
     # -------------------------
     # Financial health score
@@ -334,29 +322,17 @@ def calculate_financial_health(company_id):
     score = 0
 
     # Growth
-    if (
-        result["sales_growth_pct"] is not None
-        and result["sales_growth_pct"] > 10
-    ):
+    if result["sales_growth_pct"] is not None and result["sales_growth_pct"] > 10:
         score += 20
 
-    if (
-        result["profit_growth_pct"] is not None
-        and result["profit_growth_pct"] > 10
-    ):
+    if result["profit_growth_pct"] is not None and result["profit_growth_pct"] > 10:
         score += 20
 
     # Profitability
-    if (
-        result["latest_opm_pct"] is not None
-        and result["latest_opm_pct"] > 15
-    ):
+    if result["latest_opm_pct"] is not None and result["latest_opm_pct"] > 15:
         score += 15
 
-    if (
-        result["latest_roe_pct"] is not None
-        and result["latest_roe_pct"] > 15
-    ):
+    if result["latest_roe_pct"] is not None and result["latest_roe_pct"] > 15:
         score += 15
 
     # Debt
@@ -406,29 +382,17 @@ def print_financial_health(company_id):
     print("GROWTH")
     print("-" * 55)
 
-    print(
-        "Sales growth:",
-        format_percent(result["sales_growth_pct"])
-    )
+    print("Sales growth:", format_percent(result["sales_growth_pct"]))
 
-    print(
-        "Profit growth:",
-        format_percent(result["profit_growth_pct"])
-    )
+    print("Profit growth:", format_percent(result["profit_growth_pct"]))
 
     print()
     print("PROFITABILITY")
     print("-" * 55)
 
-    print(
-        "Operating margin:",
-        format_percent(result["latest_opm_pct"])
-    )
+    print("Operating margin:", format_percent(result["latest_opm_pct"]))
 
-    print(
-        "ROE:",
-        format_percent(result["latest_roe_pct"])
-    )
+    print("ROE:", format_percent(result["latest_roe_pct"]))
 
     print()
     print("BALANCE SHEET / DEBT")
@@ -436,14 +400,12 @@ def print_financial_health(company_id):
 
     print(
         "Debt / Equity:",
-        format_number(result["latest_debt_to_equity"])
+        format_number(result["latest_debt_to_equity"]),
     )
 
     print(
         "Interest coverage:",
-        format_number(
-            result["latest_interest_coverage"]
-        )
+        format_number(result["latest_interest_coverage"]),
     )
 
     print()
@@ -452,35 +414,28 @@ def print_financial_health(company_id):
 
     print(
         "Free cash flow:",
-        format_number(
-            result["latest_free_cash_flow_cr"]
-        ),
-        "Cr"
+        format_number(result["latest_free_cash_flow_cr"]),
+        "Cr",
     )
 
     print(
         "Cash from operations:",
-        format_number(
-            result["latest_cash_from_operations_cr"]
-        ),
-        "Cr"
+        format_number(result["latest_cash_from_operations_cr"]),
+        "Cr",
     )
 
     print()
     print("VALUATION / EPS")
     print("-" * 55)
 
-    print(
-        "Latest EPS:",
-        format_number(result["latest_eps"])
-    )
+    print("Latest EPS:", format_number(result["latest_eps"]))
 
     print()
     print("=" * 55)
     print(
         "FINANCIAL HEALTH SCORE:",
         result["financial_health_score"],
-        "/ 100"
+        "/ 100",
     )
     print("=" * 55)
 
@@ -502,7 +457,9 @@ def format_percent(value):
 
     return f"{value:.2f}%"
 
+
 print_financial_health("ABB")
+
 
 def analyze_company(company_id):
     """Return a complete financial intelligence profile."""
@@ -524,9 +481,7 @@ def analyze_company(company_id):
         "debt_to_equity": result["latest_debt_to_equity"],
         "interest_coverage": result["latest_interest_coverage"],
         "free_cash_flow_cr": result["latest_free_cash_flow_cr"],
-        "cash_from_operations_cr": result[
-            "latest_cash_from_operations_cr"
-        ],
+        "cash_from_operations_cr": result["latest_cash_from_operations_cr"],
         "eps": result["latest_eps"],
         "health_score": result["financial_health_score"],
         "profit_loss_years": len(summary["profit_loss"]),

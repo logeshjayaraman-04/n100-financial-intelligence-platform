@@ -1,12 +1,13 @@
-from pathlib import Path
+"""Module providing N100 financial intelligence functionality."""
+
 import math
 import sqlite3
+from pathlib import Path
 
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
 from reportlab.pdfgen import canvas
-
 
 # ============================================================
 # PATHS
@@ -25,11 +26,14 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 # DATABASE
 # ============================================================
 
+
 def get_connection():
+    """Retrieve connection."""
     return sqlite3.connect(DB_PATH)
 
 
 def safe_float(value):
+    """Handle safe float."""
     try:
         if value is None:
             return None
@@ -42,6 +46,7 @@ def safe_float(value):
 
 
 def fmt_number(value, decimals=2):
+    """Handle fmt number."""
     value = safe_float(value)
     if value is None:
         return "N/A"
@@ -49,6 +54,7 @@ def fmt_number(value, decimals=2):
 
 
 def fmt_pct(value, decimals=1):
+    """Handle fmt pct."""
     value = safe_float(value)
     if value is None:
         return "N/A"
@@ -56,10 +62,12 @@ def fmt_pct(value, decimals=1):
 
 
 def latest_rows(rows, count=5):
+    """Handle latest rows."""
     return rows[-count:] if rows else []
 
 
 def row_value(row, key):
+    """Handle row value."""
     try:
         return row[key]
     except (KeyError, IndexError, TypeError):
@@ -70,7 +78,9 @@ def row_value(row, key):
 # DATA LOADING
 # ============================================================
 
+
 def load_company(company_id):
+    """Retrieve company."""
     conn = get_connection()
     conn.row_factory = sqlite3.Row
 
@@ -185,6 +195,7 @@ def load_company(company_id):
 
 
 def load_capital_allocation(company_id):
+    """Retrieve capital allocation."""
     path = ROOT / "output" / "capital_allocation.csv"
 
     if not path.exists():
@@ -205,6 +216,7 @@ def load_capital_allocation(company_id):
 
 
 def load_cashflow_intelligence(company_id):
+    """Retrieve cashflow intelligence."""
     path = ROOT / "output" / "cashflow_intelligence.xlsx"
 
     if not path.exists():
@@ -231,6 +243,7 @@ def load_cashflow_intelligence(company_id):
 
 
 def load_generated_pros_cons(company_id):
+    """Retrieve generated pros cons."""
     path = ROOT / "output" / "pros_cons_generated.csv"
 
     if not path.exists():
@@ -281,6 +294,7 @@ CONTENT_W = PAGE_W - (2 * MARGIN)
 
 
 def draw_header(c, title, subtitle=None):
+    """Render header."""
     c.setFillColor(colors.HexColor("#17365D"))
     c.rect(0, PAGE_H - 18 * mm, PAGE_W, 18 * mm, fill=1, stroke=0)
 
@@ -298,6 +312,7 @@ def draw_header(c, title, subtitle=None):
 
 
 def draw_footer(c, company_id, page_no):
+    """Render footer."""
     c.setStrokeColor(colors.HexColor("#B7C9D6"))
     c.line(MARGIN, 10 * mm, PAGE_W - MARGIN, 10 * mm)
 
@@ -318,6 +333,7 @@ def draw_footer(c, company_id, page_no):
 
 
 def draw_section_title(c, x, y, title, width=CONTENT_W):
+    """Render section title."""
     c.setFillColor(colors.HexColor("#EAF0F5"))
     c.roundRect(x, y - 5 * mm, width, 8 * mm, 2 * mm, fill=1, stroke=0)
 
@@ -330,6 +346,7 @@ def draw_section_title(c, x, y, title, width=CONTENT_W):
 
 
 def draw_kpi_card(c, x, y, w, h, label, value):
+    """Render kpi card."""
     c.setStrokeColor(colors.HexColor("#D0D7DE"))
     c.setFillColor(colors.white)
     c.roundRect(x, y - h, w, h, 2 * mm, fill=1, stroke=1)
@@ -344,6 +361,7 @@ def draw_kpi_card(c, x, y, w, h, label, value):
 
 
 def draw_table(c, x, y, widths, rows, row_h=7 * mm, font_size=7):
+    """Render table."""
     if not rows:
         return y
 
@@ -358,11 +376,7 @@ def draw_table(c, x, y, widths, rows, row_h=7 * mm, font_size=7):
             text_color = colors.white
             font_name = "Helvetica-Bold"
         else:
-            c.setFillColor(
-                colors.HexColor("#F7F9FB")
-                if r % 2 == 0
-                else colors.white
-            )
+            c.setFillColor(colors.HexColor("#F7F9FB") if r % 2 == 0 else colors.white)
             c.setStrokeColor(colors.HexColor("#D9E0E6"))
             text_color = colors.HexColor("#222222")
             font_name = "Helvetica"
@@ -399,6 +413,7 @@ def draw_table(c, x, y, widths, rows, row_h=7 * mm, font_size=7):
 
 
 def draw_bullets(c, x, y, items, max_items=5, width=CONTENT_W):
+    """Render bullets."""
     c.setFillColor(colors.HexColor("#222222"))
     c.setFont("Helvetica", 7.5)
 
@@ -432,6 +447,7 @@ def draw_bullets(c, x, y, items, max_items=5, width=CONTENT_W):
 
 
 def trend_arrow(current, previous):
+    """Handle trend arrow."""
     current = safe_float(current)
     previous = safe_float(previous)
 
@@ -451,7 +467,9 @@ def trend_arrow(current, previous):
 # TEARSHEET GENERATOR
 # ============================================================
 
+
 def generate_tearsheet(company_id):
+    """Build or generate tearsheet."""
     data = load_company(company_id)
 
     if data is None:
@@ -465,11 +483,7 @@ def generate_tearsheet(company_id):
     market = data["market"]
 
     company_name = company["company_name"]
-    sector_name = (
-        sector["broad_sector"]
-        if sector and sector["broad_sector"]
-        else "N/A"
-    )
+    sector_name = sector["broad_sector"] if sector and sector["broad_sector"] else "N/A"
 
     pdf_path = OUTPUT_DIR / f"{company_id}_tearsheet.pdf"
 
@@ -511,10 +525,10 @@ def generate_tearsheet(company_id):
     prev_ratio = ratios[-2] if len(ratios) >= 2 else None
 
     latest_pl = pl[-1] if pl else None
-    prev_pl = pl[-2] if len(pl) >= 2 else None
+    pl[-2] if len(pl) >= 2 else None
 
     latest_cf = cf[-1] if cf else None
-    prev_cf = cf[-2] if len(cf) >= 2 else None
+    cf[-2] if len(cf) >= 2 else None
 
     # KPI cards
     card_gap = 3 * mm
@@ -524,34 +538,22 @@ def generate_tearsheet(company_id):
     kpis = [
         (
             "Revenue",
-            fmt_number(
-                row_value(latest_pl, "sales")
-                if latest_pl
-                else None
-            ),
+            fmt_number(row_value(latest_pl, "sales") if latest_pl else None),
         ),
         (
             "Net Profit",
-            fmt_number(
-                row_value(latest_pl, "net_profit")
-                if latest_pl
-                else None
-            ),
+            fmt_number(row_value(latest_pl, "net_profit") if latest_pl else None),
         ),
         (
             "CFO",
             fmt_number(
-                row_value(latest_cf, "operating_activity")
-                if latest_cf
-                else None
+                row_value(latest_cf, "operating_activity") if latest_cf else None
             ),
         ),
         (
             "FCF",
             fmt_number(
-                row_value(latest_ratio, "free_cash_flow_cr")
-                if latest_ratio
-                else None
+                row_value(latest_ratio, "free_cash_flow_cr") if latest_ratio else None
             ),
         ),
     ]
@@ -595,59 +597,39 @@ def generate_tearsheet(company_id):
                 else None
             ),
             fmt_pct(
-                row_value(prev_ratio, "return_on_equity_pct")
-                if prev_ratio
-                else None
+                row_value(prev_ratio, "return_on_equity_pct") if prev_ratio else None
             ),
             trend_arrow(
-                row_value(latest_ratio, "return_on_equity_pct")
-                if latest_ratio
-                else None,
-                row_value(prev_ratio, "return_on_equity_pct")
-                if prev_ratio
-                else None,
+                (
+                    row_value(latest_ratio, "return_on_equity_pct")
+                    if latest_ratio
+                    else None
+                ),
+                row_value(prev_ratio, "return_on_equity_pct") if prev_ratio else None,
             ),
         ],
         [
             "Debt / Equity",
             fmt_number(
-                row_value(latest_ratio, "debt_to_equity")
-                if latest_ratio
-                else None
+                row_value(latest_ratio, "debt_to_equity") if latest_ratio else None
             ),
-            fmt_number(
-                row_value(prev_ratio, "debt_to_equity")
-                if prev_ratio
-                else None
-            ),
+            fmt_number(row_value(prev_ratio, "debt_to_equity") if prev_ratio else None),
             trend_arrow(
-                row_value(prev_ratio, "debt_to_equity")
-                if prev_ratio
-                else None,
-                row_value(latest_ratio, "debt_to_equity")
-                if latest_ratio
-                else None,
+                row_value(prev_ratio, "debt_to_equity") if prev_ratio else None,
+                row_value(latest_ratio, "debt_to_equity") if latest_ratio else None,
             ),
         ],
         [
             "Interest Coverage",
             fmt_number(
-                row_value(latest_ratio, "interest_coverage")
-                if latest_ratio
-                else None
+                row_value(latest_ratio, "interest_coverage") if latest_ratio else None
             ),
             fmt_number(
-                row_value(prev_ratio, "interest_coverage")
-                if prev_ratio
-                else None
+                row_value(prev_ratio, "interest_coverage") if prev_ratio else None
             ),
             trend_arrow(
-                row_value(latest_ratio, "interest_coverage")
-                if latest_ratio
-                else None,
-                row_value(prev_ratio, "interest_coverage")
-                if prev_ratio
-                else None,
+                row_value(latest_ratio, "interest_coverage") if latest_ratio else None,
+                row_value(prev_ratio, "interest_coverage") if prev_ratio else None,
             ),
         ],
         [
@@ -658,17 +640,15 @@ def generate_tearsheet(company_id):
                 else None
             ),
             fmt_pct(
-                row_value(prev_ratio, "net_profit_margin_pct")
-                if prev_ratio
-                else None
+                row_value(prev_ratio, "net_profit_margin_pct") if prev_ratio else None
             ),
             trend_arrow(
-                row_value(latest_ratio, "net_profit_margin_pct")
-                if latest_ratio
-                else None,
-                row_value(prev_ratio, "net_profit_margin_pct")
-                if prev_ratio
-                else None,
+                (
+                    row_value(latest_ratio, "net_profit_margin_pct")
+                    if latest_ratio
+                    else None
+                ),
+                row_value(prev_ratio, "net_profit_margin_pct") if prev_ratio else None,
             ),
         ],
         [
@@ -684,12 +664,16 @@ def generate_tearsheet(company_id):
                 else None
             ),
             trend_arrow(
-                row_value(latest_ratio, "operating_profit_margin_pct")
-                if latest_ratio
-                else None,
-                row_value(prev_ratio, "operating_profit_margin_pct")
-                if prev_ratio
-                else None,
+                (
+                    row_value(latest_ratio, "operating_profit_margin_pct")
+                    if latest_ratio
+                    else None
+                ),
+                (
+                    row_value(prev_ratio, "operating_profit_margin_pct")
+                    if prev_ratio
+                    else None
+                ),
             ),
         ],
     ]
@@ -722,9 +706,7 @@ def generate_tearsheet(company_id):
         [
             "Revenue CAGR",
             fmt_pct(
-                row_value(latest_ratio, "revenue_cagr_5yr")
-                if latest_ratio
-                else None
+                row_value(latest_ratio, "revenue_cagr_5yr") if latest_ratio else None
             ),
             fmt_number(
                 row_value(latest_ratio, "composite_quality_score")
@@ -734,20 +716,12 @@ def generate_tearsheet(company_id):
         ],
         [
             "PAT CAGR",
-            fmt_pct(
-                row_value(latest_ratio, "pat_cagr_5yr")
-                if latest_ratio
-                else None
-            ),
+            fmt_pct(row_value(latest_ratio, "pat_cagr_5yr") if latest_ratio else None),
             "—",
         ],
         [
             "EPS CAGR",
-            fmt_pct(
-                row_value(latest_ratio, "eps_cagr_5yr")
-                if latest_ratio
-                else None
-            ),
+            fmt_pct(row_value(latest_ratio, "eps_cagr_5yr") if latest_ratio else None),
             "—",
         ],
     ]
@@ -768,27 +742,15 @@ def generate_tearsheet(company_id):
     allocations = load_capital_allocation(company_id)
 
     latest_allocation = (
-        allocations[-1].get("pattern_label", "N/A")
-        if allocations
-        else "N/A"
+        allocations[-1].get("pattern_label", "N/A") if allocations else "N/A"
     )
 
-    distress = (
-        intelligence.get("distress_level", "N/A")
-        if intelligence
-        else "N/A"
-    )
+    distress = intelligence.get("distress_level", "N/A") if intelligence else "N/A"
 
-    cfo_quality = (
-        intelligence.get("cfo_pat_quality", "N/A")
-        if intelligence
-        else "N/A"
-    )
+    cfo_quality = intelligence.get("cfo_pat_quality", "N/A") if intelligence else "N/A"
 
     capex_intensity_value = (
-        intelligence.get("capex_intensity", "N/A")
-        if intelligence
-        else "N/A"
+        intelligence.get("capex_intensity", "N/A") if intelligence else "N/A"
     )
 
     y = draw_section_title(
@@ -873,20 +835,12 @@ def generate_tearsheet(company_id):
                 str(year),
                 fmt_number(row_value(pl_row, "sales")),
                 fmt_number(row_value(pl_row, "net_profit")),
+                fmt_number(row_value(cf_row, "operating_activity") if cf_row else None),
                 fmt_number(
-                    row_value(cf_row, "operating_activity")
-                    if cf_row
-                    else None
-                ),
-                fmt_number(
-                    row_value(ratio_row, "free_cash_flow_cr")
-                    if ratio_row
-                    else None
+                    row_value(ratio_row, "free_cash_flow_cr") if ratio_row else None
                 ),
                 fmt_pct(
-                    row_value(ratio_row, "return_on_equity_pct")
-                    if ratio_row
-                    else None
+                    row_value(ratio_row, "return_on_equity_pct") if ratio_row else None
                 ),
             ]
         )
@@ -965,9 +919,7 @@ def generate_tearsheet(company_id):
         [
             "Market Cap",
             fmt_number(
-                row_value(latest_market, "market_cap_crore")
-                if latest_market
-                else None
+                row_value(latest_market, "market_cap_crore") if latest_market else None
             ),
         ],
         [
@@ -980,26 +932,16 @@ def generate_tearsheet(company_id):
         ],
         [
             "P / E",
-            fmt_number(
-                row_value(latest_market, "pe_ratio")
-                if latest_market
-                else None
-            ),
+            fmt_number(row_value(latest_market, "pe_ratio") if latest_market else None),
         ],
         [
             "P / B",
-            fmt_number(
-                row_value(latest_market, "pb_ratio")
-                if latest_market
-                else None
-            ),
+            fmt_number(row_value(latest_market, "pb_ratio") if latest_market else None),
         ],
         [
             "EV / EBITDA",
             fmt_number(
-                row_value(latest_market, "ev_ebitda")
-                if latest_market
-                else None
+                row_value(latest_market, "ev_ebitda") if latest_market else None
             ),
         ],
     ]
@@ -1061,7 +1003,9 @@ def generate_tearsheet(company_id):
 # TEST / COMMAND LINE
 # ============================================================
 
+
 def get_sample_companies(limit=5):
+    """Retrieve sample companies."""
     conn = get_connection()
 
     rows = conn.execute(
@@ -1080,6 +1024,7 @@ def get_sample_companies(limit=5):
 
 
 def main():
+    """Run the module's main workflow."""
     print("=== DAY 33 TEARSHEET GENERATOR ===")
 
     samples = get_sample_companies(5)
@@ -1096,18 +1041,10 @@ def main():
 
             generated.append(path)
 
-            print(
-                f"Generated: {company_id} | "
-                f"{company_name} | "
-                f"{path}"
-            )
+            print(f"Generated: {company_id} | " f"{company_name} | " f"{path}")
 
         except Exception as exc:
-            print(
-                f"FAILED: {company_id} | "
-                f"{company_name} | "
-                f"{exc}"
-            )
+            print(f"FAILED: {company_id} | " f"{company_name} | " f"{exc}")
 
     print()
     print(f"Generated PDFs: {len(generated)}")

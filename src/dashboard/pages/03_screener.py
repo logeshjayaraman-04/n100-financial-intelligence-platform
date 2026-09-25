@@ -1,3 +1,5 @@
+"""Module providing N100 financial intelligence functionality."""
+
 from __future__ import annotations
 
 import io
@@ -6,11 +8,10 @@ import pandas as pd
 import streamlit as st
 
 from src.screener.engine import (
-    build_screener_dataframe,
     apply_filters,
+    build_screener_dataframe,
 )
 from src.screener.presets import PRESETS
-
 
 st.title("Screener")
 
@@ -24,8 +25,10 @@ st.write(
 # Load screener data
 # ---------------------------------------------------------
 
+
 @st.cache_data(ttl=600)
 def load_screener_data():
+    """Retrieve screener data."""
     return build_screener_dataframe()
 
 
@@ -91,11 +94,13 @@ selected_preset = st.session_state.get(
 # Default filter values
 # ---------------------------------------------------------
 
+
 def preset_value(
     preset_name,
     key,
     default,
 ):
+    """Handle preset value."""
     if preset_name is None:
         return default
 
@@ -114,12 +119,13 @@ def preset_value(
 # Slider ranges
 # ---------------------------------------------------------
 
+
 def numeric_range(
     column,
     default_min,
     default_max,
 ):
-
+    """Handle numeric range."""
     if column not in df.columns:
         return default_min, default_max
 
@@ -443,9 +449,7 @@ if "composite_quality_score" in results.columns:
 # Result count
 # ---------------------------------------------------------
 
-st.subheader(
-    f"{len(results)} companies match your filters"
-)
+st.subheader(f"{len(results)} companies match your filters")
 
 
 # ---------------------------------------------------------
@@ -470,22 +474,14 @@ preferred_columns = [
 ]
 
 
-visible_columns = [
-    column
-    for column in preferred_columns
-    if column in results.columns
-]
+visible_columns = [column for column in preferred_columns if column in results.columns]
 
 
 if not visible_columns:
-    visible_columns = list(
-        results.columns
-    )
+    visible_columns = list(results.columns)
 
 
-display_df = results[
-    visible_columns
-].copy()
+display_df = results[visible_columns].copy()
 
 
 # ---------------------------------------------------------

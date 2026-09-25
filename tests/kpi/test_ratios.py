@@ -1,18 +1,19 @@
 from src.analytics.ratios import (
-    net_profit_margin,
-    operating_profit_margin,
+    asset_turnover,
     check_opm_cross_check,
-    return_on_equity,
-    return_on_capital_employed,
-    return_on_assets,
     debt_to_equity,
     high_leverage_flag,
-    interest_coverage_ratio,
     interest_coverage_label,
+    interest_coverage_ratio,
     interest_coverage_warning,
     net_debt,
-    asset_turnover,
+    net_profit_margin,
+    operating_profit_margin,
+    return_on_assets,
+    return_on_capital_employed,
+    return_on_equity,
 )
+
 
 def test_net_profit_margin_normal():
     result = net_profit_margin(20, 100)
@@ -97,6 +98,7 @@ def test_return_on_capital_employed_normal():
     )
 
     assert result == 15.0
+
 
 def test_debt_to_equity_normal():
     result = debt_to_equity(

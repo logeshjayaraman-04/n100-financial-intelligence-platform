@@ -1,3 +1,5 @@
+"""Module providing N100 financial intelligence functionality."""
+
 from __future__ import annotations
 
 import pandas as pd
@@ -5,7 +7,6 @@ import plotly.express as px
 import streamlit as st
 
 from src.dashboard.utils.db import get_companies, get_ratios
-
 
 st.title("Nifty 100 Analytics")
 st.subheader("Market Overview")
@@ -77,7 +78,9 @@ else:
 # Helper
 # ---------------------------------------------------------
 
+
 def numeric_median(column: str):
+    """Handle numeric median."""
     if column not in data.columns:
         return None
 
@@ -90,6 +93,7 @@ def numeric_median(column: str):
 
 
 def numeric_mean(column: str):
+    """Handle numeric mean."""
     if column not in data.columns:
         return None
 
@@ -191,11 +195,7 @@ with col4:
 with col5:
     st.metric(
         "Median Revenue CAGR 5yr",
-        (
-            f"{median_revenue_cagr:.2f}%"
-            if median_revenue_cagr is not None
-            else "N/A"
-        ),
+        (f"{median_revenue_cagr:.2f}%" if median_revenue_cagr is not None else "N/A"),
     )
 
 
@@ -219,10 +219,7 @@ with left:
     st.subheader("Sector Breakdown")
 
     sector_counts = (
-        companies["broad_sector"]
-        .fillna("Unknown")
-        .value_counts()
-        .reset_index()
+        companies["broad_sector"].fillna("Unknown").value_counts().reset_index()
     )
 
     sector_counts.columns = ["broad_sector", "company_count"]
@@ -237,7 +234,7 @@ with left:
 
     fig_sector.update_layout(
         height=450,
-        margin=dict(l=20, r=20, t=60, b=20),
+        margin={"l": 20, "r": 20, "t": 60, "b": 20},
     )
 
     st.plotly_chart(
@@ -270,8 +267,7 @@ with right:
         )
 
         top5 = (
-            top5
-            .dropna(subset=["composite_quality_score"])
+            top5.dropna(subset=["composite_quality_score"])
             .sort_values(
                 "composite_quality_score",
                 ascending=False,
@@ -279,9 +275,7 @@ with right:
             .head(5)
         )
 
-        top5["composite_quality_score"] = top5[
-            "composite_quality_score"
-        ].round(2)
+        top5["composite_quality_score"] = top5["composite_quality_score"].round(2)
 
         st.dataframe(
             top5,
@@ -290,9 +284,7 @@ with right:
         )
 
     else:
-        st.info(
-            "Composite quality score is not available for the selected year."
-        )
+        st.info("Composite quality score is not available for the selected year.")
 
 
 # ---------------------------------------------------------
@@ -302,6 +294,5 @@ with right:
 st.divider()
 
 st.caption(
-    f"Dashboard data view: {selected_year} | "
-    f"Companies available: {len(companies)}"
+    f"Dashboard data view: {selected_year} | " f"Companies available: {len(companies)}"
 )

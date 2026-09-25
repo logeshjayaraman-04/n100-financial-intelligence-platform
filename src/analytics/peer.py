@@ -6,17 +6,14 @@ Computes percentile rankings for 10 metrics within each peer group
 and stores the results in SQLite table: peer_percentiles.
 """
 
-from pathlib import Path
 import sqlite3
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
-
 DB_PATH = Path("data/db/n100.db")
-PEER_GROUPS_PATH = Path(
-    "data/processed/peer_groups.csv"
-)
+PEER_GROUPS_PATH = Path("data/processed/peer_groups.csv")
 
 
 # ============================================================
@@ -40,6 +37,7 @@ METRICS = {
 # ============================================================
 # HELPERS
 # ============================================================
+
 
 def find_column(df, candidates):
     """
@@ -84,8 +82,7 @@ def percentile_rank(series):
         return result
 
     ranks = (
-        values.loc[valid]
-        .rank(
+        values.loc[valid].rank(
             method="min",
             pct=True,
         )
@@ -101,31 +98,26 @@ def percentile_rank(series):
 # LOAD DATA
 # ============================================================
 
-def load_data():
 
+def load_data():
+    """Retrieve data."""
     print("=" * 80)
     print("DAY 18 — PEER PERCENTILE RANKINGS")
     print("=" * 80)
 
-    peer_groups = pd.read_csv(
-        PEER_GROUPS_PATH
-    )
+    peer_groups = pd.read_csv(PEER_GROUPS_PATH)
 
     print(
         "Peer groups:",
-        peer_groups["peer_group_name"]
-        .nunique(),
+        peer_groups["peer_group_name"].nunique(),
     )
 
     print(
         "Companies in peer groups:",
-        peer_groups["company_id"]
-        .nunique(),
+        peer_groups["company_id"].nunique(),
     )
 
-    db = sqlite3.connect(
-        DB_PATH
-    )
+    db = sqlite3.connect(DB_PATH)
 
     ratios = pd.read_sql_query(
         "SELECT * FROM financial_ratios",
@@ -150,23 +142,18 @@ def load_data():
 # PREPARE RATIO DATA
 # ============================================================
 
-def prepare_ratios(ratios, companies):
 
+def prepare_ratios(ratios, companies):
+    """Prepare ratios."""
     df = ratios.copy()
 
     # --------------------------------------------------------
     # Resolve ROE
     # --------------------------------------------------------
 
-    if (
-        "return_on_equity_pct"
-        not in df.columns
-    ):
+    if "return_on_equity_pct" not in df.columns:
 
-        raise ValueError(
-            "financial_ratios is missing "
-            "return_on_equity_pct"
-        )
+        raise ValueError("financial_ratios is missing " "return_on_equity_pct")
 
     # --------------------------------------------------------
     # Resolve ROCE
@@ -183,10 +170,6 @@ def prepare_ratios(ratios, companies):
     if roce_column is None:
 
         # Calculate ROCE from available source data.
-
-        required = [
-            "return_on_equity_pct"
-        ]
 
         if "roce_percentage" in companies.columns:
 
@@ -226,12 +209,13 @@ def prepare_ratios(ratios, companies):
 # BUILD PEER PERCENTILES
 # ============================================================
 
+
 def build_peer_percentiles(
     peer_groups,
     ratios,
     companies,
 ):
-
+    """Build or generate peer percentiles."""
     ratios, roce_column = prepare_ratios(
         ratios,
         companies,
@@ -256,22 +240,12 @@ def build_peer_percentiles(
     # Every peer group
     # --------------------------------------------------------
 
-    for peer_group_name, members in peer_groups.groupby(
-        "peer_group_name"
-    ):
+    for peer_group_name, members in peer_groups.groupby("peer_group_name"):
 
-        company_ids = (
-            members["company_id"]
-            .dropna()
-            .astype(str)
-            .unique()
-            .tolist()
-        )
+        company_ids = members["company_id"].dropna().astype(str).unique().tolist()
 
         print()
-        print(
-            f"Peer group: {peer_group_name}"
-        )
+        print(f"Peer group: {peer_group_name}")
 
         print(
             "Members:",
@@ -282,50 +256,30 @@ def build_peer_percentiles(
         # Latest available year for each company
         # ----------------------------------------------------
 
-        group_ratios = ratios[
-            ratios["company_id"]
-            .astype(str)
-            .isin(company_ids)
-        ].copy()
+        group_ratios = ratios[ratios["company_id"].astype(str).isin(company_ids)].copy()
 
         if group_ratios.empty:
-            print(
-                "No financial data available."
-            )
+            print("No financial data available.")
             continue
 
         group_ratios["_year_num"] = pd.to_numeric(
-            group_ratios["year"]
-            .astype(str)
-            .str.extract(
-                r"(\d{4})"
-            )[0],
+            group_ratios["year"].astype(str).str.extract(r"(\d{4})")[0],
             errors="coerce",
         )
 
-        group_ratios = (
-            group_ratios
-            .dropna(
-                subset=["_year_num"]
-            )
-            .sort_values(
-                [
-                    "company_id",
-                    "_year_num",
-                ]
-            )
+        group_ratios = group_ratios.dropna(subset=["_year_num"]).sort_values(
+            [
+                "company_id",
+                "_year_num",
+            ]
         )
 
         # Latest row per company.
 
-        latest = (
-            group_ratios
-            .groupby(
-                "company_id",
-                as_index=False,
-            )
-            .tail(1)
-        )
+        latest = group_ratios.groupby(
+            "company_id",
+            as_index=False,
+        ).tail(1)
 
         # ----------------------------------------------------
         # Calculate 10 metric percentiles
@@ -336,9 +290,7 @@ def build_peer_percentiles(
             if column not in latest.columns:
                 continue
 
-            ranks = percentile_rank(
-                latest[column]
-            )
+            ranks = percentile_rank(latest[column])
 
             # D/E: lower is better.
 
@@ -352,9 +304,7 @@ def build_peer_percentiles(
                     column,
                 ]
 
-                percentile = ranks.loc[
-                    idx
-                ]
+                percentile = ranks.loc[idx]
 
                 if pd.isna(value):
                     continue
@@ -368,14 +318,14 @@ def build_peer_percentiles(
                         "peer_group_name": peer_group_name,
                         "metric": metric_name,
                         "value": value,
-                        "percentile_rank": round(
-                            float(percentile),
-                            2,
-                        )
-                        if not pd.isna(
-                            percentile
-                        )
-                        else None,
+                        "percentile_rank": (
+                            round(
+                                float(percentile),
+                                2,
+                            )
+                            if not pd.isna(percentile)
+                            else None
+                        ),
                         "year": latest.loc[
                             idx,
                             "year",
@@ -383,35 +333,29 @@ def build_peer_percentiles(
                     }
                 )
 
-    return pd.DataFrame(
-        output_rows
-    )
+    return pd.DataFrame(output_rows)
 
 
 # ============================================================
 # WRITE SQLITE
 # ============================================================
 
+
 def write_to_sqlite(
     percentile_df,
 ):
-
-    db = sqlite3.connect(
-        DB_PATH
-    )
+    """Write or export to sqlite."""
+    db = sqlite3.connect(DB_PATH)
 
     # --------------------------------------------------------
     # Create table
     # --------------------------------------------------------
 
-    db.execute(
-        """
+    db.execute("""
         DROP TABLE IF EXISTS peer_percentiles
-        """
-    )
+        """)
 
-    db.execute(
-        """
+    db.execute("""
         CREATE TABLE peer_percentiles (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             company_id TEXT NOT NULL,
@@ -421,8 +365,7 @@ def write_to_sqlite(
             percentile_rank REAL,
             year TEXT
         )
-        """
-    )
+        """)
 
     # --------------------------------------------------------
     # Insert rows
@@ -443,30 +386,24 @@ def write_to_sqlite(
     # Verify
     # --------------------------------------------------------
 
-    count = db.execute(
-        """
+    count = db.execute("""
         SELECT COUNT(*)
         FROM peer_percentiles
-        """
-    ).fetchone()[0]
+        """).fetchone()[0]
 
-    groups = db.execute(
-        """
+    groups = db.execute("""
         SELECT COUNT(
             DISTINCT peer_group_name
         )
         FROM peer_percentiles
-        """
-    ).fetchone()[0]
+        """).fetchone()[0]
 
-    companies = db.execute(
-        """
+    companies = db.execute("""
         SELECT COUNT(
             DISTINCT company_id
         )
         FROM peer_percentiles
-        """
-    ).fetchone()[0]
+        """).fetchone()[0]
 
     db.close()
 
@@ -494,11 +431,10 @@ def write_to_sqlite(
 # VALIDATION
 # ============================================================
 
-def validate_peer_percentiles():
 
-    db = sqlite3.connect(
-        DB_PATH
-    )
+def validate_peer_percentiles():
+    """Validate peer percentiles."""
+    db = sqlite3.connect(DB_PATH)
 
     df = pd.read_sql_query(
         """
@@ -522,73 +458,34 @@ def validate_peer_percentiles():
 
     print(
         "Peer groups:",
-        df["peer_group_name"]
-        .nunique()
-        if not df.empty
-        else 0,
+        df["peer_group_name"].nunique() if not df.empty else 0,
     )
 
     print(
         "Metrics:",
-        df["metric"]
-        .nunique()
-        if not df.empty
-        else 0,
+        df["metric"].nunique() if not df.empty else 0,
     )
 
     if not df.empty:
 
         print()
-        print(
-            "Metric counts:"
-        )
+        print("Metric counts:")
 
-        print(
-            df.groupby(
-                "metric"
-            )
-            .size()
-            .to_string()
-        )
+        print(df.groupby("metric").size().to_string())
 
         print()
-        print(
-            "Peer group counts:"
-        )
+        print("Peer group counts:")
 
-        print(
-            df.groupby(
-                "peer_group_name"
-            )
-            .size()
-            .to_string()
-        )
+        print(df.groupby("peer_group_name").size().to_string())
 
         print()
-        print(
-            "Sample:"
-        )
+        print("Sample:")
 
-        print(
-            df.head(20)
-            .to_string(
-                index=False
-            )
-        )
+        print(df.head(20).to_string(index=False))
 
         # Percentile range check.
 
-        invalid = df[
-            (
-                df["percentile_rank"]
-                < 0
-            )
-            |
-            (
-                df["percentile_rank"]
-                > 100
-            )
-        ]
+        invalid = df[(df["percentile_rank"] < 0) | (df["percentile_rank"] > 100)]
 
         print()
 
@@ -602,8 +499,9 @@ def validate_peer_percentiles():
 # MAIN
 # ============================================================
 
-def main():
 
+def main():
+    """Run the module's main workflow."""
     (
         peer_groups,
         ratios,
@@ -616,9 +514,7 @@ def main():
         companies,
     )
 
-    write_to_sqlite(
-        percentile_df
-    )
+    write_to_sqlite(percentile_df)
 
     validate_peer_percentiles()
 

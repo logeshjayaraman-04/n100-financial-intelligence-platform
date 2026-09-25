@@ -1,3 +1,5 @@
+"""Module providing N100 financial intelligence functionality."""
+
 from financial_engine import analyze_company, get_connection
 
 
@@ -89,29 +91,13 @@ def print_peer_comparison(company_id):
         debt = company["debt_to_equity"]
         score = company["health_score"]
 
-        growth_text = (
-            f"{growth:.1f}%"
-            if growth is not None
-            else "N/A"
-        )
+        growth_text = f"{growth:.1f}%" if growth is not None else "N/A"
 
-        profit_text = (
-            f"{profit:.1f}%"
-            if profit is not None
-            else "N/A"
-        )
+        profit_text = f"{profit:.1f}%" if profit is not None else "N/A"
 
-        roe_text = (
-            f"{roe:.1f}%"
-            if roe is not None
-            else "N/A"
-        )
+        roe_text = f"{roe:.1f}%" if roe is not None else "N/A"
 
-        debt_text = (
-            f"{debt:.2f}"
-            if debt is not None
-            else "N/A"
-        )
+        debt_text = f"{debt:.2f}" if debt is not None else "N/A"
 
         print(
             f"{company['company'][:35]:<35}"
@@ -132,11 +118,7 @@ def print_peer_comparison(company_id):
             break
 
     target = next(
-        (
-            company
-            for company in comparison
-            if company["company_id"] == company_id
-        ),
+        (company for company in comparison if company["company_id"] == company_id),
         None,
     )
 

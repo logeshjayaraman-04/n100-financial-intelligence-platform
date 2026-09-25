@@ -1,12 +1,13 @@
-from pathlib import Path
-import sqlite3
+"""Module providing N100 financial intelligence functionality."""
+
 import math
+import sqlite3
+from pathlib import Path
 
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
 from reportlab.pdfgen import canvas
-
 
 ROOT = Path(__file__).resolve().parents[2]
 DB_PATH = ROOT / "data" / "db" / "n100.db"
@@ -20,6 +21,7 @@ CONTENT_W = PAGE_W - 2 * MARGIN
 
 
 def safe_float(value):
+    """Handle safe float."""
     try:
         if value is None:
             return None
@@ -32,6 +34,7 @@ def safe_float(value):
 
 
 def fmt(value, decimals=2):
+    """Handle fmt."""
     value = safe_float(value)
     if value is None:
         return "N/A"
@@ -39,6 +42,7 @@ def fmt(value, decimals=2):
 
 
 def fmt_pct(value):
+    """Handle fmt pct."""
     value = safe_float(value)
     if value is None:
         return "N/A"
@@ -46,6 +50,7 @@ def fmt_pct(value):
 
 
 def draw_header(c, title, subtitle):
+    """Render header."""
     c.setFillColor(colors.HexColor("#17365D"))
     c.rect(0, PAGE_H - 19 * mm, PAGE_W, 19 * mm, fill=1, stroke=0)
 
@@ -62,6 +67,7 @@ def draw_header(c, title, subtitle):
 
 
 def draw_footer(c, sector, page_no):
+    """Render footer."""
     c.setStrokeColor(colors.HexColor("#C8D2DC"))
     c.line(MARGIN, 10 * mm, PAGE_W - MARGIN, 10 * mm)
 
@@ -82,6 +88,7 @@ def draw_footer(c, sector, page_no):
 
 
 def section_title(c, x, y, title, width=CONTENT_W):
+    """Handle section title."""
     c.setFillColor(colors.HexColor("#EAF0F5"))
     c.roundRect(
         x,
@@ -101,6 +108,7 @@ def section_title(c, x, y, title, width=CONTENT_W):
 
 
 def draw_table(c, x, y, widths, rows, row_h=7 * mm, font_size=6.5):
+    """Render table."""
     if not rows:
         return y
 
@@ -114,11 +122,7 @@ def draw_table(c, x, y, widths, rows, row_h=7 * mm, font_size=6.5):
             text_color = colors.white
             font = "Helvetica-Bold"
         else:
-            fill = (
-                colors.HexColor("#F7F9FB")
-                if row_index % 2 == 0
-                else colors.white
-            )
+            fill = colors.HexColor("#F7F9FB") if row_index % 2 == 0 else colors.white
             text_color = colors.HexColor("#222222")
             font = "Helvetica"
 
@@ -155,11 +159,11 @@ def draw_table(c, x, y, widths, rows, row_h=7 * mm, font_size=6.5):
 
 
 def load_sector_data():
+    """Retrieve sector data."""
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
 
-    companies = conn.execute(
-        """
+    companies = conn.execute("""
         SELECT
             c.id AS company_id,
             c.company_name,
@@ -169,24 +173,19 @@ def load_sector_data():
         LEFT JOIN sectors s
             ON s.company_id = c.id
         ORDER BY s.broad_sector, c.company_name
-        """
-    ).fetchall()
+        """).fetchall()
 
-    ratios = conn.execute(
-        """
+    ratios = conn.execute("""
         SELECT *
         FROM financial_ratios
         ORDER BY company_id, year
-        """
-    ).fetchall()
+        """).fetchall()
 
-    pl = conn.execute(
-        """
+    pl = conn.execute("""
         SELECT *
         FROM profitandloss
         ORDER BY company_id, year
-        """
-    ).fetchall()
+        """).fetchall()
 
     conn.close()
 
@@ -194,6 +193,7 @@ def load_sector_data():
 
 
 def latest_by_company(rows):
+    """Handle latest by company."""
     result = {}
 
     for row in rows:
@@ -204,15 +204,13 @@ def latest_by_company(rows):
 
 
 def generate_sector_report(sector_name, company_rows, ratio_rows, pl_rows):
+    """Build or generate sector report."""
     path = OUTPUT_DIR / (
-        sector_name.replace("/", "_")
-        .replace("\\", "_")
-        .replace(" ", "_")
-        + ".pdf"
+        sector_name.replace("/", "_").replace("\\", "_").replace(" ", "_") + ".pdf"
     )
 
     ratio_latest = latest_by_company(ratio_rows)
-    pl_latest = latest_by_company(pl_rows)
+    latest_by_company(pl_rows)
 
     c = canvas.Canvas(
         str(path),
@@ -258,26 +256,10 @@ def generate_sector_report(sector_name, company_rows, ratio_rows, pl_rows):
             [
                 str(company["company_name"])[:28],
                 str(company["sub_sector"] or "N/A")[:20],
-                fmt_pct(
-                    ratio["revenue_cagr_5yr"]
-                    if ratio
-                    else None
-                ),
-                fmt_pct(
-                    ratio["pat_cagr_5yr"]
-                    if ratio
-                    else None
-                ),
-                fmt_pct(
-                    ratio["return_on_equity_pct"]
-                    if ratio
-                    else None
-                ),
-                fmt(
-                    ratio["debt_to_equity"]
-                    if ratio
-                    else None
-                ),
+                fmt_pct(ratio["revenue_cagr_5yr"] if ratio else None),
+                fmt_pct(ratio["pat_cagr_5yr"] if ratio else None),
+                fmt_pct(ratio["return_on_equity_pct"] if ratio else None),
+                fmt(ratio["debt_to_equity"] if ratio else None),
             ]
         )
 
@@ -346,6 +328,7 @@ def generate_sector_report(sector_name, company_rows, ratio_rows, pl_rows):
                 roe_values.append(roe)
 
     def avg(values):
+        """Handle avg."""
         if not values:
             return None
         return sum(values) / len(values)
@@ -454,6 +437,7 @@ def generate_sector_report(sector_name, company_rows, ratio_rows, pl_rows):
 
 
 def main():
+    """Run the module's main workflow."""
     print("=== DAY 34 SECTOR REPORT GENERATOR ===")
 
     companies, ratios, pl = load_sector_data()
@@ -487,13 +471,9 @@ def main():
         for company in sector_companies:
             company_id = company["company_id"]
 
-            sector_ratios.extend(
-                ratio_groups.get(company_id, [])
-            )
+            sector_ratios.extend(ratio_groups.get(company_id, []))
 
-            sector_pl.extend(
-                pl_groups.get(company_id, [])
-            )
+            sector_pl.extend(pl_groups.get(company_id, []))
 
         path = generate_sector_report(
             sector_name,

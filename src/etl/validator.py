@@ -16,7 +16,6 @@ import pandas as pd
 
 from src.etl.normaliser import normalize_ticker, normalize_year
 
-
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
@@ -80,9 +79,7 @@ def load_excel(file_name: str) -> pd.DataFrame:
     csv_path = PROCESSED_DIR / csv_name
 
     if not csv_path.exists():
-        raise FileNotFoundError(
-            f"Processed file not found: {csv_path}"
-        )
+        raise FileNotFoundError(f"Processed file not found: {csv_path}")
 
     return pd.read_csv(csv_path)
 
@@ -137,17 +134,10 @@ def dq02_company_year_uniqueness(
 
     check = df.copy()
 
-    check["company_id"] = (
-        check["company_id"].apply(normalize_ticker)
-    )
+    check["company_id"] = check["company_id"].apply(normalize_ticker)
 
     # Do NOT collapse Mar 2024 and Sep 2024 into the same year.
-    check["reporting_period"] = (
-        check["year"]
-        .astype(str)
-        .str.strip()
-        .str.upper()
-    )
+    check["reporting_period"] = check["year"].astype(str).str.strip().str.upper()
 
     duplicates = check[
         check.duplicated(
@@ -192,17 +182,9 @@ def dq03_fk_integrity(
     if "id" not in companies_df.columns:
         return failures
 
-    valid_companies = set(
-        companies_df["id"]
-        .dropna()
-        .apply(normalize_ticker)
-    )
+    valid_companies = set(companies_df["id"].dropna().apply(normalize_ticker))
 
-    child_companies = (
-        child_df["company_id"]
-        .dropna()
-        .apply(normalize_ticker)
-    )
+    child_companies = child_df["company_id"].dropna().apply(normalize_ticker)
 
     invalid_mask = ~child_companies.isin(valid_companies)
 
@@ -264,17 +246,12 @@ def dq04_balance_sheet_balance(
     ].copy()
 
     valid["difference_pct"] = (
-        (
-            valid["total_assets"]
-            - valid["total_liabilities"]
-        ).abs()
+        (valid["total_assets"] - valid["total_liabilities"]).abs()
         / valid["total_assets"].abs()
         * 100
     )
 
-    invalid = valid[
-        valid["difference_pct"] >= 1
-    ]
+    invalid = valid[valid["difference_pct"] >= 1]
 
     for _, row in invalid.iterrows():
         failures.append(
@@ -333,19 +310,9 @@ def dq05_opm_crosscheck(
         & (check["sales"] != 0)
     ].copy()
 
-    valid["calculated_opm"] = (
-        valid["operating_profit"]
-        / valid["sales"]
-        * 100
-    )
+    valid["calculated_opm"] = valid["operating_profit"] / valid["sales"] * 100
 
-    invalid = valid[
-        (
-            valid["calculated_opm"]
-            - valid["opm_percentage"]
-        ).abs()
-        > 1
-    ]
+    invalid = valid[(valid["calculated_opm"] - valid["opm_percentage"]).abs() > 1]
 
     for _, row in invalid.iterrows():
         failures.append(
@@ -425,13 +392,7 @@ def dq07_company_identifier(
         return failures
 
     invalid = df[
-        df["company_id"].isna()
-        | (
-            df["company_id"]
-            .astype(str)
-            .str.strip()
-            == ""
-        )
+        df["company_id"].isna() | (df["company_id"].astype(str).str.strip() == "")
     ]
 
     for index in invalid.index:
@@ -473,10 +434,7 @@ def dq08_year_present(
                 "Valid year",
                 "WARNING",
                 file_name,
-                (
-                    "Unable to normalize year value: "
-                    f"{df.loc[index, 'year']}"
-                ),
+                ("Unable to normalize year value: " f"{df.loc[index, 'year']}"),
                 df.loc[index].get("company_id"),
             )
         )
@@ -516,10 +474,7 @@ def dq09_nonnegative_assets(
                 "Non-negative assets",
                 "WARNING",
                 file_name,
-                (
-                    f"Negative total assets: "
-                    f"{values.loc[index]}"
-                ),
+                (f"Negative total assets: " f"{values.loc[index]}"),
                 row.get("company_id"),
                 normalize_year(row.get("year")),
             )
@@ -546,11 +501,7 @@ def dq10_balance_sheet_completeness(
         "total_assets",
     ]
 
-    available = [
-        column
-        for column in required
-        if column in df.columns
-    ]
+    available = [column for column in required if column in df.columns]
 
     if not available:
         return failures
@@ -714,10 +665,7 @@ def dq13_market_cap_positive(
                 "Positive market capitalization",
                 "WARNING",
                 file_name,
-                (
-                    f"market_cap_crore="
-                    f"{values.loc[index]}"
-                ),
+                (f"market_cap_crore=" f"{values.loc[index]}"),
                 row.get("company_id"),
                 normalize_year(row.get("year")),
             )
@@ -751,10 +699,7 @@ def dq14_dividend_payout(
         errors="coerce",
     )
 
-    invalid = df[
-        (values < 0)
-        | (values > 100)
-    ]
+    invalid = df[(values < 0) | (values > 100)]
 
     for index in invalid.index:
         row = df.loc[index]
@@ -795,10 +740,7 @@ def dq15_sector_weight(
         errors="coerce",
     )
 
-    invalid = df[
-        (values < 0)
-        | (values > 100)
-    ]
+    invalid = df[(values < 0) | (values > 100)]
 
     for index in invalid.index:
         row = df.loc[index]
@@ -843,12 +785,7 @@ def dq16_eps_sanity(
         errors="coerce",
     )
 
-    invalid_mask = (
-        values.isna()
-        | values.isin(
-            [float("inf"), float("-inf")]
-        )
-    )
+    invalid_mask = values.isna() | values.isin([float("inf"), float("-inf")])
 
     for index in df.index[invalid_mask]:
         row = df.loc[index]
@@ -970,9 +907,7 @@ def validate_all() -> pd.DataFrame:
     # Balance Sheet
     # -----------------------------------------------------------------------
 
-    balance_sheet = load_excel(
-        "balancesheet.xlsx"
-    )
+    balance_sheet = load_excel("balancesheet.xlsx")
 
     failures.extend(
         dq01_pk_uniqueness(
@@ -1035,9 +970,7 @@ def validate_all() -> pd.DataFrame:
     # Cash Flow
     # -----------------------------------------------------------------------
 
-    cashflow = load_excel(
-        "cashflow.xlsx"
-    )
+    cashflow = load_excel("cashflow.xlsx")
 
     failures.extend(
         dq01_pk_uniqueness(
@@ -1079,9 +1012,7 @@ def validate_all() -> pd.DataFrame:
     # Stock Prices
     # -----------------------------------------------------------------------
 
-    stock_prices = load_excel(
-        "stock_prices.xlsx"
-    )
+    stock_prices = load_excel("stock_prices.xlsx")
 
     failures.extend(
         dq01_pk_uniqueness(
@@ -1123,9 +1054,7 @@ def validate_all() -> pd.DataFrame:
     # Market Cap
     # -----------------------------------------------------------------------
 
-    market_cap = load_excel(
-        "market_cap.xlsx"
-    )
+    market_cap = load_excel("market_cap.xlsx")
 
     failures.extend(
         dq01_pk_uniqueness(
@@ -1160,9 +1089,7 @@ def validate_all() -> pd.DataFrame:
     # Financial Ratios
     # -----------------------------------------------------------------------
 
-    ratios = load_excel(
-        "financial_ratios.xlsx"
-    )
+    ratios = load_excel("financial_ratios.xlsx")
 
     failures.extend(
         dq01_pk_uniqueness(
@@ -1204,9 +1131,7 @@ def validate_all() -> pd.DataFrame:
     # Sectors
     # -----------------------------------------------------------------------
 
-    sectors = load_excel(
-        "sectors.xlsx"
-    )
+    sectors = load_excel("sectors.xlsx")
 
     failures.extend(
         dq01_pk_uniqueness(
@@ -1234,9 +1159,7 @@ def validate_all() -> pd.DataFrame:
     # Peer Groups
     # -----------------------------------------------------------------------
 
-    peers = load_excel(
-        "peer_groups.xlsx"
-    )
+    peers = load_excel("peer_groups.xlsx")
 
     failures.extend(
         dq01_pk_uniqueness(
@@ -1257,9 +1180,7 @@ def validate_all() -> pd.DataFrame:
     # Documents
     # -----------------------------------------------------------------------
 
-    documents = load_excel(
-        "documents.xlsx"
-    )
+    documents = load_excel("documents.xlsx")
 
     failures.extend(
         dq01_pk_uniqueness(
@@ -1285,10 +1206,7 @@ def validate_all() -> pd.DataFrame:
         columns=FAILURE_COLUMNS,
     )
 
-    output_file = (
-        OUTPUT_DIR
-        / "validation_failures.csv"
-    )
+    output_file = OUTPUT_DIR / "validation_failures.csv"
 
     result.to_csv(
         output_file,
@@ -1306,46 +1224,27 @@ def validate_all() -> pd.DataFrame:
 def main() -> None:
     """Run validation and print summary."""
 
-    print(
-        "Running N100 data-quality validation..."
-    )
+    print("Running N100 data-quality validation...")
 
     result = validate_all()
 
-    print(
-        "Validation completed."
-    )
+    print("Validation completed.")
 
-    print(
-        f"Total failures: {len(result)}"
-    )
+    print(f"Total failures: {len(result)}")
 
     if result.empty:
-        print(
-            "No validation failures found."
-        )
+        print("No validation failures found.")
         return
 
-    print(
-        "\nFailures by severity:"
-    )
+    print("\nFailures by severity:")
 
-    print(
-        result["severity"].value_counts()
-    )
+    print(result["severity"].value_counts())
 
-    print(
-        "\nFailures by rule:"
-    )
+    print("\nFailures by rule:")
 
-    print(
-        result["rule_id"].value_counts()
-    )
+    print(result["rule_id"].value_counts())
 
-    print(
-        "\nReport saved to: "
-        f"{OUTPUT_DIR / 'validation_failures.csv'}"
-    )
+    print("\nReport saved to: " f"{OUTPUT_DIR / 'validation_failures.csv'}")
 
 
 if __name__ == "__main__":

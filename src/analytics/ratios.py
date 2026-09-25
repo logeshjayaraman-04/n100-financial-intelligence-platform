@@ -5,13 +5,11 @@ Day 08:
 Profitability ratios
 """
 
-from typing import Optional
-
 
 def net_profit_margin(
-    net_profit: float | int | None,
-    sales: float | int | None,
-) -> Optional[float]:
+    net_profit: float | None,
+    sales: float | None,
+) -> float | None:
     """
     Net Profit Margin = Net Profit / Sales * 100
 
@@ -28,9 +26,9 @@ def net_profit_margin(
 
 
 def operating_profit_margin(
-    operating_profit: float | int | None,
-    sales: float | int | None,
-) -> Optional[float]:
+    operating_profit: float | None,
+    sales: float | None,
+) -> float | None:
     """
     Operating Profit Margin = Operating Profit / Sales * 100
 
@@ -48,7 +46,7 @@ def operating_profit_margin(
 
 def check_opm_cross_check(
     calculated_opm: float | None,
-    source_opm: float | int | None,
+    source_opm: float | None,
     tolerance: float = 1.0,
 ) -> bool:
     """
@@ -65,21 +63,17 @@ def check_opm_cross_check(
 
 
 def return_on_equity(
-    net_profit: float | int | None,
-    equity_capital: float | int | None,
-    reserves: float | int | None,
-) -> Optional[float]:
+    net_profit: float | None,
+    equity_capital: float | None,
+    reserves: float | None,
+) -> float | None:
     """
     ROE = Net Profit / (Equity Capital + Reserves) * 100
 
     If equity + reserves <= 0, return None.
     """
 
-    if (
-        net_profit is None
-        or equity_capital is None
-        or reserves is None
-    ):
+    if net_profit is None or equity_capital is None or reserves is None:
         return None
 
     equity = float(equity_capital) + float(reserves)
@@ -91,11 +85,11 @@ def return_on_equity(
 
 
 def return_on_capital_employed(
-    ebit: float | int | None,
-    equity_capital: float | int | None,
-    reserves: float | int | None,
-    borrowings: float | int | None,
-) -> Optional[float]:
+    ebit: float | None,
+    equity_capital: float | None,
+    reserves: float | None,
+    borrowings: float | None,
+) -> float | None:
     """
     ROCE = EBIT /
            (Equity Capital + Reserves + Borrowings) * 100
@@ -103,19 +97,10 @@ def return_on_capital_employed(
     Returns None when the denominator is zero or negative.
     """
 
-    if (
-        ebit is None
-        or equity_capital is None
-        or reserves is None
-        or borrowings is None
-    ):
+    if ebit is None or equity_capital is None or reserves is None or borrowings is None:
         return None
 
-    capital_employed = (
-        float(equity_capital)
-        + float(reserves)
-        + float(borrowings)
-    )
+    capital_employed = float(equity_capital) + float(reserves) + float(borrowings)
 
     if capital_employed <= 0:
         return None
@@ -124,9 +109,9 @@ def return_on_capital_employed(
 
 
 def return_on_assets(
-    net_profit: float | int | None,
-    total_assets: float | int | None,
-) -> Optional[float]:
+    net_profit: float | None,
+    total_assets: float | None,
+) -> float | None:
     """
     ROA = Net Profit / Total Assets * 100
 
@@ -141,11 +126,12 @@ def return_on_assets(
 
     return (float(net_profit) / float(total_assets)) * 100
 
+
 def debt_to_equity(
-    borrowings: float | int | None,
-    equity_capital: float | int | None,
-    reserves: float | int | None,
-) -> Optional[float]:
+    borrowings: float | None,
+    equity_capital: float | None,
+    reserves: float | None,
+) -> float | None:
     """
     Debt-to-Equity = Borrowings / (Equity Capital + Reserves)
 
@@ -180,43 +166,35 @@ def high_leverage_flag(
     if debt_to_equity_value is None:
         return False
 
-    if broad_sector is not None:
-        if broad_sector.strip().lower() == "financials":
-            return False
+    if broad_sector is not None and broad_sector.strip().lower() == "financials":
+        return False
 
     return debt_to_equity_value > 5
 
 
 def interest_coverage_ratio(
-    operating_profit: float | int | None,
-    other_income: float | int | None,
-    interest: float | int | None,
-) -> Optional[float]:
+    operating_profit: float | None,
+    other_income: float | None,
+    interest: float | None,
+) -> float | None:
     """
     ICR = (Operating Profit + Other Income) / Interest
 
     Returns None when interest is zero.
     """
 
-    if (
-        operating_profit is None
-        or other_income is None
-        or interest is None
-    ):
+    if operating_profit is None or other_income is None or interest is None:
         return None
 
     if interest == 0:
         return None
 
-    return (
-        (float(operating_profit) + float(other_income))
-        / float(interest)
-    )
+    return (float(operating_profit) + float(other_income)) / float(interest)
 
 
 def interest_coverage_label(
     icr: float | None,
-) -> Optional[str]:
+) -> str | None:
     """
     Return 'Debt Free' when ICR is None.
     """
@@ -241,9 +219,9 @@ def interest_coverage_warning(
 
 
 def net_debt(
-    borrowings: float | int | None,
-    investments: float | int | None,
-) -> Optional[float]:
+    borrowings: float | None,
+    investments: float | None,
+) -> float | None:
     """
     Net Debt = Borrowings - Investments
     """
@@ -255,9 +233,9 @@ def net_debt(
 
 
 def asset_turnover(
-    sales: float | int | None,
-    total_assets: float | int | None,
-) -> Optional[float]:
+    sales: float | None,
+    total_assets: float | None,
+) -> float | None:
     """
     Asset Turnover = Sales / Total Assets
 

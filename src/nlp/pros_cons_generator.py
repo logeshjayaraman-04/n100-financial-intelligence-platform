@@ -1,7 +1,8 @@
-from pathlib import Path
-import sqlite3
-import csv
+"""Module providing N100 financial intelligence functionality."""
 
+import csv
+import sqlite3
+from pathlib import Path
 
 # ============================================================
 # PATHS
@@ -207,6 +208,7 @@ CON_RULES = [
 # DATABASE
 # ============================================================
 
+
 def load_latest_ratios():
     """
     Load the latest available financial-ratio row for every company.
@@ -251,7 +253,9 @@ def load_latest_ratios():
 # RULE EVALUATION
 # ============================================================
 
+
 def evaluate_rules(row):
+    """Handle evaluate rules."""
     results = []
 
     for rule in PRO_RULES + CON_RULES:
@@ -272,11 +276,7 @@ def evaluate_rules(row):
             confidence = max(0, min(100, round(confidence, 2)))
 
             if confidence > MIN_CONFIDENCE:
-                result_type = (
-                    "pro"
-                    if rule["rule_id"].startswith("PRO")
-                    else "con"
-                )
+                result_type = "pro" if rule["rule_id"].startswith("PRO") else "con"
 
                 results.append(
                     {
@@ -294,6 +294,7 @@ def evaluate_rules(row):
 # ============================================================
 # FALLBACK RULES
 # ============================================================
+
 
 def apply_fallbacks(row, results):
     """
@@ -335,7 +336,9 @@ def apply_fallbacks(row, results):
 # MAIN GENERATOR
 # ============================================================
 
+
 def generate():
+    """Handle generate."""
     print("=== NLP PROS/CONS GENERATOR ===")
 
     rows = load_latest_ratios()
@@ -388,15 +391,11 @@ def generate():
             con_counts[company_id] = con_counts.get(company_id, 0) + 1
 
     missing_pro = [
-        company_id
-        for company_id in company_ids
-        if pro_counts.get(company_id, 0) == 0
+        company_id for company_id in company_ids if pro_counts.get(company_id, 0) == 0
     ]
 
     missing_con = [
-        company_id
-        for company_id in company_ids
-        if con_counts.get(company_id, 0) == 0
+        company_id for company_id in company_ids if con_counts.get(company_id, 0) == 0
     ]
 
     confidence_failures = [

@@ -1,3 +1,5 @@
+"""Module providing N100 financial intelligence functionality."""
+
 from __future__ import annotations
 
 import pandas as pd
@@ -9,12 +11,9 @@ from src.dashboard.utils.db import (
     get_ratios,
 )
 
-
 st.title("Trend Analysis")
 
-st.write(
-    "Explore long-term financial trends for a selected company."
-)
+st.write("Explore long-term financial trends for a selected company.")
 
 
 # ---------------------------------------------------------
@@ -53,8 +52,7 @@ if search_text.strip():
             search_lower,
             na=False,
         )
-        |
-        filtered["company_id"]
+        | filtered["company_id"]
         .astype(str)
         .str.lower()
         .str.contains(
@@ -67,8 +65,7 @@ if search_text.strip():
 if filtered.empty:
 
     st.warning(
-        "No matching company was found. "
-        "Please check the company name or ticker."
+        "No matching company was found. " "Please check the company name or ticker."
     )
 
     st.stop()
@@ -78,9 +75,7 @@ if filtered.empty:
 # Company selector
 # ---------------------------------------------------------
 
-filtered = filtered.sort_values(
-    "company_name"
-)
+filtered = filtered.sort_values("company_name")
 
 
 company_labels = (
@@ -97,9 +92,7 @@ selected_label = st.selectbox(
 )
 
 
-selected_row = filtered.iloc[
-    company_labels.index(selected_label)
-]
+selected_row = filtered.iloc[company_labels.index(selected_label)]
 
 
 ticker = selected_row["company_id"]
@@ -114,10 +107,7 @@ ratios = get_ratios(ticker)
 
 if ratios.empty:
 
-    st.warning(
-        "Historical financial data is not available "
-        "for this company."
-    )
+    st.warning("Historical financial data is not available " "for this company.")
 
     st.stop()
 
@@ -129,33 +119,22 @@ if ratios.empty:
 ratios = ratios.copy()
 
 
-ratios["year_text"] = (
-    ratios["year"]
-    .astype(str)
-)
+ratios["year_text"] = ratios["year"].astype(str)
 
 
 ratios["year_num"] = pd.to_numeric(
-    ratios["year_text"]
-    .str.extract(r"(\d{4})", expand=False),
+    ratios["year_text"].str.extract(r"(\d{4})", expand=False),
     errors="coerce",
 )
 
 
-ratios = ratios.dropna(
-    subset=["year_num"]
-)
+ratios = ratios.dropna(subset=["year_num"])
 
 
-ratios["year_num"] = (
-    ratios["year_num"]
-    .astype(int)
-)
+ratios["year_num"] = ratios["year_num"].astype(int)
 
 
-ratios = ratios.sort_values(
-    "year_num"
-)
+ratios = ratios.sort_values("year_num")
 
 
 # Keep latest 10 years
@@ -181,9 +160,7 @@ metric_options = {
 
 
 available_metrics = [
-    label
-    for label, column in metric_options.items()
-    if column in ratios.columns
+    label for label, column in metric_options.items() if column in ratios.columns
 ]
 
 
@@ -201,9 +178,7 @@ selected_metrics = st.multiselect(
 
 if not selected_metrics:
 
-    st.info(
-        "Select at least one metric to display the trend."
-    )
+    st.info("Select at least one metric to display the trend.")
 
     st.stop()
 
@@ -227,7 +202,6 @@ for metric in selected_metrics:
         errors="coerce",
     )
 
-
     fig.add_trace(
         go.Scatter(
             x=ratios["year_num"],
@@ -243,12 +217,12 @@ fig.update_layout(
     hovermode="x unified",
     xaxis_title="Year",
     yaxis_title="Value",
-    margin=dict(
-        l=50,
-        r=40,
-        t=50,
-        b=50,
-    ),
+    margin={
+        "l": 50,
+        "r": 40,
+        "t": 50,
+        "b": 50,
+    },
 )
 
 
@@ -279,19 +253,12 @@ for metric in selected_metrics:
         ]
     ].copy()
 
-
     temp["Value"] = pd.to_numeric(
         temp[column],
         errors="coerce",
     )
 
-
-    temp["YoY %"] = (
-        temp["Value"]
-        .pct_change()
-        * 100
-    )
-
+    temp["YoY %"] = temp["Value"].pct_change() * 100
 
     temp = temp[
         [
@@ -301,9 +268,7 @@ for metric in selected_metrics:
         ]
     ]
 
-
     temp["Metric"] = metric
-
 
     yoy_tables.append(temp)
 
@@ -315,23 +280,15 @@ if yoy_tables:
         ignore_index=True,
     )
 
-
     yoy_df = yoy_df.rename(
         columns={
             "year_num": "Year",
         }
     )
 
+    yoy_df["Value"] = yoy_df["Value"].round(2)
 
-    yoy_df["Value"] = yoy_df[
-        "Value"
-    ].round(2)
-
-
-    yoy_df["YoY %"] = yoy_df[
-        "YoY %"
-    ].round(2)
-
+    yoy_df["YoY %"] = yoy_df["YoY %"].round(2)
 
     st.dataframe(
         yoy_df[

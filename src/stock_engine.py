@@ -1,4 +1,5 @@
-import sqlite3
+"""Module providing N100 financial intelligence functionality."""
+
 from financial_engine import get_connection
 
 
@@ -35,9 +36,7 @@ def calculate_stock_metrics(company_id):
     latest_price = prices[-1]
 
     total_return = (
-        ((latest_price - first_price) / first_price) * 100
-        if first_price
-        else None
+        ((latest_price - first_price) / first_price) * 100 if first_price else None
     )
 
     highest_price = max(prices)
@@ -74,26 +73,15 @@ def print_stock_analysis(company_id):
     print()
     print("PRICE")
     print("-" * 70)
-    print(
-        f"First price:     {analysis['first_price']:.2f}"
-    )
-    print(
-        f"Latest price:    {analysis['latest_price']:.2f}"
-    )
-    print(
-        f"Highest price:   {analysis['highest_price']:.2f}"
-    )
-    print(
-        f"Lowest price:    {analysis['lowest_price']:.2f}"
-    )
+    print(f"First price:     {analysis['first_price']:.2f}")
+    print(f"Latest price:    {analysis['latest_price']:.2f}")
+    print(f"Highest price:   {analysis['highest_price']:.2f}")
+    print(f"Lowest price:    {analysis['lowest_price']:.2f}")
 
     print()
     print("PERFORMANCE")
     print("-" * 70)
-    print(
-        f"Total return:    "
-        f"{analysis['total_return_pct']:.2f}%"
-    )
+    print(f"Total return:    " f"{analysis['total_return_pct']:.2f}%")
 
     print()
     print("=" * 70)

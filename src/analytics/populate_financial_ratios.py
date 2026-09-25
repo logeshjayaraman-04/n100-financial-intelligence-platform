@@ -1,25 +1,24 @@
-from pathlib import Path
+"""Module providing N100 financial intelligence functionality."""
+
 import sqlite3
+from pathlib import Path
 
 import pandas as pd
 
+from src.analytics.cagr import (
+    eps_cagr,
+    pat_cagr,
+    revenue_cagr,
+)
 from src.analytics.ratios import (
-    net_profit_margin,
-    operating_profit_margin,
-    return_on_equity,
-    return_on_capital_employed,
-    return_on_assets,
+    asset_turnover,
     debt_to_equity,
     interest_coverage_ratio,
-    asset_turnover,
+    net_profit_margin,
+    operating_profit_margin,
+    return_on_capital_employed,
+    return_on_equity,
 )
-
-from src.analytics.cagr import (
-    revenue_cagr,
-    pat_cagr,
-    eps_cagr,
-)
-
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
@@ -50,27 +49,19 @@ def build_cagr_map(df, value_column, years):
 
     Uses exact available year positions where possible.
     """
-
     result = {}
 
     for company_id, group in df.groupby("company_id"):
-
         group = group.copy()
 
-        group["_year_num"] = (
-            group["year"]
-            .astype(str)
-            .str.extract(r"(\d{4})")[0]
-        )
+        group["_year_num"] = group["year"].astype(str).str.extract(r"(\d{4})")[0]
 
         group["_year_num"] = pd.to_numeric(
             group["_year_num"],
             errors="coerce",
         )
 
-        group = group.dropna(
-            subset=["_year_num"]
-        ).sort_values("_year_num")
+        group = group.dropna(subset=["_year_num"]).sort_values("_year_num")
 
         values = {
             int(row["_year_num"]): number(row[value_column])
@@ -78,13 +69,11 @@ def build_cagr_map(df, value_column, years):
         }
 
         for _, row in group.iterrows():
-
             end_year = int(row["_year_num"])
 
             entry = {}
 
             for window in [3, 5, 10]:
-
                 start_year = end_year - window
 
                 if start_year not in values:
@@ -98,7 +87,6 @@ def build_cagr_map(df, value_column, years):
                 end_value = values[end_year]
 
                 if value_column == "sales":
-
                     entry[f"{window}yr"] = revenue_cagr(
                         start_value,
                         end_value,
@@ -106,7 +94,6 @@ def build_cagr_map(df, value_column, years):
                     )
 
                 elif value_column == "net_profit":
-
                     entry[f"{window}yr"] = pat_cagr(
                         start_value,
                         end_value,
@@ -114,41 +101,27 @@ def build_cagr_map(df, value_column, years):
                     )
 
                 elif value_column == "eps":
-
                     entry[f"{window}yr"] = eps_cagr(
                         start_value,
                         end_value,
                         window,
                     )
 
-            result[
-                (company_id, end_year)
-            ] = entry
+            result[(company_id, end_year)] = entry
 
     return result
 
 
 def main():
-
+    """Run the module's main workflow."""
     print("=" * 80)
     print("DAY 12 — POPULATING FINANCIAL RATIOS")
     print("=" * 80)
 
-    pnl = pd.read_csv(
-        PROCESSED / "profitandloss.csv"
-    )
-
-    balance = pd.read_csv(
-        PROCESSED / "balancesheet.csv"
-    )
-
-    cashflow = pd.read_csv(
-        PROCESSED / "cashflow.csv"
-    )
-
-    companies = pd.read_csv(
-        PROCESSED / "companies.csv"
-    )
+    pnl = pd.read_csv(PROCESSED / "profitandloss.csv")
+    balance = pd.read_csv(PROCESSED / "balancesheet.csv")
+    cashflow = pd.read_csv(PROCESSED / "cashflow.csv")
+    companies = pd.read_csv(PROCESSED / "companies.csv")
 
     print()
     print("P&L rows:", len(pnl))
@@ -165,20 +138,9 @@ def main():
         balance,
         cashflow,
     ]:
+        df["company_id"] = df["company_id"].astype(str).str.strip().str.upper()
 
-        df["company_id"] = (
-            df["company_id"]
-            .astype(str)
-            .str.strip()
-            .str.upper()
-        )
-
-    companies["id"] = (
-        companies["id"]
-        .astype(str)
-        .str.strip()
-        .str.upper()
-    )
+    companies["id"] = companies["id"].astype(str).str.strip().str.upper()
 
     # ---------------------------------------------------------
     # Normalize year
@@ -189,15 +151,12 @@ def main():
         balance,
         cashflow,
     ]:
-
         df["_year_num"] = pd.to_numeric(
-            df["year"]
-            .astype(str)
-            .str.extract(r"(\d{4})")[0],
+            df["year"].astype(str).str.extract(r"(\d{4})")[0],
             errors="coerce",
         )
 
-        # -----------------------------
+    # -----------------------------
     # Merge source data
     # -----------------------------
 
@@ -257,7 +216,6 @@ def main():
     # ---------------------------------------------------------
 
     for _, row in merged.iterrows():
-
         company_id = row["company_id"]
         year_num = row["_year_num"]
 
@@ -266,57 +224,18 @@ def main():
 
         year_num = int(year_num)
 
-        sales = number(
-            row.get("sales")
-        )
-
-        net_profit = number(
-            row.get("net_profit")
-        )
-
-        operating_profit = number(
-            row.get("operating_profit")
-        )
-
-        equity_capital = number(
-            row.get("equity_capital")
-        )
-
-        reserves = number(
-            row.get("reserves")
-        )
-
-        borrowings = number(
-            row.get("borrowings")
-        )
-
-        interest = number(
-            row.get("interest")
-        )
-
-        other_income = number(
-            row.get("other_income")
-        )
-
-        total_assets = number(
-            row.get("total_assets")
-        )
-
-        investments = number(
-            row.get("investments")
-        )
-
-        operating_activity = number(
-            row.get("operating_activity")
-        )
-
-        investing_activity = number(
-            row.get("investing_activity")
-        )
-
-        eps = number(
-            row.get("eps")
-        )
+        sales = number(row.get("sales"))
+        net_profit = number(row.get("net_profit"))
+        operating_profit = number(row.get("operating_profit"))
+        equity_capital = number(row.get("equity_capital"))
+        reserves = number(row.get("reserves"))
+        borrowings = number(row.get("borrowings"))
+        interest = number(row.get("interest"))
+        other_income = number(row.get("other_income"))
+        total_assets = number(row.get("total_assets"))
+        operating_activity = number(row.get("operating_activity"))
+        investing_activity = number(row.get("investing_activity"))
+        eps = number(row.get("eps"))
 
         # -----------------------------------------------------
         # Book Value Per Share
@@ -338,29 +257,16 @@ def main():
             and eps not in (None, 0)
             and net_profit is not None
         ):
-
-            shares_outstanding = (
-                net_profit / eps
-            )
+            shares_outstanding = net_profit / eps
 
             if shares_outstanding != 0:
-
-                book_value = (
-                    equity_capital
-                    + reserves
-                ) / shares_outstanding
-
+                book_value = (equity_capital + reserves) / shares_outstanding
             else:
-
                 book_value = None
-
         else:
-
             book_value = None
 
-        dividend_payout = number(
-            row.get("dividend_payout")
-        )
+        dividend_payout = number(row.get("dividend_payout"))
 
         # -----------------------------------------------------
         # Profitability
@@ -387,11 +293,6 @@ def main():
             equity_capital,
             reserves,
             borrowings,
-        )
-
-        roa = return_on_assets(
-            net_profit,
-            total_assets,
         )
 
         # -----------------------------------------------------
@@ -421,15 +322,8 @@ def main():
 
         fcf = None
 
-        if (
-            operating_activity is not None
-            and investing_activity is not None
-        ):
-
-            fcf = (
-                operating_activity
-                + investing_activity
-            )
+        if operating_activity is not None and investing_activity is not None:
+            fcf = operating_activity + investing_activity
 
         capex = None
 
@@ -481,20 +375,12 @@ def main():
             turnover,
         ]
 
-        valid_scores = [
-            x
-            for x in score_parts
-            if x is not None
-        ]
+        valid_scores = [value for value in score_parts if value is not None]
 
         composite = None
 
         if valid_scores:
-
-            composite = (
-                sum(valid_scores)
-                / len(valid_scores)
-            )
+            composite = sum(valid_scores) / len(valid_scores)
 
         # -----------------------------------------------------
         # Record
@@ -535,21 +421,12 @@ def main():
 
     db = sqlite3.connect(DB_PATH)
 
-    db.execute(
-        "DELETE FROM financial_ratios"
-    )
+    db.execute("DELETE FROM financial_ratios")
 
     columns = list(result.columns)
 
-    placeholders = ", ".join(
-        "?"
-        for _ in columns
-    )
-
-    quoted = ", ".join(
-        f'"{column}"'
-        for column in columns
-    )
+    placeholders = ", ".join("?" for _ in columns)
+    quoted = ", ".join(f'"{column}"' for column in columns)
 
     sql = f"""
         INSERT INTO financial_ratios
@@ -558,11 +435,7 @@ def main():
     """
 
     rows = [
-        tuple(
-            None if pd.isna(value)
-            else value
-            for value in row
-        )
+        tuple(None if pd.isna(value) else value for value in row)
         for row in result.itertuples(
             index=False,
             name=None,
@@ -576,9 +449,7 @@ def main():
 
     db.commit()
 
-    count = db.execute(
-        "SELECT COUNT(*) FROM financial_ratios"
-    ).fetchone()[0]
+    count = db.execute("SELECT COUNT(*) FROM financial_ratios").fetchone()[0]
 
     db.close()
 
@@ -586,10 +457,7 @@ def main():
     print("financial_ratios rows:", count)
 
     if count < 1100:
-
-        raise RuntimeError(
-            f"ERROR: expected >= 1100 rows, got {count}"
-        )
+        raise RuntimeError(f"ERROR: expected >= 1100 rows, got {count}")
 
     print()
     print("SUCCESS: financial_ratios populated.")

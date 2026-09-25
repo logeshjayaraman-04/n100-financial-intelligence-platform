@@ -8,12 +8,10 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from openpyxl import load_workbook
-from openpyxl.styles import PatternFill, Font
+from openpyxl.styles import Font, PatternFill
 from openpyxl.utils import get_column_letter
 
-from .engine import build_screener_dataframe
 from .presets import PRESETS, run_preset, run_turnaround_watch
-
 
 DB_PATH = Path("data/db/n100.db")
 OUTPUT_PATH = Path("output/screener_output.xlsx")
@@ -23,7 +21,9 @@ OUTPUT_PATH = Path("output/screener_output.xlsx")
 # HELPERS
 # ============================================================
 
+
 def winsorised_score(series, higher_is_better=True):
+    """Handle winsorised score."""
     values = pd.to_numeric(series, errors="coerce")
     valid = values.dropna()
 
@@ -47,6 +47,7 @@ def winsorised_score(series, higher_is_better=True):
 
 
 def find_column(df, candidates):
+    """Handle find column."""
     for column in candidates:
         if column in df.columns:
             return column
@@ -57,7 +58,9 @@ def find_column(df, candidates):
 # COMPOSITE SCORE
 # ============================================================
 
+
 def calculate_composite_score(df):
+    """Calculate composite score."""
     result = df.copy()
 
     roe_col = find_column(
@@ -147,11 +150,7 @@ def calculate_composite_score(df):
             index=result.index,
         )
 
-    profitability_score = (
-        roe_score * 0.15
-        + roce_score * 0.10
-        + npm_score * 0.10
-    )
+    profitability_score = roe_score * 0.15 + roce_score * 0.10 + npm_score * 0.10
 
     # --------------------------------------------------------
     # Cash Quality: 30%
@@ -167,7 +166,8 @@ def calculate_composite_score(df):
             pd.to_numeric(
                 result[fcf_col],
                 errors="coerce",
-            ) > 0
+            )
+            > 0
         ).astype(float) * 100
 
     else:
@@ -198,15 +198,9 @@ def calculate_composite_score(df):
             index=result.index,
         )
 
-        valid = (
-            pat_values.notna()
-            & (pat_values != 0)
-        )
+        valid = pat_values.notna() & (pat_values != 0)
 
-        cfo_pat_ratio.loc[valid] = (
-            cfo_values.loc[valid]
-            / pat_values.loc[valid]
-        )
+        cfo_pat_ratio.loc[valid] = cfo_values.loc[valid] / pat_values.loc[valid]
 
         cfo_pat_score = winsorised_score(
             cfo_pat_ratio,
@@ -224,11 +218,7 @@ def calculate_composite_score(df):
 
         result["cfo_pat_ratio"] = np.nan
 
-    cash_quality_score = (
-        fcf_score * 0.15
-        + cfo_pat_score * 0.10
-        + fcf_positive * 0.05
-    )
+    cash_quality_score = fcf_score * 0.15 + cfo_pat_score * 0.10 + fcf_positive * 0.05
 
     # --------------------------------------------------------
     # Growth: 20%
@@ -256,10 +246,7 @@ def calculate_composite_score(df):
             index=result.index,
         )
 
-    growth_score = (
-        revenue_growth_score * 0.10
-        + pat_growth_score * 0.10
-    )
+    growth_score = revenue_growth_score * 0.10 + pat_growth_score * 0.10
 
     # --------------------------------------------------------
     # Leverage: 15%
@@ -299,26 +286,18 @@ def calculate_composite_score(df):
             index=result.index,
         )
 
-    leverage_score = (
-        de_score * 0.10
-        + icr_score * 0.05
-    )
+    leverage_score = de_score * 0.10 + icr_score * 0.05
 
     # --------------------------------------------------------
     # Final 0-100 score
     # --------------------------------------------------------
 
     result["composite_quality_score"] = (
-        profitability_score
-        + cash_quality_score
-        + growth_score
-        + leverage_score
+        profitability_score + cash_quality_score + growth_score + leverage_score
     )
 
     result["composite_quality_score"] = (
-        result["composite_quality_score"]
-        .clip(0, 100)
-        .round(2)
+        result["composite_quality_score"].clip(0, 100).round(2)
     )
 
     return result
@@ -328,13 +307,12 @@ def calculate_composite_score(df):
 # PRESET DATA
 # ============================================================
 
-def get_preset_dataframe(preset_name, db_path=DB_PATH):
 
+def get_preset_dataframe(preset_name, db_path=DB_PATH):
+    """Retrieve preset dataframe."""
     if preset_name == "Turnaround Watch":
 
-        df = run_turnaround_watch(
-            db_path
-        )
+        df = run_turnaround_watch(db_path)
 
     else:
 
@@ -350,11 +328,12 @@ def get_preset_dataframe(preset_name, db_path=DB_PATH):
 # EXCEL EXPORT
 # ============================================================
 
+
 def export_screener_excel(
     output_path=OUTPUT_PATH,
     db_path=DB_PATH,
 ):
-
+    """Write or export screener excel."""
     output_path.parent.mkdir(
         parents=True,
         exist_ok=True,
@@ -365,21 +344,15 @@ def export_screener_excel(
     preset_names = list(PRESETS)
 
     if "Turnaround Watch" not in preset_names:
-        preset_names.append(
-            "Turnaround Watch"
-        )
+        preset_names.append("Turnaround Watch")
 
     for preset_name in preset_names:
 
-        print(
-            f"Preparing: {preset_name}"
-        )
+        print(f"Preparing: {preset_name}")
 
-        preset_data[preset_name] = (
-            get_preset_dataframe(
-                preset_name,
-                db_path,
-            )
+        preset_data[preset_name] = get_preset_dataframe(
+            preset_name,
+            db_path,
         )
 
     # --------------------------------------------------------
@@ -414,9 +387,7 @@ def export_screener_excel(
     # Format workbook
     # --------------------------------------------------------
 
-    workbook = load_workbook(
-        output_path
-    )
+    workbook = load_workbook(output_path)
 
     header_fill = PatternFill(
         fill_type="solid",
@@ -439,9 +410,7 @@ def export_screener_excel(
 
         for cell in worksheet[1]:
 
-            cell.font = Font(
-                bold=True
-            )
+            cell.font = Font(bold=True)
 
             cell.fill = header_fill
 
@@ -451,9 +420,7 @@ def export_screener_excel(
 
         # Filter
 
-        worksheet.auto_filter.ref = (
-            worksheet.dimensions
-        )
+        worksheet.auto_filter.ref = worksheet.dimensions
 
         # Column widths
 
@@ -461,9 +428,7 @@ def export_screener_excel(
 
             max_length = 0
 
-            column_letter = get_column_letter(
-                column_cells[0].column
-            )
+            column_letter = get_column_letter(column_cells[0].column)
 
             for cell in column_cells:
 
@@ -474,9 +439,7 @@ def export_screener_excel(
                         len(str(cell.value)),
                     )
 
-            worksheet.column_dimensions[
-                column_letter
-            ].width = min(
+            worksheet.column_dimensions[column_letter].width = min(
                 max(max_length + 2, 10),
                 30,
             )
@@ -485,21 +448,11 @@ def export_screener_excel(
         # Composite score colour coding
         # ----------------------------------------------------
 
-        headers = [
-            cell.value
-            for cell in worksheet[1]
-        ]
+        headers = [cell.value for cell in worksheet[1]]
 
-        if (
-            "composite_quality_score"
-            in headers
-        ):
+        if "composite_quality_score" in headers:
 
-            score_column = (
-                headers.index(
-                    "composite_quality_score"
-                ) + 1
-            )
+            score_column = headers.index("composite_quality_score") + 1
 
             for row in range(
                 2,
@@ -524,9 +477,7 @@ def export_screener_excel(
 
                         cell.fill = red_fill
 
-    workbook.save(
-        output_path
-    )
+    workbook.save(output_path)
 
     # --------------------------------------------------------
     # Summary
@@ -536,28 +487,19 @@ def export_screener_excel(
     print("=" * 80)
     print("DAY 17 — SCREENER EXPORT COMPLETE")
     print("=" * 80)
-    print(
-        f"Output: {output_path}"
-    )
+    print(f"Output: {output_path}")
 
     for name, df in preset_data.items():
 
         if "company_id" in df.columns:
 
-            company_count = (
-                df["company_id"]
-                .nunique()
-            )
+            company_count = df["company_id"].nunique()
 
         else:
 
             company_count = 0
 
-        print(
-            f"{name}: "
-            f"{len(df)} rows / "
-            f"{company_count} companies"
-        )
+        print(f"{name}: " f"{len(df)} rows / " f"{company_count} companies")
 
 
 # ============================================================

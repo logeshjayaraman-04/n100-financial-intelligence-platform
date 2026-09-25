@@ -1,3 +1,5 @@
+"""Module providing N100 financial intelligence functionality."""
+
 from __future__ import annotations
 
 import pandas as pd
@@ -9,12 +11,10 @@ from src.dashboard.utils.db import (
     get_ratios,
 )
 
-
 st.title("Capital Allocation")
 
 st.write(
-    "Explore companies by their capital allocation and "
-    "financial characteristics."
+    "Explore companies by their capital allocation and " "financial characteristics."
 )
 
 
@@ -57,46 +57,26 @@ for _, company in companies.iterrows():
         errors="coerce",
     )
 
-    ratios = ratios.dropna(
-        subset=["year_num"]
-    )
+    ratios = ratios.dropna(subset=["year_num"])
 
     if ratios.empty:
         continue
 
-    ratios = ratios.sort_values(
-        "year_num"
-    )
+    ratios = ratios.sort_values("year_num")
 
     latest = ratios.iloc[-1]
 
     rows.append(
         {
             "company_id": company_id,
-            "company_name": company[
-                "company_name"
-            ],
-            "broad_sector": company[
-                "broad_sector"
-            ],
-            "roe": latest.get(
-                "return_on_equity_pct"
-            ),
-            "debt_to_equity": latest.get(
-                "debt_to_equity"
-            ),
-            "free_cash_flow_cr": latest.get(
-                "free_cash_flow_cr"
-            ),
-            "dividend_payout_ratio_pct": latest.get(
-                "dividend_payout_ratio_pct"
-            ),
-            "capex_cr": latest.get(
-                "capex_cr"
-            ),
-            "cash_from_operations_cr": latest.get(
-                "cash_from_operations_cr"
-            ),
+            "company_name": company["company_name"],
+            "broad_sector": company["broad_sector"],
+            "roe": latest.get("return_on_equity_pct"),
+            "debt_to_equity": latest.get("debt_to_equity"),
+            "free_cash_flow_cr": latest.get("free_cash_flow_cr"),
+            "dividend_payout_ratio_pct": latest.get("dividend_payout_ratio_pct"),
+            "capex_cr": latest.get("capex_cr"),
+            "cash_from_operations_cr": latest.get("cash_from_operations_cr"),
         }
     )
 
@@ -105,10 +85,7 @@ df = pd.DataFrame(rows)
 
 
 if df.empty:
-    st.warning(
-        "No financial data is available "
-        "for capital allocation analysis."
-    )
+    st.warning("No financial data is available " "for capital allocation analysis.")
     st.stop()
 
 
@@ -138,30 +115,22 @@ for column in numeric_columns:
 # Capital allocation classification
 # ---------------------------------------------------------
 
-def classify_company(row):
 
+def classify_company(row):
+    """Handle classify company."""
     roe = row["roe"]
     debt = row["debt_to_equity"]
     fcf = row["free_cash_flow_cr"]
-    dividend = row[
-        "dividend_payout_ratio_pct"
-    ]
+    dividend = row["dividend_payout_ratio_pct"]
     capex = row["capex_cr"]
-    cfo = row[
-        "cash_from_operations_cr"
-    ]
+    cfo = row["cash_from_operations_cr"]
 
     # -----------------------------------------------------
     # Missing data
     # -----------------------------------------------------
 
-    if (
-        pd.isna(roe)
-        and pd.isna(debt)
-        and pd.isna(fcf)
-    ):
+    if pd.isna(roe) and pd.isna(debt) and pd.isna(fcf):
         return "Insufficient Data"
-
 
     # -----------------------------------------------------
     # 1. High Return Compounder
@@ -170,47 +139,24 @@ def classify_company(row):
     if (
         pd.notna(roe)
         and roe >= 20
-        and (
-            pd.isna(debt)
-            or debt <= 1
-        )
-        and (
-            pd.isna(fcf)
-            or fcf >= 0
-        )
+        and (pd.isna(debt) or debt <= 1)
+        and (pd.isna(fcf) or fcf >= 0)
     ):
         return "High Return Compounder"
-
 
     # -----------------------------------------------------
     # 2. Dividend / Shareholder Return
     # -----------------------------------------------------
 
-    if (
-        pd.notna(dividend)
-        and dividend >= 40
-        and (
-            pd.isna(fcf)
-            or fcf >= 0
-        )
-    ):
+    if pd.notna(dividend) and dividend >= 40 and (pd.isna(fcf) or fcf >= 0):
         return "Dividend / Shareholder Return"
-
 
     # -----------------------------------------------------
     # 3. Debt Reduction / Conservative
     # -----------------------------------------------------
 
-    if (
-        pd.notna(debt)
-        and debt <= 0.25
-        and (
-            pd.isna(roe)
-            or roe >= 12
-        )
-    ):
+    if pd.notna(debt) and debt <= 0.25 and (pd.isna(roe) or roe >= 12):
         return "Debt Reduction / Conservative"
-
 
     # -----------------------------------------------------
     # 4. Growth Reinvestment
@@ -225,53 +171,26 @@ def classify_company(row):
     ):
         return "Growth Reinvestment"
 
-
     # -----------------------------------------------------
     # 5. Cash Generation
     # -----------------------------------------------------
 
-    if (
-        pd.notna(fcf)
-        and fcf > 0
-        and (
-            pd.isna(dividend)
-            or dividend < 40
-        )
-    ):
+    if pd.notna(fcf) and fcf > 0 and (pd.isna(dividend) or dividend < 40):
         return "Cash Generation"
-
 
     # -----------------------------------------------------
     # 6. Leveraged Expansion
     # -----------------------------------------------------
 
-    if (
-        pd.notna(debt)
-        and debt > 1
-        and (
-            pd.isna(roe)
-            or roe >= 12
-        )
-    ):
+    if pd.notna(debt) and debt > 1 and (pd.isna(roe) or roe >= 12):
         return "Leveraged Expansion"
-
 
     # -----------------------------------------------------
     # 7. Turnaround / Restructuring
     # -----------------------------------------------------
 
-    if (
-        (
-            pd.notna(roe)
-            and roe < 10
-        )
-        or (
-            pd.notna(fcf)
-            and fcf < 0
-        )
-    ):
+    if (pd.notna(roe) and roe < 10) or (pd.notna(fcf) and fcf < 0):
         return "Turnaround / Restructuring"
-
 
     # -----------------------------------------------------
     # 8. Balanced Allocation
@@ -307,36 +226,29 @@ pattern_order = [
 # Pattern summary
 # ---------------------------------------------------------
 
-summary = (
-    df.groupby(
-        "capital_allocation_pattern",
-        as_index=False,
-    )
-    .agg(
-        Companies=(
-            "company_id",
-            "count",
-        ),
-        Total_FCF=(
-            "free_cash_flow_cr",
-            "sum",
-        ),
-    )
+summary = df.groupby(
+    "capital_allocation_pattern",
+    as_index=False,
+).agg(
+    Companies=(
+        "company_id",
+        "count",
+    ),
+    Total_FCF=(
+        "free_cash_flow_cr",
+        "sum",
+    ),
 )
 
 
 summary["Pattern"] = pd.Categorical(
-    summary[
-        "capital_allocation_pattern"
-    ],
+    summary["capital_allocation_pattern"],
     categories=pattern_order,
     ordered=True,
 )
 
 
-summary = summary.sort_values(
-    "Pattern"
-)
+summary = summary.sort_values("Pattern")
 
 
 # ---------------------------------------------------------
@@ -348,36 +260,29 @@ st.subheader("Capital Allocation Patterns")
 
 if summary.empty:
 
-    st.info(
-        "No capital allocation patterns are available."
-    )
+    st.info("No capital allocation patterns are available.")
 
 else:
 
     fig = px.treemap(
         summary,
-        path=[
-            "capital_allocation_pattern"
-        ],
+        path=["capital_allocation_pattern"],
         values="Companies",
         hover_data={
             "Companies": True,
             "Total_FCF": ":.2f",
         },
-        title=(
-            "Companies by Capital "
-            "Allocation Pattern"
-        ),
+        title=("Companies by Capital " "Allocation Pattern"),
     )
 
     fig.update_layout(
         height=600,
-        margin=dict(
-            l=20,
-            r=20,
-            t=70,
-            b=20,
-        ),
+        margin={
+            "l": 20,
+            "r": 20,
+            "t": 70,
+            "b": 20,
+        },
     )
 
     st.plotly_chart(
@@ -396,9 +301,7 @@ st.subheader("Companies by Pattern")
 available_patterns = [
     pattern
     for pattern in pattern_order
-    if pattern in df[
-        "capital_allocation_pattern"
-    ].unique()
+    if pattern in df["capital_allocation_pattern"].unique()
 ]
 
 
@@ -408,10 +311,7 @@ selected_pattern = st.selectbox(
 )
 
 
-pattern_companies = df[
-    df["capital_allocation_pattern"]
-    == selected_pattern
-].copy()
+pattern_companies = df[df["capital_allocation_pattern"] == selected_pattern].copy()
 
 
 # ---------------------------------------------------------
@@ -450,9 +350,7 @@ with col2:
 with col3:
 
     total_fcf = pd.to_numeric(
-        pattern_companies[
-            "free_cash_flow_cr"
-        ],
+        pattern_companies["free_cash_flow_cr"],
         errors="coerce",
     ).sum()
 
@@ -494,9 +392,7 @@ display_df = display_df.rename(
         "roe": "ROE",
         "debt_to_equity": "D/E",
         "free_cash_flow_cr": "FCF",
-        "dividend_payout_ratio_pct": (
-            "Dividend Payout %"
-        ),
+        "dividend_payout_ratio_pct": ("Dividend Payout %"),
         "capex_cr": "Capex",
     }
 )
@@ -516,9 +412,7 @@ for column in [
     ).round(2)
 
 
-display_df = display_df.sort_values(
-    "Company"
-)
+display_df = display_df.sort_values("Company")
 
 
 st.dataframe(

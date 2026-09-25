@@ -1,50 +1,29 @@
+"""Module providing N100 financial intelligence functionality."""
+
 from pathlib import Path
+
 import pandas as pd
 
 from src.analytics.ratios import (
-    return_on_equity,
     return_on_capital_employed,
+    return_on_equity,
 )
-
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
-COMPANIES_FILE = (
-    PROJECT_ROOT
-    / "data"
-    / "processed"
-    / "companies.csv"
-)
+COMPANIES_FILE = PROJECT_ROOT / "data" / "processed" / "companies.csv"
 
-PNL_FILE = (
-    PROJECT_ROOT
-    / "data"
-    / "processed"
-    / "profitandloss.csv"
-)
+PNL_FILE = PROJECT_ROOT / "data" / "processed" / "profitandloss.csv"
 
-BALANCE_FILE = (
-    PROJECT_ROOT
-    / "data"
-    / "processed"
-    / "balancesheet.csv"
-)
+BALANCE_FILE = PROJECT_ROOT / "data" / "processed" / "balancesheet.csv"
 
-SECTORS_FILE = (
-    PROJECT_ROOT
-    / "data"
-    / "processed"
-    / "sectors.csv"
-)
+SECTORS_FILE = PROJECT_ROOT / "data" / "processed" / "sectors.csv"
 
-OUTPUT_FILE = (
-    PROJECT_ROOT
-    / "output"
-    / "ratio_edge_cases.log"
-)
+OUTPUT_FILE = PROJECT_ROOT / "output" / "ratio_edge_cases.log"
 
 
 def number(value):
+    """Handle number."""
     if pd.isna(value):
         return None
 
@@ -66,26 +45,18 @@ def category(difference, threshold):
 
 
 def main():
-
+    """Run the module's main workflow."""
     print("=" * 80)
     print("DAY 13 — RATIO EDGE CASE CHECK")
     print("=" * 80)
 
-    companies = pd.read_csv(
-        COMPANIES_FILE
-    )
+    companies = pd.read_csv(COMPANIES_FILE)
 
-    pnl = pd.read_csv(
-        PNL_FILE
-    )
+    pnl = pd.read_csv(PNL_FILE)
 
-    balance = pd.read_csv(
-        BALANCE_FILE
-    )
+    balance = pd.read_csv(BALANCE_FILE)
 
-    sectors = pd.read_csv(
-        SECTORS_FILE
-    )
+    sectors = pd.read_csv(SECTORS_FILE)
 
     # ---------------------------------------------------------
     # Normalize IDs
@@ -98,34 +69,21 @@ def main():
         sectors,
     ]:
 
-        id_column = (
-            "company_id"
-            if "company_id" in df.columns
-            else "id"
-        )
+        id_column = "company_id" if "company_id" in df.columns else "id"
 
-        df[id_column] = (
-            df[id_column]
-            .astype(str)
-            .str.strip()
-            .str.upper()
-        )
+        df[id_column] = df[id_column].astype(str).str.strip().str.upper()
 
     # ---------------------------------------------------------
     # Normalize years
     # ---------------------------------------------------------
 
     pnl["_year"] = pd.to_numeric(
-        pnl["year"]
-        .astype(str)
-        .str.extract(r"(\d{4})")[0],
+        pnl["year"].astype(str).str.extract(r"(\d{4})")[0],
         errors="coerce",
     )
 
     balance["_year"] = pd.to_numeric(
-        balance["year"]
-        .astype(str)
-        .str.extract(r"(\d{4})")[0],
+        balance["year"].astype(str).str.extract(r"(\d{4})")[0],
         errors="coerce",
     )
 
@@ -186,25 +144,15 @@ def main():
 
         year = row["year_pnl"]
 
-        net_profit = number(
-            row.get("net_profit")
-        )
+        net_profit = number(row.get("net_profit"))
 
-        equity_capital = number(
-            row.get("equity_capital")
-        )
+        equity_capital = number(row.get("equity_capital"))
 
-        reserves = number(
-            row.get("reserves")
-        )
+        reserves = number(row.get("reserves"))
 
-        operating_profit = number(
-            row.get("operating_profit")
-        )
+        operating_profit = number(row.get("operating_profit"))
 
-        borrowings = number(
-            row.get("borrowings")
-        )
+        borrowings = number(row.get("borrowings"))
 
         calculated_roe = return_on_equity(
             net_profit,
@@ -212,36 +160,24 @@ def main():
             reserves,
         )
 
-        calculated_roce = (
-            return_on_capital_employed(
-                operating_profit,
-                equity_capital,
-                reserves,
-                borrowings,
-            )
+        calculated_roce = return_on_capital_employed(
+            operating_profit,
+            equity_capital,
+            reserves,
+            borrowings,
         )
 
-        source_roe = number(
-            row.get("source_roe")
-        )
+        source_roe = number(row.get("source_roe"))
 
-        source_roce = number(
-            row.get("source_roce")
-        )
+        source_roce = number(row.get("source_roce"))
 
         # -----------------------------------------------------
         # ROCE anomaly
         # -----------------------------------------------------
 
-        if (
-            calculated_roce is not None
-            and source_roce is not None
-        ):
+        if calculated_roce is not None and source_roce is not None:
 
-            roce_difference = abs(
-                calculated_roce
-                - source_roce
-            )
+            roce_difference = abs(calculated_roce - source_roce)
 
             if roce_difference > 5:
 
@@ -261,15 +197,9 @@ def main():
         # ROE anomaly
         # -----------------------------------------------------
 
-        if (
-            calculated_roe is not None
-            and source_roe is not None
-        ):
+        if calculated_roe is not None and source_roe is not None:
 
-            roe_difference = abs(
-                calculated_roe
-                - source_roe
-            )
+            roe_difference = abs(calculated_roe - source_roe)
 
             if roe_difference > 5:
 
@@ -300,78 +230,50 @@ def main():
         encoding="utf-8",
     ) as file:
 
+        file.write("N100 FINANCIAL INTELLIGENCE PLATFORM\n")
+
+        file.write("DAY 13 — RATIO EDGE CASE LOG\n")
+
+        file.write("=" * 80 + "\n\n")
+
+        file.write("Comparison:\n")
+
         file.write(
-            "N100 FINANCIAL INTELLIGENCE PLATFORM\n"
+            "Computed ROCE vs source ROCE: " "anomaly threshold > 5 percentage points\n"
         )
 
         file.write(
-            "DAY 13 — RATIO EDGE CASE LOG\n"
-        )
-
-        file.write(
-            "=" * 80 + "\n\n"
-        )
-
-        file.write(
-            "Comparison:\n"
-        )
-
-        file.write(
-            "Computed ROCE vs source ROCE: "
-            "anomaly threshold > 5 percentage points\n"
-        )
-
-        file.write(
-            "Computed ROE vs source ROE: "
-            "anomaly threshold > 5 percentage points\n\n"
+            "Computed ROE vs source ROE: " "anomaly threshold > 5 percentage points\n\n"
         )
 
         if not anomalies:
 
-            file.write(
-                "NO ANOMALIES FOUND.\n"
-            )
+            file.write("NO ANOMALIES FOUND.\n")
 
         else:
 
             for item in anomalies:
 
-                file.write(
-                    "-" * 80 + "\n"
-                )
+                file.write("-" * 80 + "\n")
 
-                file.write(
-                    f"Company: {item['company_id']}\n"
-                )
+                file.write(f"Company: {item['company_id']}\n")
 
-                file.write(
-                    f"Year: {item['year']}\n"
-                )
+                file.write(f"Year: {item['year']}\n")
 
-                file.write(
-                    f"Metric: {item['metric']}\n"
-                )
+                file.write(f"Metric: {item['metric']}\n")
 
-                file.write(
-                    f"Calculated: {item['calculated']:.4f}\n"
-                )
+                file.write(f"Calculated: {item['calculated']:.4f}\n")
 
-                file.write(
-                    f"Source: {item['source']:.4f}\n"
-                )
+                file.write(f"Source: {item['source']:.4f}\n")
 
-                file.write(
-                    f"Difference: {item['difference']:.4f}\n"
-                )
+                file.write(f"Difference: {item['difference']:.4f}\n")
 
-                file.write(
-                    f"Category: {item['category']}\n"
-                )
+                file.write(f"Category: {item['category']}\n")
 
                 file.write(
                     "Explanation: Source financial inputs produce a materially different "
-"ratio-engine result. The specified formula is retained for analytics; "
-"the source ratio is retained for display/reference.\n"
+                    "ratio-engine result. The specified formula is retained for analytics; "
+                    "the source ratio is retained for display/reference.\n"
                 )
 
     print()
@@ -386,9 +288,7 @@ def main():
     )
 
     print()
-    print(
-        "DAY 13 EDGE-CASE CHECK COMPLETE."
-    )
+    print("DAY 13 EDGE-CASE CHECK COMPLETE.")
 
 
 if __name__ == "__main__":
