@@ -1,0 +1,957 @@
+company_id,type,rule_id,text,confidence_pct
+ABB,pro,PRO02,Strong 5-year profit growth,78.39
+ABB,pro,PRO03,Healthy return on equity,91.2
+ABB,pro,PRO04,Healthy operating margin,79.76
+ABB,pro,PRO05,Healthy net profit margin,80.8
+ABB,pro,PRO06,Strong interest coverage,95
+ABB,pro,PRO07,Conservative debt-to-equity profile,79.33
+ABB,pro,PRO08,Positive free cash flow,80
+ABB,pro,PRO09,Positive operating cash flow,80
+ABB,pro,PRO10,Positive long-term EPS growth,88.32
+ABB,pro,PRO12,Reasonable asset utilization,87.53
+ABB,con,CON11,Low composite quality score,76.86
+ADANIENSOL,pro,PRO01,Strong 5-year revenue growth,70.7
+ADANIENSOL,pro,PRO02,Strong 5-year profit growth,67.86
+ADANIENSOL,pro,PRO04,Healthy operating margin,94.08
+ADANIENSOL,pro,PRO08,Positive free cash flow,80
+ADANIENSOL,pro,PRO09,Positive operating cash flow,80
+ADANIENSOL,pro,PRO10,Positive long-term EPS growth,74.74
+ADANIENSOL,con,CON03,Low return on equity,66.08
+ADANIENSOL,con,CON07,High debt-to-equity profile,84.33
+ADANIENSOL,con,CON11,Low composite quality score,92.89
+ADANIENSOL,con,CON12,Low asset utilization,66.63
+ADANIENT,pro,PRO01,Strong 5-year revenue growth,73.03
+ADANIENT,pro,PRO02,Strong 5-year profit growth,95
+ADANIENT,pro,PRO09,Positive operating cash flow,80
+ADANIENT,pro,PRO10,Positive long-term EPS growth,95
+ADANIENT,pro,PRO12,Reasonable asset utilization,77.01
+ADANIENT,con,CON03,Low return on equity,67.93
+ADANIENT,con,CON05,Low net profit margin,69.62
+ADANIENT,con,CON07,High debt-to-equity profile,71.71
+ADANIENT,con,CON08,Negative free cash flow,85
+ADANIENT,con,CON11,Low composite quality score,94.13
+ADANIGREEN,pro,PRO01,Strong 5-year revenue growth,95
+ADANIGREEN,pro,PRO04,Healthy operating margin,95
+ADANIGREEN,pro,PRO05,Healthy net profit margin,70.5
+ADANIGREEN,pro,PRO09,Positive operating cash flow,80
+ADANIGREEN,con,CON06,Weak interest coverage,67.86
+ADANIGREEN,con,CON07,High debt-to-equity profile,95
+ADANIGREEN,con,CON08,Negative free cash flow,85
+ADANIGREEN,con,CON11,Low composite quality score,90.9
+ADANIGREEN,con,CON12,Low asset utilization,84.53
+ADANIPORTS,pro,PRO01,Strong 5-year revenue growth,74.16
+ADANIPORTS,pro,PRO03,Healthy return on equity,65.53
+ADANIPORTS,pro,PRO04,Healthy operating margin,95
+ADANIPORTS,pro,PRO05,Healthy net profit margin,95
+ADANIPORTS,pro,PRO06,Strong interest coverage,71.9
+ADANIPORTS,pro,PRO08,Positive free cash flow,80
+ADANIPORTS,pro,PRO09,Positive operating cash flow,80
+ADANIPORTS,pro,PRO10,Positive long-term EPS growth,74.74
+ADANIPORTS,con,CON11,Low composite quality score,84.71
+ADANIPORTS,con,CON12,Low asset utilization,72.17
+ADANIPOWER,pro,PRO01,Strong 5-year revenue growth,67.17
+ADANIPOWER,pro,PRO03,Healthy return on equity,95
+ADANIPOWER,pro,PRO04,Healthy operating margin,95
+ADANIPOWER,pro,PRO05,Healthy net profit margin,95
+ADANIPOWER,pro,PRO06,Strong interest coverage,76.59
+ADANIPOWER,pro,PRO08,Positive free cash flow,80
+ADANIPOWER,pro,PRO09,Positive operating cash flow,80
+ADANIPOWER,pro,PRO12,Reasonable asset utilization,75.94
+ADANIPOWER,con,CON11,Low composite quality score,71.59
+AMBUJACEM,pro,PRO04,Healthy operating margin,71.45
+AMBUJACEM,pro,PRO05,Healthy net profit margin,71.43
+AMBUJACEM,pro,PRO06,Strong interest coverage,95
+AMBUJACEM,pro,PRO07,Conservative debt-to-equity profile,79.49
+AMBUJACEM,pro,PRO09,Positive operating cash flow,80
+AMBUJACEM,pro,PRO12,Reasonable asset utilization,75.16
+AMBUJACEM,con,CON01,Weak 5-year revenue growth,67.65
+AMBUJACEM,con,CON08,Negative free cash flow,85
+AMBUJACEM,con,CON11,Low composite quality score,89.65
+APOLLOHOSP,pro,PRO02,Strong 5-year profit growth,95
+APOLLOHOSP,pro,PRO06,Strong interest coverage,71.13
+APOLLOHOSP,pro,PRO08,Positive free cash flow,80
+APOLLOHOSP,pro,PRO09,Positive operating cash flow,80
+APOLLOHOSP,pro,PRO10,Positive long-term EPS growth,95
+APOLLOHOSP,pro,PRO12,Reasonable asset utilization,87.77
+APOLLOHOSP,con,CON05,Low net profit margin,65.28
+APOLLOHOSP,con,CON11,Low composite quality score,90.24
+ASIANPAINT,pro,PRO02,Strong 5-year profit growth,75.55
+ASIANPAINT,pro,PRO03,Healthy return on equity,87.02
+ASIANPAINT,pro,PRO04,Healthy operating margin,74.55
+ASIANPAINT,pro,PRO05,Healthy net profit margin,73.49
+ASIANPAINT,pro,PRO06,Strong interest coverage,95
+ASIANPAINT,pro,PRO07,Conservative debt-to-equity profile,76.04
+ASIANPAINT,pro,PRO08,Positive free cash flow,80
+ASIANPAINT,pro,PRO09,Positive operating cash flow,80
+ASIANPAINT,pro,PRO10,Positive long-term EPS growth,86.95
+ASIANPAINT,pro,PRO12,Reasonable asset utilization,88.74
+ASIANPAINT,con,CON11,Low composite quality score,79.43
+ATGL,pro,PRO01,Strong 5-year revenue growth,77.18
+ATGL,pro,PRO02,Strong 5-year profit growth,82.75
+ATGL,pro,PRO03,Healthy return on equity,70.49
+ATGL,pro,PRO04,Healthy operating margin,79.51
+ATGL,pro,PRO05,Healthy net profit margin,72.39
+ATGL,pro,PRO06,Strong interest coverage,81.01
+ATGL,pro,PRO07,Conservative debt-to-equity profile,66.95
+ATGL,pro,PRO08,Positive free cash flow,80
+ATGL,pro,PRO09,Positive operating cash flow,80
+ATGL,pro,PRO10,Positive long-term EPS growth,94.15
+ATGL,pro,PRO12,Reasonable asset utilization,78.58
+ATGL,con,CON11,Low composite quality score,86.06
+AXISBANK,pro,PRO02,Strong 5-year profit growth,95
+AXISBANK,pro,PRO03,Healthy return on equity,66.25
+AXISBANK,pro,PRO04,Healthy operating margin,94.54
+AXISBANK,pro,PRO05,Healthy net profit margin,84.1
+AXISBANK,pro,PRO10,Positive long-term EPS growth,95
+AXISBANK,con,CON06,Weak interest coverage,68.09
+AXISBANK,con,CON07,High debt-to-equity profile,95
+AXISBANK,con,CON08,Negative free cash flow,85
+AXISBANK,con,CON09,Negative operating cash flow,85
+AXISBANK,con,CON11,Low composite quality score,89.69
+AXISBANK,con,CON12,Low asset utilization,87.8
+BAJAJ-AUTO,pro,PRO03,Healthy return on equity,82.42
+BAJAJ-AUTO,pro,PRO04,Healthy operating margin,71.8
+BAJAJ-AUTO,pro,PRO05,Healthy net profit margin,75.77
+BAJAJ-AUTO,pro,PRO06,Strong interest coverage,95
+BAJAJ-AUTO,pro,PRO07,Conservative debt-to-equity profile,78.02
+BAJAJ-AUTO,pro,PRO08,Positive free cash flow,80
+BAJAJ-AUTO,pro,PRO09,Positive operating cash flow,80
+BAJAJ-AUTO,pro,PRO10,Positive long-term EPS growth,65.35
+BAJAJ-AUTO,pro,PRO12,Reasonable asset utilization,87.81
+BAJAJ-AUTO,con,CON11,Low composite quality score,81.67
+BAJAJFINSV,pro,PRO01,Strong 5-year revenue growth,76.95
+BAJAJFINSV,pro,PRO02,Strong 5-year profit growth,82.5
+BAJAJFINSV,pro,PRO03,Healthy return on equity,81.28
+BAJAJFINSV,pro,PRO04,Healthy operating margin,95
+BAJAJFINSV,pro,PRO05,Healthy net profit margin,71.19
+BAJAJFINSV,pro,PRO10,Positive long-term EPS growth,86.18
+BAJAJFINSV,con,CON07,High debt-to-equity profile,95
+BAJAJFINSV,con,CON08,Negative free cash flow,85
+BAJAJFINSV,con,CON09,Negative operating cash flow,85
+BAJAJFINSV,con,CON11,Low composite quality score,87.03
+BAJAJFINSV,con,CON12,Low asset utilization,74.46
+BAJAJHLDNG,pro,PRO01,Strong 5-year revenue growth,95
+BAJAJHLDNG,pro,PRO02,Strong 5-year profit growth,73.6
+BAJAJHLDNG,pro,PRO04,Healthy operating margin,95
+BAJAJHLDNG,pro,PRO05,Healthy net profit margin,95
+BAJAJHLDNG,pro,PRO06,Strong interest coverage,95
+BAJAJHLDNG,pro,PRO07,Conservative debt-to-equity profile,79.97
+BAJAJHLDNG,pro,PRO08,Positive free cash flow,80
+BAJAJHLDNG,pro,PRO09,Positive operating cash flow,80
+BAJAJHLDNG,pro,PRO10,Positive long-term EPS growth,82.94
+BAJAJHLDNG,pro,PRO11,High composite quality score,95
+BAJAJHLDNG,con,CON12,Low asset utilization,92.39
+BAJFINANCE,pro,PRO01,Strong 5-year revenue growth,83.71
+BAJFINANCE,pro,PRO02,Strong 5-year profit growth,93.65
+BAJFINANCE,pro,PRO03,Healthy return on equity,70.76
+BAJFINANCE,pro,PRO04,Healthy operating margin,86.43
+BAJFINANCE,pro,PRO05,Healthy net profit margin,89.43
+BAJFINANCE,pro,PRO06,Strong interest coverage,95
+BAJFINANCE,pro,PRO10,Positive long-term EPS growth,95
+BAJFINANCE,con,CON07,High debt-to-equity profile,93.25
+BAJFINANCE,con,CON08,Negative free cash flow,85
+BAJFINANCE,con,CON09,Negative operating cash flow,85
+BAJFINANCE,con,CON11,Low composite quality score,87.59
+BAJFINANCE,con,CON12,Low asset utilization,80.37
+BANKBARODA,pro,PRO01,Strong 5-year revenue growth,69.95
+BANKBARODA,pro,PRO02,Strong 5-year profit growth,95
+BANKBARODA,pro,PRO03,Healthy return on equity,66.14
+BANKBARODA,pro,PRO04,Healthy operating margin,95
+BANKBARODA,pro,PRO05,Healthy net profit margin,73.91
+BANKBARODA,pro,PRO10,Positive long-term EPS growth,95
+BANKBARODA,con,CON06,Weak interest coverage,66.03
+BANKBARODA,con,CON07,High debt-to-equity profile,95
+BANKBARODA,con,CON08,Negative free cash flow,85
+BANKBARODA,con,CON09,Negative operating cash flow,85
+BANKBARODA,con,CON11,Low composite quality score,91.35
+BANKBARODA,con,CON12,Low asset utilization,87.85
+BEL,pro,PRO02,Strong 5-year profit growth,67.25
+BEL,pro,PRO03,Healthy return on equity,95
+BEL,pro,PRO04,Healthy operating margin,79.88
+BEL,pro,PRO05,Healthy net profit margin,79.49
+BEL,pro,PRO06,Strong interest coverage,95
+BEL,pro,PRO09,Positive operating cash flow,80
+BEL,pro,PRO10,Positive long-term EPS growth,66.51
+BEL,pro,PRO11,High composite quality score,95
+BEL,pro,PRO12,Reasonable asset utilization,95
+BEL,con,CON08,Negative free cash flow,85
+BHARTIARTL,pro,PRO02,Strong 5-year profit growth,95
+BHARTIARTL,pro,PRO04,Healthy operating margin,95
+BHARTIARTL,pro,PRO08,Positive free cash flow,80
+BHARTIARTL,pro,PRO09,Positive operating cash flow,80
+BHARTIARTL,pro,PRO10,Positive long-term EPS growth,95
+BHARTIARTL,con,CON07,High debt-to-equity profile,81.09
+BHARTIARTL,con,CON11,Low composite quality score,89.34
+BHEL,pro,PRO07,Conservative debt-to-equity profile,69.13
+BHEL,con,CON01,Weak 5-year revenue growth,94.19
+BHEL,con,CON02,Weak 5-year profit growth,95
+BHEL,con,CON03,Low return on equity,82.69
+BHEL,con,CON04,Low operating margin,79.05
+BHEL,con,CON05,Low net profit margin,76.46
+BHEL,con,CON06,Weak interest coverage,69.07
+BHEL,con,CON08,Negative free cash flow,85
+BHEL,con,CON09,Negative operating cash flow,85
+BHEL,con,CON10,Declining long-term EPS,95
+BHEL,con,CON11,Low composite quality score,95
+BOSCHLTD,pro,PRO03,Healthy return on equity,73.46
+BOSCHLTD,pro,PRO05,Healthy net profit margin,72.33
+BOSCHLTD,pro,PRO06,Strong interest coverage,95
+BOSCHLTD,pro,PRO07,Conservative debt-to-equity profile,79.9
+BOSCHLTD,pro,PRO08,Positive free cash flow,80
+BOSCHLTD,pro,PRO09,Positive operating cash flow,80
+BOSCHLTD,pro,PRO12,Reasonable asset utilization,84.28
+BOSCHLTD,con,CON11,Low composite quality score,86.55
+BPCL,pro,PRO02,Strong 5-year profit growth,86.58
+BPCL,pro,PRO03,Healthy return on equity,95
+BPCL,pro,PRO06,Strong interest coverage,82.71
+BPCL,pro,PRO08,Positive free cash flow,80
+BPCL,pro,PRO09,Positive operating cash flow,80
+BPCL,pro,PRO10,Positive long-term EPS growth,95
+BPCL,pro,PRO12,Reasonable asset utilization,95
+BPCL,con,CON04,Low operating margin,65.32
+BPCL,con,CON11,Low composite quality score,80.61
+BRITANNIA,pro,PRO03,Healthy return on equity,95
+BRITANNIA,pro,PRO04,Healthy operating margin,70.83
+BRITANNIA,pro,PRO05,Healthy net profit margin,69.09
+BRITANNIA,pro,PRO06,Strong interest coverage,95
+BRITANNIA,pro,PRO08,Positive free cash flow,80
+BRITANNIA,pro,PRO09,Positive operating cash flow,80
+BRITANNIA,pro,PRO10,Positive long-term EPS growth,71.29
+BRITANNIA,pro,PRO12,Reasonable asset utilization,95
+BRITANNIA,con,CON11,Low composite quality score,69.64
+CANBK,pro,PRO01,Strong 5-year revenue growth,71.35
+CANBK,pro,PRO02,Strong 5-year profit growth,95
+CANBK,pro,PRO03,Healthy return on equity,67.57
+CANBK,pro,PRO04,Healthy operating margin,95
+CANBK,pro,PRO05,Healthy net profit margin,70.9
+CANBK,pro,PRO08,Positive free cash flow,80
+CANBK,pro,PRO09,Positive operating cash flow,80
+CANBK,pro,PRO10,Positive long-term EPS growth,95
+CANBK,con,CON06,Weak interest coverage,68.89
+CANBK,con,CON07,High debt-to-equity profile,95
+CANBK,con,CON11,Low composite quality score,91.53
+CANBK,con,CON12,Low asset utilization,87.8
+CHOLAFIN,pro,PRO01,Strong 5-year revenue growth,78.88
+CHOLAFIN,pro,PRO02,Strong 5-year profit growth,81.73
+CHOLAFIN,pro,PRO03,Healthy return on equity,68.68
+CHOLAFIN,pro,PRO04,Healthy operating margin,84.65
+CHOLAFIN,pro,PRO05,Healthy net profit margin,76.77
+CHOLAFIN,pro,PRO06,Strong interest coverage,95
+CHOLAFIN,pro,PRO10,Positive long-term EPS growth,89.55
+CHOLAFIN,con,CON07,High debt-to-equity profile,95
+CHOLAFIN,con,CON08,Negative free cash flow,85
+CHOLAFIN,con,CON09,Negative operating cash flow,85
+CHOLAFIN,con,CON11,Low composite quality score,90.27
+CHOLAFIN,con,CON12,Low asset utilization,82.77
+CIPLA,pro,PRO02,Strong 5-year profit growth,80.45
+CIPLA,pro,PRO03,Healthy return on equity,65.83
+CIPLA,pro,PRO04,Healthy operating margin,95
+CIPLA,pro,PRO05,Healthy net profit margin,74.18
+CIPLA,pro,PRO06,Strong interest coverage,95
+CIPLA,pro,PRO07,Conservative debt-to-equity profile,79.37
+CIPLA,pro,PRO08,Positive free cash flow,80
+CIPLA,pro,PRO09,Positive operating cash flow,80
+CIPLA,pro,PRO10,Positive long-term EPS growth,88.67
+CIPLA,pro,PRO12,Reasonable asset utilization,80.84
+CIPLA,con,CON11,Low composite quality score,74.02
+COALINDIA,pro,PRO02,Strong 5-year profit growth,67.86
+COALINDIA,pro,PRO03,Healthy return on equity,95
+COALINDIA,pro,PRO04,Healthy operating margin,95
+COALINDIA,pro,PRO05,Healthy net profit margin,89.38
+COALINDIA,pro,PRO06,Strong interest coverage,82.48
+COALINDIA,pro,PRO07,Conservative debt-to-equity profile,77.63
+COALINDIA,pro,PRO08,Positive free cash flow,80
+COALINDIA,pro,PRO09,Positive operating cash flow,80
+COALINDIA,pro,PRO10,Positive long-term EPS growth,78.7
+COALINDIA,pro,PRO12,Reasonable asset utilization,77.04
+COALINDIA,con,CON_FALLBACK,Financial profile warrants continued monitoring,61
+DABUR,pro,PRO03,Healthy return on equity,70.03
+DABUR,pro,PRO04,Healthy operating margin,71.52
+DABUR,pro,PRO05,Healthy net profit margin,71.9
+DABUR,pro,PRO06,Strong interest coverage,95
+DABUR,pro,PRO07,Conservative debt-to-equity profile,75.85
+DABUR,pro,PRO08,Positive free cash flow,80
+DABUR,pro,PRO09,Positive operating cash flow,80
+DABUR,pro,PRO12,Reasonable asset utilization,81.41
+DABUR,con,CON02,Weak 5-year profit growth,66.19
+DABUR,con,CON11,Low composite quality score,86.21
+DIVISLAB,pro,PRO04,Healthy operating margin,84.76
+DIVISLAB,pro,PRO05,Healthy net profit margin,80.59
+DIVISLAB,pro,PRO06,Strong interest coverage,95
+DIVISLAB,pro,PRO07,Conservative debt-to-equity profile,79.99
+DIVISLAB,pro,PRO08,Positive free cash flow,80
+DIVISLAB,pro,PRO09,Positive operating cash flow,80
+DIVISLAB,pro,PRO12,Reasonable asset utilization,75.15
+DIVISLAB,con,CON02,Weak 5-year profit growth,69.77
+DIVISLAB,con,CON11,Low composite quality score,87.76
+DLF,pro,PRO02,Strong 5-year profit growth,66.39
+DLF,pro,PRO04,Healthy operating margin,92.07
+DLF,pro,PRO05,Healthy net profit margin,95
+DLF,pro,PRO06,Strong interest coverage,74.92
+DLF,pro,PRO07,Conservative debt-to-equity profile,76.32
+DLF,pro,PRO08,Positive free cash flow,80
+DLF,pro,PRO09,Positive operating cash flow,80
+DLF,pro,PRO10,Positive long-term EPS growth,70.78
+DLF,con,CON01,Weak 5-year revenue growth,95
+DLF,con,CON03,Low return on equity,71.18
+DLF,con,CON11,Low composite quality score,86.45
+DLF,con,CON12,Low asset utilization,84.12
+DMART,pro,PRO01,Strong 5-year revenue growth,75.97
+DMART,pro,PRO02,Strong 5-year profit growth,80.93
+DMART,pro,PRO06,Strong interest coverage,95
+DMART,pro,PRO07,Conservative debt-to-equity profile,79.05
+DMART,pro,PRO08,Positive free cash flow,80
+DMART,pro,PRO09,Positive operating cash flow,80
+DMART,pro,PRO10,Positive long-term EPS growth,90.48
+DMART,pro,PRO12,Reasonable asset utilization,95
+DMART,con,CON04,Low operating margin,68.83
+DMART,con,CON05,Low net profit margin,65.02
+DMART,con,CON11,Low composite quality score,89.44
+DRREDDY,pro,PRO02,Strong 5-year profit growth,81.79
+DRREDDY,pro,PRO03,Healthy return on equity,72.11
+DRREDDY,pro,PRO04,Healthy operating margin,84.98
+DRREDDY,pro,PRO05,Healthy net profit margin,79.87
+DRREDDY,pro,PRO06,Strong interest coverage,95
+DRREDDY,pro,PRO07,Conservative debt-to-equity profile,77.87
+DRREDDY,pro,PRO08,Positive free cash flow,80
+DRREDDY,pro,PRO09,Positive operating cash flow,80
+DRREDDY,pro,PRO10,Positive long-term EPS growth,92.68
+DRREDDY,pro,PRO12,Reasonable asset utilization,79.45
+DRREDDY,con,CON11,Low composite quality score,83.35
+EICHERMOT,pro,PRO03,Healthy return on equity,75.76
+EICHERMOT,pro,PRO04,Healthy operating margin,81.77
+EICHERMOT,pro,PRO05,Healthy net profit margin,86.29
+EICHERMOT,pro,PRO06,Strong interest coverage,95
+EICHERMOT,pro,PRO07,Conservative debt-to-equity profile,79.3
+EICHERMOT,pro,PRO08,Positive free cash flow,80
+EICHERMOT,pro,PRO09,Positive operating cash flow,80
+EICHERMOT,pro,PRO10,Positive long-term EPS growth,70.01
+EICHERMOT,pro,PRO12,Reasonable asset utilization,79.31
+EICHERMOT,con,CON11,Low composite quality score,82.37
+GAIL,pro,PRO06,Strong interest coverage,95
+GAIL,pro,PRO07,Conservative debt-to-equity profile,71.51
+GAIL,pro,PRO08,Positive free cash flow,80
+GAIL,pro,PRO09,Positive operating cash flow,80
+GAIL,pro,PRO12,Reasonable asset utilization,86.36
+GAIL,con,CON11,Low composite quality score,91.04
+GODREJCP,pro,PRO04,Healthy operating margin,73.97
+GODREJCP,pro,PRO07,Conservative debt-to-equity profile,72.33
+GODREJCP,pro,PRO09,Positive operating cash flow,80
+GODREJCP,pro,PRO12,Reasonable asset utilization,80.33
+GODREJCP,con,CON03,Low return on equity,93.91
+GODREJCP,con,CON05,Low net profit margin,91.94
+GODREJCP,con,CON08,Negative free cash flow,85
+GODREJCP,con,CON11,Low composite quality score,95
+GRASIM,pro,PRO02,Strong 5-year profit growth,93.63
+GRASIM,pro,PRO04,Healthy operating margin,73.64
+GRASIM,pro,PRO10,Positive long-term EPS growth,95
+GRASIM,con,CON07,High debt-to-equity profile,70.47
+GRASIM,con,CON08,Negative free cash flow,85
+GRASIM,con,CON09,Negative operating cash flow,85
+GRASIM,con,CON11,Low composite quality score,92.22
+HAL,pro,PRO02,Strong 5-year profit growth,87.97
+HAL,pro,PRO03,Healthy return on equity,95
+HAL,pro,PRO04,Healthy operating margin,90.63
+HAL,pro,PRO05,Healthy net profit margin,87.5
+HAL,pro,PRO06,Strong interest coverage,95
+HAL,pro,PRO08,Positive free cash flow,80
+HAL,pro,PRO09,Positive operating cash flow,80
+HAL,pro,PRO10,Positive long-term EPS growth,95
+HAL,pro,PRO11,High composite quality score,95
+HAL,pro,PRO12,Reasonable asset utilization,95
+HAL,con,CON_FALLBACK,Financial profile warrants continued monitoring,61
+HAVELLS,pro,PRO03,Healthy return on equity,68.1
+HAVELLS,pro,PRO06,Strong interest coverage,95
+HAVELLS,pro,PRO07,Conservative debt-to-equity profile,78.78
+HAVELLS,pro,PRO08,Positive free cash flow,80
+HAVELLS,pro,PRO09,Positive operating cash flow,80
+HAVELLS,pro,PRO12,Reasonable asset utilization,94.9
+HAVELLS,con,CON11,Low composite quality score,87.58
+HCLTECH,pro,PRO03,Healthy return on equity,77.02
+HCLTECH,pro,PRO04,Healthy operating margin,75.52
+HCLTECH,pro,PRO05,Healthy net profit margin,71.44
+HCLTECH,pro,PRO06,Strong interest coverage,95
+HCLTECH,pro,PRO07,Conservative debt-to-equity profile,77.47
+HCLTECH,pro,PRO08,Positive free cash flow,80
+HCLTECH,pro,PRO09,Positive operating cash flow,80
+HCLTECH,pro,PRO12,Reasonable asset utilization,87.2
+HCLTECH,con,CON11,Low composite quality score,82.22
+HDFCBANK,pro,PRO01,Strong 5-year revenue growth,78.9
+HDFCBANK,pro,PRO02,Strong 5-year profit growth,82.73
+HDFCBANK,pro,PRO04,Healthy operating margin,95
+HDFCBANK,pro,PRO05,Healthy net profit margin,84.61
+HDFCBANK,pro,PRO08,Positive free cash flow,80
+HDFCBANK,pro,PRO09,Positive operating cash flow,80
+HDFCBANK,pro,PRO10,Positive long-term EPS growth,75.85
+HDFCBANK,con,CON06,Weak interest coverage,70.99
+HDFCBANK,con,CON07,High debt-to-equity profile,95
+HDFCBANK,con,CON11,Low composite quality score,89.41
+HDFCBANK,con,CON12,Low asset utilization,87.96
+HDFCLIFE,pro,PRO01,Strong 5-year revenue growth,77.34
+HDFCLIFE,pro,PRO04,Healthy operating margin,95
+HDFCLIFE,pro,PRO06,Strong interest coverage,95
+HDFCLIFE,pro,PRO07,Conservative debt-to-equity profile,78.06
+HDFCLIFE,pro,PRO09,Positive operating cash flow,80
+HDFCLIFE,pro,PRO11,High composite quality score,95
+HDFCLIFE,con,CON02,Weak 5-year profit growth,67.24
+HDFCLIFE,con,CON05,Low net profit margin,75.35
+HDFCLIFE,con,CON08,Negative free cash flow,85
+HEROMOTOCO,pro,PRO03,Healthy return on equity,74.21
+HEROMOTOCO,pro,PRO04,Healthy operating margin,95
+HEROMOTOCO,pro,PRO06,Strong interest coverage,95
+HEROMOTOCO,pro,PRO07,Conservative debt-to-equity profile,78.97
+HEROMOTOCO,pro,PRO08,Positive free cash flow,80
+HEROMOTOCO,pro,PRO09,Positive operating cash flow,80
+HEROMOTOCO,pro,PRO12,Reasonable asset utilization,93.9
+HEROMOTOCO,con,CON01,Weak 5-year revenue growth,73.54
+HEROMOTOCO,con,CON02,Weak 5-year profit growth,75.37
+HINDALCO,pro,PRO04,Healthy operating margin,95
+HINDALCO,pro,PRO06,Strong interest coverage,95
+HINDALCO,pro,PRO08,Positive free cash flow,80
+HINDALCO,pro,PRO09,Positive operating cash flow,80
+HINDALCO,pro,PRO10,Positive long-term EPS growth,71.79
+HINDALCO,pro,PRO12,Reasonable asset utilization,83.72
+HINDALCO,con,CON03,Low return on equity,65.87
+HINDALCO,con,CON05,Low net profit margin,65.89
+HINDALCO,con,CON11,Low composite quality score,66.65
+HINDUNILVR,pro,PRO03,Healthy return on equity,72.61
+HINDUNILVR,pro,PRO04,Healthy operating margin,95
+HINDUNILVR,pro,PRO05,Healthy net profit margin,74.92
+HINDUNILVR,pro,PRO06,Strong interest coverage,95
+HINDUNILVR,pro,PRO07,Conservative debt-to-equity profile,79.13
+HINDUNILVR,pro,PRO08,Positive free cash flow,80
+HINDUNILVR,pro,PRO09,Positive operating cash flow,80
+HINDUNILVR,pro,PRO12,Reasonable asset utilization,80.77
+HINDUNILVR,con,CON11,Low composite quality score,68.22
+ICICIBANK,pro,PRO01,Strong 5-year revenue growth,69.5
+ICICIBANK,pro,PRO02,Strong 5-year profit growth,95
+ICICIBANK,pro,PRO03,Healthy return on equity,69.49
+ICICIBANK,pro,PRO04,Healthy operating margin,95
+ICICIBANK,pro,PRO05,Healthy net profit margin,93.33
+ICICIBANK,pro,PRO08,Positive free cash flow,80
+ICICIBANK,pro,PRO09,Positive operating cash flow,80
+ICICIBANK,pro,PRO10,Positive long-term EPS growth,95
+ICICIBANK,con,CON06,Weak interest coverage,71.99
+ICICIBANK,con,CON07,High debt-to-equity profile,95
+ICICIBANK,con,CON11,Low composite quality score,86.96
+ICICIBANK,con,CON12,Low asset utilization,88.25
+ICICIGI,pro,PRO03,Healthy return on equity,66.08
+ICICIGI,pro,PRO04,Healthy operating margin,95
+ICICIGI,pro,PRO06,Strong interest coverage,95
+ICICIGI,pro,PRO07,Conservative debt-to-equity profile,79.91
+ICICIGI,pro,PRO08,Positive free cash flow,80
+ICICIGI,pro,PRO09,Positive operating cash flow,80
+ICICIGI,pro,PRO10,Positive long-term EPS growth,67.28
+ICICIGI,con,CON_FALLBACK,Financial profile warrants continued monitoring,61
+ICICIPRULI,pro,PRO01,Strong 5-year revenue growth,68.69
+ICICIPRULI,pro,PRO04,Healthy operating margin,95
+ICICIPRULI,pro,PRO06,Strong interest coverage,95
+ICICIPRULI,pro,PRO07,Conservative debt-to-equity profile,76.73
+ICICIPRULI,pro,PRO08,Positive free cash flow,80
+ICICIPRULI,pro,PRO11,High composite quality score,95
+ICICIPRULI,con,CON02,Weak 5-year profit growth,95
+ICICIPRULI,con,CON03,Low return on equity,69.53
+ICICIPRULI,con,CON05,Low net profit margin,77.17
+ICICIPRULI,con,CON09,Negative operating cash flow,85
+ICICIPRULI,con,CON10,Declining long-term EPS,81.18
+INDIGO,pro,PRO01,Strong 5-year revenue growth,73.63
+INDIGO,pro,PRO02,Strong 5-year profit growth,95
+INDIGO,pro,PRO03,Healthy return on equity,95
+INDIGO,pro,PRO04,Healthy operating margin,95
+INDIGO,pro,PRO05,Healthy net profit margin,67.78
+INDIGO,pro,PRO06,Strong interest coverage,95
+INDIGO,pro,PRO07,Conservative debt-to-equity profile,79.44
+INDIGO,pro,PRO08,Positive free cash flow,80
+INDIGO,pro,PRO09,Positive operating cash flow,80
+INDIGO,pro,PRO10,Positive long-term EPS growth,95
+INDIGO,pro,PRO11,High composite quality score,95
+INDIGO,pro,PRO12,Reasonable asset utilization,95
+INDIGO,con,CON_FALLBACK,Financial profile warrants continued monitoring,61
+INDUSINDBK,pro,PRO01,Strong 5-year revenue growth,65.99
+INDUSINDBK,pro,PRO02,Strong 5-year profit growth,79.15
+INDUSINDBK,pro,PRO04,Healthy operating margin,95
+INDUSINDBK,pro,PRO05,Healthy net profit margin,79.35
+INDUSINDBK,pro,PRO10,Positive long-term EPS growth,76.79
+INDUSINDBK,con,CON06,Weak interest coverage,66.2
+INDUSINDBK,con,CON07,High debt-to-equity profile,95
+INDUSINDBK,con,CON08,Negative free cash flow,85
+INDUSINDBK,con,CON09,Negative operating cash flow,85
+INDUSINDBK,con,CON11,Low composite quality score,90.63
+INDUSINDBK,con,CON12,Low asset utilization,86.12
+INFY,pro,PRO03,Healthy return on equity,87.18
+INFY,pro,PRO04,Healthy operating margin,78.06
+INFY,pro,PRO05,Healthy net profit margin,75.62
+INFY,pro,PRO06,Strong interest coverage,95
+INFY,pro,PRO07,Conservative debt-to-equity profile,77.15
+INFY,pro,PRO08,Positive free cash flow,80
+INFY,pro,PRO09,Positive operating cash flow,80
+INFY,pro,PRO10,Positive long-term EPS growth,69.95
+INFY,pro,PRO12,Reasonable asset utilization,87.6
+INFY,con,CON11,Low composite quality score,78.56
+IOC,pro,PRO02,Strong 5-year profit growth,75.2
+IOC,pro,PRO03,Healthy return on equity,77.8
+IOC,pro,PRO06,Strong interest coverage,80.56
+IOC,pro,PRO08,Positive free cash flow,80
+IOC,pro,PRO09,Positive operating cash flow,80
+IOC,pro,PRO10,Positive long-term EPS growth,85.22
+IOC,pro,PRO12,Reasonable asset utilization,95
+IOC,con,CON04,Low operating margin,65.51
+IOC,con,CON11,Low composite quality score,86.34
+IRCTC,pro,PRO01,Strong 5-year revenue growth,70.91
+IRCTC,pro,PRO02,Strong 5-year profit growth,93.33
+IRCTC,pro,PRO03,Healthy return on equity,94.09
+IRCTC,pro,PRO04,Healthy operating margin,94.0
+IRCTC,pro,PRO05,Healthy net profit margin,89.03
+IRCTC,pro,PRO06,Strong interest coverage,95
+IRCTC,pro,PRO07,Conservative debt-to-equity profile,79.44
+IRCTC,pro,PRO08,Positive free cash flow,80
+IRCTC,pro,PRO09,Positive operating cash flow,80
+IRCTC,pro,PRO10,Positive long-term EPS growth,95
+IRCTC,pro,PRO12,Reasonable asset utilization,79.02
+IRCTC,con,CON11,Low composite quality score,73.58
+IRFC,pro,PRO01,Strong 5-year revenue growth,73.13
+IRFC,pro,PRO02,Strong 5-year profit growth,81.49
+IRFC,pro,PRO04,Healthy operating margin,95
+IRFC,pro,PRO05,Healthy net profit margin,86.1
+IRFC,pro,PRO08,Positive free cash flow,80
+IRFC,pro,PRO09,Positive operating cash flow,80
+IRFC,pro,PRO10,Positive long-term EPS growth,85.22
+IRFC,con,CON06,Weak interest coverage,71.81
+IRFC,con,CON07,High debt-to-equity profile,95
+IRFC,con,CON11,Low composite quality score,89.27
+IRFC,con,CON12,Low asset utilization,89.51
+ITC,pro,PRO03,Healthy return on equity,84.28
+ITC,pro,PRO04,Healthy operating margin,95
+ITC,pro,PRO05,Healthy net profit margin,93.92
+ITC,pro,PRO06,Strong interest coverage,95
+ITC,pro,PRO07,Conservative debt-to-equity profile,79.88
+ITC,pro,PRO08,Positive free cash flow,80
+ITC,pro,PRO09,Positive operating cash flow,80
+ITC,pro,PRO12,Reasonable asset utilization,80.45
+ITC,con,CON11,Low composite quality score,76.76
+JINDALSTEL,pro,PRO04,Healthy operating margin,72.89
+JINDALSTEL,pro,PRO05,Healthy net profit margin,67.7
+JINDALSTEL,pro,PRO06,Strong interest coverage,76.01
+JINDALSTEL,pro,PRO07,Conservative debt-to-equity profile,68.85
+JINDALSTEL,pro,PRO09,Positive operating cash flow,80
+JINDALSTEL,pro,PRO12,Reasonable asset utilization,77.8
+JINDALSTEL,con,CON01,Weak 5-year revenue growth,75.79
+JINDALSTEL,con,CON08,Negative free cash flow,85
+JINDALSTEL,con,CON11,Low composite quality score,89.34
+JIOFIN,pro,PRO04,Healthy operating margin,95
+JIOFIN,pro,PRO05,Healthy net profit margin,95
+JIOFIN,pro,PRO06,Strong interest coverage,95
+JIOFIN,pro,PRO07,Conservative debt-to-equity profile,80.0
+JIOFIN,pro,PRO08,Positive free cash flow,80
+JIOFIN,con,CON03,Low return on equity,82.69
+JIOFIN,con,CON09,Negative operating cash flow,85
+JIOFIN,con,CON11,Low composite quality score,77.8
+JIOFIN,con,CON12,Low asset utilization,93.72
+JSWENERGY,pro,PRO02,Strong 5-year profit growth,75.64
+JSWENERGY,pro,PRO04,Healthy operating margin,95
+JSWENERGY,pro,PRO05,Healthy net profit margin,72.53
+JSWENERGY,pro,PRO09,Positive operating cash flow,80
+JSWENERGY,pro,PRO10,Positive long-term EPS growth,85.22
+JSWENERGY,con,CON01,Weak 5-year revenue growth,65.96
+JSWENERGY,con,CON03,Low return on equity,68.44
+JSWENERGY,con,CON07,High debt-to-equity profile,70.16
+JSWENERGY,con,CON08,Negative free cash flow,85
+JSWENERGY,con,CON11,Low composite quality score,91.56
+JSWENERGY,con,CON12,Low asset utilization,75.12
+JSWSTEEL,pro,PRO01,Strong 5-year revenue growth,66.21
+JSWSTEEL,pro,PRO04,Healthy operating margin,66.63
+JSWSTEEL,pro,PRO09,Positive operating cash flow,80
+JSWSTEEL,pro,PRO12,Reasonable asset utilization,80.36
+JSWSTEEL,con,CON02,Weak 5-year profit growth,69.24
+JSWSTEEL,con,CON07,High debt-to-equity profile,66.33
+JSWSTEEL,con,CON08,Negative free cash flow,85
+JSWSTEEL,con,CON11,Low composite quality score,91.39
+KOTAKBANK,pro,PRO02,Strong 5-year profit growth,75.76
+KOTAKBANK,pro,PRO04,Healthy operating margin,95
+KOTAKBANK,pro,PRO05,Healthy net profit margin,95
+KOTAKBANK,pro,PRO08,Positive free cash flow,80
+KOTAKBANK,pro,PRO09,Positive operating cash flow,80
+KOTAKBANK,pro,PRO10,Positive long-term EPS growth,83.69
+KOTAKBANK,con,CON06,Weak interest coverage,72.64
+KOTAKBANK,con,CON07,High debt-to-equity profile,95
+KOTAKBANK,con,CON11,Low composite quality score,86.57
+KOTAKBANK,con,CON12,Low asset utilization,87.67
+LICI,pro,PRO02,Strong 5-year profit growth,95
+LICI,pro,PRO03,Healthy return on equity,95
+LICI,pro,PRO06,Strong interest coverage,95
+LICI,pro,PRO07,Conservative debt-to-equity profile,80.0
+LICI,pro,PRO08,Positive free cash flow,80
+LICI,pro,PRO09,Positive operating cash flow,80
+LICI,con,CON04,Low operating margin,77.25
+LICI,con,CON05,Low net profit margin,65.49
+LICI,con,CON11,Low composite quality score,76.49
+LICI,con,CON12,Low asset utilization,79.09
+LODHA,pro,PRO04,Healthy operating margin,81.25
+LODHA,pro,PRO05,Healthy net profit margin,72.6
+LODHA,pro,PRO06,Strong interest coverage,71.26
+LODHA,pro,PRO07,Conservative debt-to-equity profile,66.78
+LODHA,pro,PRO09,Positive operating cash flow,80
+LODHA,con,CON01,Weak 5-year revenue growth,88.48
+LODHA,con,CON02,Weak 5-year profit growth,83.36
+LODHA,con,CON03,Low return on equity,67.21
+LODHA,con,CON08,Negative free cash flow,85
+LODHA,con,CON10,Declining long-term EPS,80.59
+LODHA,con,CON11,Low composite quality score,91.31
+LODHA,con,CON12,Low asset utilization,73.14
+LT,pro,PRO03,Healthy return on equity,95
+LT,pro,PRO07,Conservative debt-to-equity profile,76.9
+LT,pro,PRO08,Positive free cash flow,80
+LT,pro,PRO09,Positive operating cash flow,80
+LT,pro,PRO12,Reasonable asset utilization,95
+LT,con,CON_FALLBACK,Financial profile warrants continued monitoring,61
+LTIM,pro,PRO01,Strong 5-year revenue growth,95
+LTIM,pro,PRO02,Strong 5-year profit growth,84.55
+LTIM,pro,PRO03,Healthy return on equity,76.86
+LTIM,pro,PRO04,Healthy operating margin,69.47
+LTIM,pro,PRO05,Healthy net profit margin,69.36
+LTIM,pro,PRO06,Strong interest coverage,95
+LTIM,pro,PRO07,Conservative debt-to-equity profile,76.9
+LTIM,pro,PRO08,Positive free cash flow,80
+LTIM,pro,PRO09,Positive operating cash flow,80
+LTIM,pro,PRO10,Positive long-term EPS growth,69.49
+LTIM,pro,PRO12,Reasonable asset utilization,90.79
+LTIM,con,CON11,Low composite quality score,83.5
+M&M,pro,PRO02,Strong 5-year profit growth,65.63
+M&M,pro,PRO03,Healthy return on equity,70.31
+M&M,pro,PRO04,Healthy operating margin,69.35
+M&M,pro,PRO10,Positive long-term EPS growth,77.35
+M&M,pro,PRO12,Reasonable asset utilization,76.85
+M&M,con,CON07,High debt-to-equity profile,71.41
+M&M,con,CON08,Negative free cash flow,85
+M&M,con,CON09,Negative operating cash flow,85
+M&M,con,CON11,Low composite quality score,89.45
+MARUTI,pro,PRO03,Healthy return on equity,66.13
+MARUTI,pro,PRO06,Strong interest coverage,95
+MARUTI,pro,PRO07,Conservative debt-to-equity profile,79.96
+MARUTI,pro,PRO08,Positive free cash flow,80
+MARUTI,pro,PRO09,Positive operating cash flow,80
+MARUTI,pro,PRO10,Positive long-term EPS growth,67.28
+MARUTI,pro,PRO12,Reasonable asset utilization,89.61
+MARUTI,con,CON11,Low composite quality score,87.95
+MOTHERSON,pro,PRO06,Strong interest coverage,70.45
+MOTHERSON,pro,PRO08,Positive free cash flow,80
+MOTHERSON,pro,PRO09,Positive operating cash flow,80
+MOTHERSON,pro,PRO12,Reasonable asset utilization,88.45
+MOTHERSON,con,CON04,Low operating margin,66.11
+MOTHERSON,con,CON05,Low net profit margin,70.82
+MOTHERSON,con,CON11,Low composite quality score,91.0
+NAUKRI,pro,PRO01,Strong 5-year revenue growth,69.23
+NAUKRI,pro,PRO04,Healthy operating margin,84.55
+NAUKRI,pro,PRO05,Healthy net profit margin,85.19
+NAUKRI,pro,PRO06,Strong interest coverage,95
+NAUKRI,pro,PRO07,Conservative debt-to-equity profile,79.76
+NAUKRI,pro,PRO09,Positive operating cash flow,80
+NAUKRI,con,CON02,Weak 5-year profit growth,79.7
+NAUKRI,con,CON03,Low return on equity,81.07
+NAUKRI,con,CON08,Negative free cash flow,85
+NAUKRI,con,CON10,Declining long-term EPS,74.26
+NAUKRI,con,CON11,Low composite quality score,93.04
+NAUKRI,con,CON12,Low asset utilization,87.97
+NESTLEIND,pro,PRO03,Healthy return on equity,95
+NESTLEIND,pro,PRO04,Healthy operating margin,78.24
+NESTLEIND,pro,PRO05,Healthy net profit margin,74.18
+NESTLEIND,pro,PRO06,Strong interest coverage,95
+NESTLEIND,pro,PRO07,Conservative debt-to-equity profile,76.9
+NESTLEIND,pro,PRO08,Positive free cash flow,80
+NESTLEIND,pro,PRO09,Positive operating cash flow,80
+NESTLEIND,pro,PRO10,Positive long-term EPS growth,75.88
+NESTLEIND,pro,PRO11,High composite quality score,73.49
+NESTLEIND,pro,PRO12,Reasonable asset utilization,95
+NESTLEIND,con,CON_FALLBACK,Financial profile warrants continued monitoring,61
+NHPC,pro,PRO04,Healthy operating margin,95
+NHPC,pro,PRO05,Healthy net profit margin,95
+NHPC,pro,PRO06,Strong interest coverage,82.49
+NHPC,pro,PRO08,Positive free cash flow,80
+NHPC,pro,PRO09,Positive operating cash flow,80
+NHPC,con,CON01,Weak 5-year revenue growth,75.79
+NHPC,con,CON11,Low composite quality score,85.23
+NHPC,con,CON12,Low asset utilization,84.68
+NTPC,pro,PRO04,Healthy operating margin,85.74
+NTPC,pro,PRO05,Healthy net profit margin,67.93
+NTPC,pro,PRO08,Positive free cash flow,80
+NTPC,pro,PRO09,Positive operating cash flow,80
+NTPC,con,CON07,High debt-to-equity profile,69.76
+NTPC,con,CON11,Low composite quality score,90.37
+ONGC,pro,PRO03,Healthy return on equity,67.91
+ONGC,pro,PRO04,Healthy operating margin,68.58
+ONGC,pro,PRO06,Strong interest coverage,82.72
+ONGC,pro,PRO07,Conservative debt-to-equity profile,66.37
+ONGC,pro,PRO08,Positive free cash flow,80
+ONGC,pro,PRO09,Positive operating cash flow,80
+ONGC,pro,PRO10,Positive long-term EPS growth,65.39
+ONGC,pro,PRO12,Reasonable asset utilization,81.66
+ONGC,con,CON11,Low composite quality score,87.9
+PFC,pro,PRO02,Strong 5-year profit growth,66.85
+PFC,pro,PRO03,Healthy return on equity,81.74
+PFC,pro,PRO04,Healthy operating margin,95
+PFC,pro,PRO05,Healthy net profit margin,93.37
+PFC,pro,PRO10,Positive long-term EPS growth,74.74
+PFC,con,CON06,Weak interest coverage,79.2
+PFC,con,CON07,High debt-to-equity profile,95
+PFC,con,CON08,Negative free cash flow,85
+PFC,con,CON09,Negative operating cash flow,85
+PFC,con,CON11,Low composite quality score,85.34
+PFC,con,CON12,Low asset utilization,86.19
+PIDILITIND,pro,PRO03,Healthy return on equity,73.67
+PIDILITIND,pro,PRO04,Healthy operating margin,75.3
+PIDILITIND,pro,PRO05,Healthy net profit margin,71.16
+PIDILITIND,pro,PRO06,Strong interest coverage,95
+PIDILITIND,pro,PRO07,Conservative debt-to-equity profile,78.64
+PIDILITIND,pro,PRO08,Positive free cash flow,80
+PIDILITIND,pro,PRO09,Positive operating cash flow,80
+PIDILITIND,pro,PRO10,Positive long-term EPS growth,72.13
+PIDILITIND,pro,PRO12,Reasonable asset utilization,85.51
+PIDILITIND,con,CON11,Low composite quality score,83.32
+PNB,pro,PRO01,Strong 5-year revenue growth,66.8
+PNB,pro,PRO03,Healthy return on equity,95
+PNB,pro,PRO12,Reasonable asset utilization,95
+PNB,con,CON07,High debt-to-equity profile,91.84
+PNB,con,CON08,Negative free cash flow,85
+PNB,con,CON09,Negative operating cash flow,85
+PNB,con,CON11,Low composite quality score,76.26
+POWERGRID,pro,PRO03,Healthy return on equity,69.31
+POWERGRID,pro,PRO04,Healthy operating margin,95
+POWERGRID,pro,PRO05,Healthy net profit margin,95
+POWERGRID,pro,PRO08,Positive free cash flow,80
+POWERGRID,pro,PRO09,Positive operating cash flow,80
+POWERGRID,con,CON07,High debt-to-equity profile,69.17
+POWERGRID,con,CON11,Low composite quality score,82.27
+POWERGRID,con,CON12,Low asset utilization,76.72
+RECLTD,pro,PRO02,Strong 5-year profit growth,74.53
+RECLTD,pro,PRO03,Healthy return on equity,73.09
+RECLTD,pro,PRO04,Healthy operating margin,95
+RECLTD,pro,PRO05,Healthy net profit margin,94.65
+RECLTD,pro,PRO10,Positive long-term EPS growth,84.34
+RECLTD,con,CON06,Weak interest coverage,69.0
+RECLTD,con,CON07,High debt-to-equity profile,95
+RECLTD,con,CON08,Negative free cash flow,85
+RECLTD,con,CON09,Negative operating cash flow,85
+RECLTD,con,CON11,Low composite quality score,85.11
+RECLTD,con,CON12,Low asset utilization,86.33
+RELIANCE,pro,PRO04,Healthy operating margin,69.61
+RELIANCE,pro,PRO06,Strong interest coverage,75.46
+RELIANCE,pro,PRO08,Positive free cash flow,80
+RELIANCE,pro,PRO09,Positive operating cash flow,80
+RELIANCE,pro,PRO10,Positive long-term EPS growth,68.91
+RELIANCE,pro,PRO12,Reasonable asset utilization,75.25
+RELIANCE,con,CON03,Low return on equity,65.08
+RELIANCE,con,CON11,Low composite quality score,91.94
+SBILIFE,pro,PRO01,Strong 5-year revenue growth,83.46
+SBILIFE,pro,PRO06,Strong interest coverage,95
+SBILIFE,pro,PRO07,Conservative debt-to-equity profile,80.0
+SBILIFE,pro,PRO09,Positive operating cash flow,80
+SBILIFE,con,CON04,Low operating margin,84.63
+SBILIFE,con,CON05,Low net profit margin,75.7
+SBILIFE,con,CON08,Negative free cash flow,85
+SBILIFE,con,CON11,Low composite quality score,95
+SBIN,pro,PRO02,Strong 5-year profit growth,95
+SBIN,pro,PRO05,Healthy net profit margin,73.75
+SBIN,pro,PRO08,Positive free cash flow,80
+SBIN,pro,PRO09,Positive operating cash flow,80
+SBIN,pro,PRO10,Positive long-term EPS growth,95
+SBIN,con,CON04,Low operating margin,95
+SBIN,con,CON06,Weak interest coverage,81.34
+SBIN,con,CON11,Low composite quality score,84.17
+SHREECEM,pro,PRO04,Healthy operating margin,75.52
+SHREECEM,pro,PRO06,Strong interest coverage,95
+SHREECEM,pro,PRO07,Conservative debt-to-equity profile,77.6
+SHREECEM,pro,PRO08,Positive free cash flow,80
+SHREECEM,pro,PRO09,Positive operating cash flow,80
+SHREECEM,pro,PRO10,Positive long-term EPS growth,66.36
+SHREECEM,pro,PRO12,Reasonable asset utilization,79.7
+SHREECEM,con,CON03,Low return on equity,68.26
+SHREECEM,con,CON11,Low composite quality score,90.56
+SHRIRAMFIN,pro,PRO01,Strong 5-year revenue growth,72.11
+SHRIRAMFIN,pro,PRO02,Strong 5-year profit growth,81.99
+SHRIRAMFIN,pro,PRO03,Healthy return on equity,65.17
+SHRIRAMFIN,pro,PRO04,Healthy operating margin,85.88
+SHRIRAMFIN,pro,PRO05,Healthy net profit margin,80.5
+SHRIRAMFIN,pro,PRO10,Positive long-term EPS growth,73.58
+SHRIRAMFIN,con,CON06,Weak interest coverage,78.23
+SHRIRAMFIN,con,CON07,High debt-to-equity profile,94.94
+SHRIRAMFIN,con,CON08,Negative free cash flow,85
+SHRIRAMFIN,con,CON09,Negative operating cash flow,85
+SHRIRAMFIN,con,CON11,Low composite quality score,90.02
+SHRIRAMFIN,con,CON12,Low asset utilization,80.34
+SIEMENS,pro,PRO02,Strong 5-year profit growth,74.71
+SIEMENS,pro,PRO03,Healthy return on equity,69.05
+SIEMENS,pro,PRO05,Healthy net profit margin,68.33
+SIEMENS,pro,PRO06,Strong interest coverage,95
+SIEMENS,pro,PRO07,Conservative debt-to-equity profile,79.45
+SIEMENS,pro,PRO08,Positive free cash flow,80
+SIEMENS,pro,PRO09,Positive operating cash flow,80
+SIEMENS,pro,PRO10,Positive long-term EPS growth,84.29
+SIEMENS,pro,PRO12,Reasonable asset utilization,82.58
+SIEMENS,con,CON11,Low composite quality score,87.34
+SUNPHARMA,pro,PRO02,Strong 5-year profit growth,84.07
+SUNPHARMA,pro,PRO03,Healthy return on equity,65.14
+SUNPHARMA,pro,PRO04,Healthy operating margin,82.76
+SUNPHARMA,pro,PRO05,Healthy net profit margin,79.72
+SUNPHARMA,pro,PRO06,Strong interest coverage,95
+SUNPHARMA,pro,PRO07,Conservative debt-to-equity profile,78.46
+SUNPHARMA,pro,PRO08,Positive free cash flow,80
+SUNPHARMA,pro,PRO09,Positive operating cash flow,80
+SUNPHARMA,pro,PRO10,Positive long-term EPS growth,95
+SUNPHARMA,pro,PRO12,Reasonable asset utilization,76.37
+SUNPHARMA,con,CON11,Low composite quality score,86.27
+TATACONSUM,pro,PRO01,Strong 5-year revenue growth,66.92
+TATACONSUM,pro,PRO02,Strong 5-year profit growth,78.2
+TATACONSUM,pro,PRO04,Healthy operating margin,65.03
+TATACONSUM,pro,PRO06,Strong interest coverage,95
+TATACONSUM,pro,PRO07,Conservative debt-to-equity profile,73.5
+TATACONSUM,pro,PRO08,Positive free cash flow,80
+TATACONSUM,pro,PRO09,Positive operating cash flow,80
+TATACONSUM,pro,PRO10,Positive long-term EPS growth,74.74
+TATACONSUM,pro,PRO12,Reasonable asset utilization,75.91
+TATACONSUM,con,CON03,Low return on equity,69.87
+TATACONSUM,con,CON11,Low composite quality score,93.05
+TATAMOTORS,pro,PRO03,Healthy return on equity,95
+TATAMOTORS,pro,PRO06,Strong interest coverage,73.06
+TATAMOTORS,pro,PRO08,Positive free cash flow,80
+TATAMOTORS,pro,PRO09,Positive operating cash flow,80
+TATAMOTORS,pro,PRO12,Reasonable asset utilization,88.7
+TATAMOTORS,con,CON07,High debt-to-equity profile,67.63
+TATAMOTORS,con,CON11,Low composite quality score,80.78
+TATAPOWER,pro,PRO01,Strong 5-year revenue growth,66.02
+TATAPOWER,pro,PRO04,Healthy operating margin,68.7
+TATAPOWER,pro,PRO08,Positive free cash flow,80
+TATAPOWER,pro,PRO09,Positive operating cash flow,80
+TATAPOWER,con,CON07,High debt-to-equity profile,71.59
+TATAPOWER,con,CON11,Low composite quality score,91.72
+TATASTEEL,pro,PRO08,Positive free cash flow,80
+TATASTEEL,pro,PRO09,Positive operating cash flow,80
+TATASTEEL,pro,PRO12,Reasonable asset utilization,82.02
+TATASTEEL,con,CON03,Low return on equity,95
+TATASTEEL,con,CON04,Low operating margin,65.58
+TATASTEEL,con,CON05,Low net profit margin,86.43
+TATASTEEL,con,CON11,Low composite quality score,95
+TCS,pro,PRO03,Healthy return on equity,95
+TCS,pro,PRO04,Healthy operating margin,82.54
+TCS,pro,PRO05,Healthy net profit margin,78.71
+TCS,pro,PRO06,Strong interest coverage,95
+TCS,pro,PRO07,Conservative debt-to-equity profile,77.34
+TCS,pro,PRO08,Positive free cash flow,80
+TCS,pro,PRO09,Positive operating cash flow,80
+TCS,pro,PRO12,Reasonable asset utilization,95
+TCS,con,CON11,Low composite quality score,65.75
+TECHM,pro,PRO06,Strong interest coverage,87.72
+TECHM,pro,PRO07,Conservative debt-to-equity profile,77.15
+TECHM,pro,PRO08,Positive free cash flow,80
+TECHM,pro,PRO09,Positive operating cash flow,80
+TECHM,pro,PRO12,Reasonable asset utilization,89.1
+TECHM,con,CON02,Weak 5-year profit growth,95
+TECHM,con,CON03,Low return on equity,67.02
+TECHM,con,CON04,Low operating margin,67.67
+TECHM,con,CON05,Low net profit margin,66.17
+TECHM,con,CON10,Declining long-term EPS,92.83
+TECHM,con,CON11,Low composite quality score,92.44
+TITAN,pro,PRO01,Strong 5-year revenue growth,76.79
+TITAN,pro,PRO02,Strong 5-year profit growth,75.55
+TITAN,pro,PRO03,Healthy return on equity,95
+TITAN,pro,PRO06,Strong interest coverage,78.82
+TITAN,pro,PRO08,Positive free cash flow,80
+TITAN,pro,PRO09,Positive operating cash flow,80
+TITAN,pro,PRO10,Positive long-term EPS growth,84.01
+TITAN,pro,PRO12,Reasonable asset utilization,95
+TITAN,con,CON07,High debt-to-equity profile,71.53
+TITAN,con,CON11,Low composite quality score,83.27
+TORNTPHARM,pro,PRO02,Strong 5-year profit growth,95
+TORNTPHARM,pro,PRO03,Healthy return on equity,78.73
+TORNTPHARM,pro,PRO04,Healthy operating margin,89.59
+TORNTPHARM,pro,PRO05,Healthy net profit margin,73.15
+TORNTPHARM,pro,PRO06,Strong interest coverage,79.85
+TORNTPHARM,pro,PRO08,Positive free cash flow,80
+TORNTPHARM,pro,PRO09,Positive operating cash flow,80
+TORNTPHARM,pro,PRO10,Positive long-term EPS growth,95
+TORNTPHARM,pro,PRO12,Reasonable asset utilization,79.79
+TORNTPHARM,con,CON11,Low composite quality score,82.18
+TRENT,pro,PRO01,Strong 5-year revenue growth,95
+TRENT,pro,PRO02,Strong 5-year profit growth,95
+TRENT,pro,PRO03,Healthy return on equity,95
+TRENT,pro,PRO04,Healthy operating margin,66.39
+TRENT,pro,PRO05,Healthy net profit margin,67.9
+TRENT,pro,PRO06,Strong interest coverage,76.09
+TRENT,pro,PRO07,Conservative debt-to-equity profile,67.07
+TRENT,pro,PRO08,Positive free cash flow,80
+TRENT,pro,PRO09,Positive operating cash flow,80
+TRENT,pro,PRO10,Positive long-term EPS growth,95
+TRENT,pro,PRO12,Reasonable asset utilization,95
+TRENT,con,CON11,Low composite quality score,79.04
+TVSMOTOR,pro,PRO02,Strong 5-year profit growth,74.33
+TVSMOTOR,pro,PRO03,Healthy return on equity,81.84
+TVSMOTOR,pro,PRO10,Positive long-term EPS growth,83.27
+TVSMOTOR,pro,PRO12,Reasonable asset utilization,83.63
+TVSMOTOR,con,CON05,Low net profit margin,66.37
+TVSMOTOR,con,CON07,High debt-to-equity profile,93.33
+TVSMOTOR,con,CON08,Negative free cash flow,85
+TVSMOTOR,con,CON09,Negative operating cash flow,85
+TVSMOTOR,con,CON11,Low composite quality score,87.88
+ULTRACEMCO,pro,PRO02,Strong 5-year profit growth,82.77
+ULTRACEMCO,pro,PRO04,Healthy operating margin,69.93
+ULTRACEMCO,pro,PRO06,Strong interest coverage,87.97
+ULTRACEMCO,pro,PRO07,Conservative debt-to-equity profile,74.32
+ULTRACEMCO,pro,PRO08,Positive free cash flow,80
+ULTRACEMCO,pro,PRO09,Positive operating cash flow,80
+ULTRACEMCO,pro,PRO10,Positive long-term EPS growth,90.05
+ULTRACEMCO,pro,PRO12,Reasonable asset utilization,79.07
+ULTRACEMCO,con,CON11,Low composite quality score,89.92
+UNIONBANK,pro,PRO01,Strong 5-year revenue growth,82.89
+UNIONBANK,pro,PRO05,Healthy net profit margin,70.62
+UNIONBANK,pro,PRO08,Positive free cash flow,80
+UNIONBANK,pro,PRO09,Positive operating cash flow,80
+UNIONBANK,con,CON04,Low operating margin,75.85
+UNIONBANK,con,CON06,Weak interest coverage,81.46
+UNIONBANK,con,CON07,High debt-to-equity profile,95
+UNIONBANK,con,CON11,Low composite quality score,92.93
+UNIONBANK,con,CON12,Low asset utilization,87.84
+UNITDSPR,pro,PRO02,Strong 5-year profit growth,66.07
+UNITDSPR,pro,PRO04,Healthy operating margin,69.0
+UNITDSPR,pro,PRO05,Healthy net profit margin,68.66
+UNITDSPR,pro,PRO06,Strong interest coverage,95
+UNITDSPR,pro,PRO08,Positive free cash flow,80
+UNITDSPR,pro,PRO09,Positive operating cash flow,80
+UNITDSPR,pro,PRO10,Positive long-term EPS growth,72.39
+UNITDSPR,con,CON01,Weak 5-year revenue growth,68.24
+UNITDSPR,con,CON11,Low composite quality score,87.56
+VBL,pro,PRO01,Strong 5-year revenue growth,86.47
+VBL,pro,PRO02,Strong 5-year profit growth,95
+VBL,pro,PRO04,Healthy operating margin,77.25
+VBL,pro,PRO05,Healthy net profit margin,69.65
+VBL,pro,PRO06,Strong interest coverage,85.42
+VBL,pro,PRO09,Positive operating cash flow,80
+VBL,pro,PRO10,Positive long-term EPS growth,95
+VBL,con,CON08,Negative free cash flow,85
+VBL,con,CON11,Low composite quality score,86.9
+VEDL,pro,PRO04,Healthy operating margin,79.35
+VEDL,pro,PRO08,Positive free cash flow,80
+VEDL,pro,PRO09,Positive operating cash flow,80
+VEDL,con,CON02,Weak 5-year profit growth,94.74
+VEDL,con,CON10,Declining long-term EPS,90.71
+VEDL,con,CON11,Low composite quality score,94.75
+WIPRO,pro,PRO04,Healthy operating margin,70.49
+WIPRO,pro,PRO05,Healthy net profit margin,68.57
+WIPRO,pro,PRO06,Strong interest coverage,90.89
+WIPRO,pro,PRO08,Positive free cash flow,80
+WIPRO,pro,PRO09,Positive operating cash flow,80
+WIPRO,con,CON02,Weak 5-year profit growth,67.21
+WIPRO,con,CON11,Low composite quality score,87.62
+ZOMATO,pro,PRO01,Strong 5-year revenue growth,95
+ZOMATO,pro,PRO06,Strong interest coverage,84.69
+ZOMATO,pro,PRO08,Positive free cash flow,80
+ZOMATO,pro,PRO09,Positive operating cash flow,80
+ZOMATO,con,CON04,Low operating margin,84.29
+ZOMATO,con,CON05,Low net profit margin,71.31
+ZOMATO,con,CON11,Low composite quality score,95
+ZYDUSLIFE,pro,PRO02,Strong 5-year profit growth,66.82
+ZYDUSLIFE,pro,PRO04,Healthy operating margin,83.82
+ZYDUSLIFE,pro,PRO05,Healthy net profit margin,80.49
+ZYDUSLIFE,pro,PRO06,Strong interest coverage,95
+ZYDUSLIFE,pro,PRO08,Positive free cash flow,80
+ZYDUSLIFE,pro,PRO09,Positive operating cash flow,80
+ZYDUSLIFE,pro,PRO10,Positive long-term EPS growth,77.24
+ZYDUSLIFE,con,CON11,Low composite quality score,79.67
